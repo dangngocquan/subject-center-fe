@@ -1,15 +1,15 @@
-import PlansNavbar from "@/components/PlansNavbar";
-import PlansSidebar from "@/components/PlansSidebar";
-import PlansMain from "@/components/PlansMain";
+"use client";
 
-const Plans: React.FC = () => {
+import React from "react";
+
+import Dashboard from "@/components/Dashboard/Dashboard";
+
+const DashboardPage: React.FC = () => {
   return (
-    <div>
-      <PlansNavbar />
-      <PlansSidebar />
-      <PlansMain />
+    <div className="min-h-screen bg-black text-white">
+      <Dashboard />
     </div>
   );
 };
 
-export default Plans;
+export default DashboardPage;

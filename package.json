@@ -9,17 +9,20 @@
     "lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@heroui/button": "2.2.16",
     "@heroui/code": "2.2.12",
     "@heroui/input": "2.4.16",
     "@heroui/kbd": "2.2.12",
     "@heroui/link": "2.2.13",
     "@heroui/listbox": "2.3.15",
+    "@heroui/modal": "^2.2.13",
     "@heroui/navbar": "2.2.14",
     "@heroui/snippet": "2.2.17",
     "@heroui/switch": "2.2.14",
     "@heroui/system": "2.4.12",
     "@heroui/theme": "2.4.12",
+    "@nextui-org/react": "^2.6.11",
     "@react-aria/ssr": "3.9.7",
     "@react-aria/visually-hidden": "3.8.20",
     "@react-oauth/google": "^0.12.1",
@@ -31,7 +34,8 @@
     "next": "15.0.4",
     "next-themes": "^0.4.4",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "recharts": "^2.15.1"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "15.0.4",
@@ -57,5 +61,6 @@
     "tailwind-variants": "0.3.0",
     "tailwindcss": "3.4.16",
     "typescript": "5.6.3"
-  }
+  },
+  "proxy": "https://subject-center-be.vercel.app"
 }

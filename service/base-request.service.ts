@@ -20,7 +20,7 @@ export default class BaseRequest {
         const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
 
         if (accessToken) {
-          config.headers["Authorization"] = `Bearer ${accessToken}`;
+          config.headers["token"] = `${accessToken}`;
         }
         config.headers["lang"] = lang;
 
