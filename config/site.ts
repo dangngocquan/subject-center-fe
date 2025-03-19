@@ -9,8 +9,8 @@ export const siteConfig = {
       href: "/",
     },
     {
-      label: "About",
-      href: "/about",
+      label: "Majors",
+      href: "/major",
     },
     {
       label: "Plans",
