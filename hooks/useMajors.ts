@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import BaseRequest from "@/service/base-request.service";
 import { API_ROUTES } from "@/service/api-route.service";
-import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
+import BaseRequest from "@/service/base-request.service";
+import { Major } from "@/types/major";
+import { useEffect, useState } from "react";
 
 export const useMajors = (searchQuery: string) => {
   const [majors, setMajors] = useState<Major[]>([]);

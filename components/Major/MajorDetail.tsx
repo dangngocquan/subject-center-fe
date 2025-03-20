@@ -1,20 +1,25 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { motion } from "framer-motion";
+import { useMajorDetail } from "@/hooks/useMajorDetail";
+import { API_ROUTES } from "@/service/api-route.service";
+import BaseRequest from "@/service/base-request.service";
+import { MajorItem } from "@/types/major";
+import { Plan } from "@/types/plan";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   FaArrowsAltV,
+  FaCheckSquare,
   FaCompressArrowsAlt,
   FaEdit,
   FaEye,
-  FaUndo,
-  FaCheckSquare,
   FaPlus,
-  FaTimes,
+  FaUndo,
 } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
-import { useMajorDetail } from "@/hooks/useMajorDetail";
 import LoadingModal from "../LoadingModal";
+import PlanModal from "./PlanModal";
+import { apiUpsertPlan } from "@/service/plan.api";
 
 interface MajorItemWithChildren extends MajorItem {
   children: MajorItemWithChildren[];
@@ -149,7 +154,6 @@ const findRequiredSubjects = (
 
 const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   const { major, loading, error } = useMajorDetail(Number(id));
-  console.log({ major });
   const [data, setData] = useState<MajorItem[]>([]);
   const [tree, setTree] = useState<MajorItemWithChildren[]>([]);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -396,31 +400,18 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       </motion.div>
 
       {/* Modal */}
-      {isPlanModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <motion.div
-            animate={{ opacity: 1, scale: 1 }}
-            initial={{ opacity: 0, scale: 0.8 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3 }}
-            className="bg-[#1A2A44] p-6 rounded-lg shadow-lg w-full max-w-md relative"
-          >
-            {/* Nút Close */}
-            <button
-              onClick={closePlanModal}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors duration-200"
-            >
-              <FaTimes size={20} />
-            </button>
-
-            {/* Nội dung modal (tạm thời để trống) */}
-            <div className="text-white">
-              <h3 className="text-xl font-bold mb-4">Tạo Plan</h3>
-              <p>Modal này sẽ được thiết kế chi tiết sau.</p>
-            </div>
-          </motion.div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isPlanModalOpen && (
+          <PlanModal
+            isOpen={isPlanModalOpen}
+            onClose={closePlanModal}
+            majorItems={major?.items ?? []}
+            tree={tree}
+            selected={selected}
+            onCreatePlan={(plan) => apiUpsertPlan(plan)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Tùy chỉnh style cho Tooltip */}
       <Tooltip

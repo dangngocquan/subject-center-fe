@@ -1,28 +1,29 @@
 export interface Plan {
-  id: string;
-  name: string;
-  accountId: string;
-  orderIndex: number;
-  createdAt: string;
-  updatedAt: string;
+  id?: string;
+  name?: string;
+  accountId?: string;
+  orderIndex?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  items?: PlanItem[];
 }
 
-export interface Subject {
-  id: string;
-  planId: string;
-  name: string;
-  code: string;
-  credit: string;
-  grade4: number | null;
-  gradeLatin: string | null;
-  prerequisites: string[];
-  orderIndex: number;
-  createdAt: string;
-  updatedAt: string;
+export interface PlanItem {
+  id?: string;
+  planId?: string;
+  name?: string;
+  code?: string;
+  credit?: string;
+  grade4?: number | null;
+  gradeLatin?: string | null;
+  prerequisites?: string[];
+  orderIndex?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Credits {
-  items: Subject[];
+  items: PlanItem[];
   totalCredits: number;
   totalSubjects: number;
   totalSubjectsCompleted: number;
@@ -50,5 +51,3 @@ export interface PlanDetails {
     withImprovements: { marks: Mark[] };
   };
 }
-
-

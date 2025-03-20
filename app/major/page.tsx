@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import LoadingModal from "@/components/LoadingModal";
 import { useMajors } from "@/hooks/useMajors";
 import MajorsList from "@/components/Major/MajorsList";
+import { Major } from "@/types/major";
 
 const MajorsPage: React.FC = () => {
   const { majors, loading, error } = useMajors("");

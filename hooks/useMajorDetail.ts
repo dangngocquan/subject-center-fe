@@ -1,5 +1,6 @@
 import { API_ROUTES } from "@/service/api-route.service";
 import BaseRequest from "@/service/base-request.service";
+import { Major } from "@/types/major";
 import { useEffect, useState } from "react";
 
 export const useMajorDetail = (id: number) => {
@@ -17,7 +18,7 @@ export const useMajorDetail = (id: number) => {
         API_ROUTES.GET_MAJOR_DETAIL(id),
         {}
       );
-      setMajor((prev) => response.data);
+      setMajor(response.data);
     } catch (err) {
       setError("Failed to fetch plans");
     } finally {

@@ -1,4 +1,4 @@
-interface MajorItem {
+export interface MajorItem {
   genCode: string;
   parentGenCode?: string | null;
   stt?: string;
@@ -14,9 +14,13 @@ interface MajorItem {
   majorId?: number;
 }
 
-interface Major {
+export interface Major {
   id?: number;
   name: string;
   items: MajorItem[];
   updatedAt?: string | Date | number;
+}
+
+export interface MajorItemWithChildren extends MajorItem {
+  children: MajorItemWithChildren[]; // Danh sách các mục con
 }
