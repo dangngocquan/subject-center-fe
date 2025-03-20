@@ -14,16 +14,27 @@ interface PlanModalProps {
   tree: MajorItemWithChildren[];
   selected: Set<string>;
   onCreatePlan: (plan: Plan) => Promise<{
-    plan: Plan;
-    successes: {
-      code: string;
-      message: string;
-    }[];
-    failed: {
-      code: string;
-      message: string;
-    }[];
+    isBadRequest: boolean;
+    message: string;
+    data: {
+      plan: Plan;
+      result: {
+        name: string;
+        code: string;
+        status: "SUCCEEDED" | "FAILED";
+        message: string;
+      }[];
+    };
+    status: number;
   }>;
+  onPlanCreated: (
+    result: {
+      name: string;
+      code: string;
+      status: "SUCCEEDED" | "FAILED";
+      message: string;
+    }[]
+  ) => void;
 }
 
 const PlanModal: React.FC<PlanModalProps> = ({
@@ -33,11 +44,11 @@ const PlanModal: React.FC<PlanModalProps> = ({
   tree,
   selected,
   onCreatePlan,
+  onPlanCreated,
 }) => {
   const [planName, setPlanName] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false); // Thêm trạng thái loading
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Hàm kiểm tra các nhóm chưa đạt yêu cầu tối thiểu
   const getUnmetRequirements = () => {
     const unmetGroups: MajorItemWithChildren[] = [];
     tree.forEach((node) => {
@@ -58,14 +69,13 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
   const unmetRequirements = getUnmetRequirements();
 
-  // Hàm xử lý khi nhấn "Tạo"
   const handleCreate = async () => {
     if (!planName.trim()) {
       alert("Vui lòng nhập tên plan!");
       return;
     }
 
-    setIsLoading(true); // Hiển thị modal loading
+    setIsLoading(true);
     const selectedItems = Array.from(selected);
     try {
       const response = await onCreatePlan({
@@ -75,36 +85,21 @@ const PlanModal: React.FC<PlanModalProps> = ({
         ) as PlanItem[],
       });
 
-      const { successes = [], failed = [] } = response; // Add default values
+      
 
-      // Hiển thị kết quả
-      let resultMessage = "Kết quả tạo plan:\n";
-      if (successes.length > 0) {
-        resultMessage += "Thành công:\n";
-        successes.forEach((item) => {
-          resultMessage += `- ${item.code}: ${item.message}\n`;
-        });
-      }
-      if (failed.length > 0) {
-        resultMessage += "Thất bại:\n";
-        failed.forEach((item) => {
-          resultMessage += `- ${item.code}: ${item.message}\n`;
-        });
-      }
-      alert(resultMessage);
-
+      // Truyền result từ response.data.result
+      onPlanCreated(response.data.result || []);
       onClose();
     } catch (error) {
-      console.error("Lỗi khi tạo plan:", error);
+      console.error("PlanModal - Error in handleCreate:", error);
       alert("Đã xảy ra lỗi khi tạo plan!");
     } finally {
-      setIsLoading(false); // Ẩn modal loading sau khi hoàn tất (dù thành công hay thất bại)
+      setIsLoading(false);
     }
   };
 
   if (!isOpen) return null;
 
-  // Animation variants cho modal
   const modalVariants = {
     hidden: {
       opacity: 0,
@@ -128,10 +123,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
   return (
     <>
-      {/* Modal loading */}
-      <LoadingModal isOpen={isLoading} />
-
-      {/* Modal chính */}
+      {isLoading && <LoadingModal isOpen={isLoading} />}
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
         <motion.div
           animate="visible"
@@ -141,7 +133,6 @@ const PlanModal: React.FC<PlanModalProps> = ({
           style={{ background: "rgba(26, 42, 68, 0.95)" }}
           variants={modalVariants}
         >
-          {/* Nút Close */}
           <button
             className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition-colors duration-200"
             onClick={onClose}
@@ -149,12 +140,10 @@ const PlanModal: React.FC<PlanModalProps> = ({
             <FaTimes size={16} />
           </button>
 
-          {/* Tiêu đề */}
           <h3 className="text-xl font-semibold text-white mb-4">
             Tạo Plan Học Tập
           </h3>
 
-          {/* Input Plan Name */}
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-gray-300 mb-1"
@@ -173,7 +162,6 @@ const PlanModal: React.FC<PlanModalProps> = ({
             />
           </div>
 
-          {/* Danh sách nhóm chưa đủ yêu cầu */}
           {unmetRequirements.length > 0 && (
             <div className="mb-4">
               <p className="text-sm font-medium text-[#FF6B6B] mb-2">
@@ -214,7 +202,6 @@ const PlanModal: React.FC<PlanModalProps> = ({
             </div>
           )}
 
-          {/* Nút hành động */}
           <div className="flex justify-end space-x-2">
             <motion.button
               className="px-4 py-2 bg-[#3A4A64] text-gray-200 rounded-md hover:bg-[#4A5A74] transition-all duration-200 text-sm font-medium"
@@ -227,7 +214,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
             </motion.button>
             <motion.button
               className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
-              disabled={isLoading} // Vô hiệu hóa nút khi đang loading
+              disabled={isLoading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleCreate}
@@ -241,7 +228,6 @@ const PlanModal: React.FC<PlanModalProps> = ({
   );
 };
 
-// Hàm tính tổng tín chỉ và số môn đã chọn
 const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
   selected: Set<string>

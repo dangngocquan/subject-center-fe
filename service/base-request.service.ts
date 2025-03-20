@@ -18,7 +18,6 @@ export default class BaseRequest {
       (config) => {
         const lang = localStorage.getItem("language") || "en-US";
         const accessToken = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-        console.log({ accessToken });
         if (accessToken) {
           config.headers["token"] = `${accessToken}`;
         }

@@ -23,7 +23,6 @@ export const usePlanDetails = (planId: string | null | undefined) => {
           },
         }
       );
-      console.log(response);
       setPlanDetails(response.data);
     } catch (err) {
       setError("Failed to fetch plan details");

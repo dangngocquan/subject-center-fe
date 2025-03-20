@@ -1,8 +1,6 @@
 "use client";
 
 import { useMajorDetail } from "@/hooks/useMajorDetail";
-import { API_ROUTES } from "@/service/api-route.service";
-import BaseRequest from "@/service/base-request.service";
 import { MajorItem } from "@/types/major";
 import { Plan } from "@/types/plan";
 import { AnimatePresence, motion } from "framer-motion";
@@ -19,6 +17,7 @@ import {
 import { Tooltip } from "react-tooltip";
 import LoadingModal from "../LoadingModal";
 import PlanModal from "./PlanModal";
+import ResultModal from "./ResultModal";
 import { apiUpsertPlan } from "@/service/plan.api";
 
 interface MajorItemWithChildren extends MajorItem {
@@ -30,12 +29,10 @@ interface MajorDetailProps {
 }
 
 const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
-  console.log("buildTree input items:", items);
   const itemMap = new Map<string, MajorItemWithChildren>();
   const roots: MajorItemWithChildren[] = [];
 
   items.forEach((item) => {
-    console.log(item.genCode);
     itemMap.set(item.genCode, { ...item, children: [] });
   });
 
@@ -50,8 +47,6 @@ const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
       }
     }
   });
-
-  console.log("buildTree result:", roots);
   return roots;
 };
 
@@ -70,7 +65,6 @@ const flattenTree = (
       }
     }
   });
-  console.log("flattenTree result:", result);
   return result;
 };
 
@@ -160,6 +154,15 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [isPlanModalOpen, setIsPlanModalOpen] = useState<boolean>(false);
+  const [isResultOpen, setIsResultOpen] = useState<boolean>(false);
+  const [result, setResult] = useState<
+    {
+      name: string;
+      code: string;
+      status: "SUCCEEDED" | "FAILED";
+      message: string;
+    }[]
+  >([]);
 
   useEffect(() => {
     if (major) {
@@ -221,19 +224,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   };
 
   const selectAllRequired = () => {
-    console.log(
-      "Data for selectAllRequired:",
-      data.map((item) => ({
-        genCode: item.genCode,
-        name: item.name,
-        isLeaf: item.isLeaf,
-        credits: item.credit,
-        minCredits: item.minCredits,
-        minChildren: item.minChildren,
-      }))
-    );
     const requiredSubjects = findRequiredSubjects(tree, data);
-    console.log("Required subjects:", Array.from(requiredSubjects));
     setSelected(requiredSubjects);
   };
 
@@ -259,6 +250,23 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
     setIsPlanModalOpen(false);
   };
 
+  const handlePlanCreated = (
+    result: {
+      name: string;
+      code: string;
+      status: "SUCCEEDED" | "FAILED";
+      message: string;
+    }[]
+  ) => {
+    setResult(result);
+    setIsResultOpen(true);
+  };
+
+  const closeResultModal = () => {
+    setIsResultOpen(false);
+    setResult([]);
+  };
+
   if (loading) return <LoadingModal isOpen={loading} />;
 
   if (error) return <p className="text-red-500">Đã xảy ra lỗi: {error}</p>;
@@ -267,13 +275,12 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
     <div className="min-h-screen p-6" style={{ backgroundColor: "#0A1A2F" }}>
       <motion.div
         className="flex justify-between items-center bg-[#1A2A44] p-4 rounded-lg shadow-lg my-4"
-        style={{ height: "150px" }} // Tăng chiều cao header lên 150px
+        style={{ height: "150px" }}
       >
-        {/* Bên trái: Tiêu đề và thông tin tổng tín chỉ */}
         <motion.div
           className="flex flex-col space-y-2"
           animate={{
-            y: isEditMode ? 0 : "50%", // Dịch chuyển nội dung xuống giữa khi không ở edit mode
+            y: isEditMode ? 0 : "50%",
           }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
@@ -303,10 +310,8 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
           )}
         </motion.div>
 
-        {/* Bên phải: Các nút chức năng */}
         <div className="flex flex-col items-end space-y-2">
           <div className="flex space-x-2">
-            {/* Nút mở/đóng tất cả */}
             <motion.button
               animate={{ opacity: 1 }}
               className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
@@ -323,7 +328,6 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
               )}
             </motion.button>
 
-            {/* Nút chỉnh sửa/xem */}
             <motion.button
               animate={{ opacity: 1 }}
               className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
@@ -337,10 +341,8 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
             </motion.button>
           </div>
 
-          {/* Hàng nút thứ hai: Đặt lại và Chọn môn bắt buộc */}
           {isEditMode && (
             <div className="flex space-x-2">
-              {/* Nút đặt lại */}
               <motion.button
                 animate={{ opacity: 1, scale: 1 }}
                 className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
@@ -354,7 +356,6 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                 <FaUndo size={20} />
               </motion.button>
 
-              {/* Nút chọn tất cả môn bắt buộc */}
               <motion.button
                 animate={{ opacity: 1, scale: 1 }}
                 className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
@@ -370,7 +371,6 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
             </div>
           )}
 
-          {/* Hàng nút thứ ba: Tạo plan sử dụng các môn học đã chọn */}
           {isEditMode && (
             <div className="w-[80px] flex justify-center">
               <motion.button
@@ -399,7 +399,6 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         </div>
       </motion.div>
 
-      {/* Modal */}
       <AnimatePresence>
         {isPlanModalOpen && (
           <PlanModal
@@ -409,11 +408,18 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
             tree={tree}
             selected={selected}
             onCreatePlan={(plan) => apiUpsertPlan(plan)}
+            onPlanCreated={handlePlanCreated}
+          />
+        )}
+        {isResultOpen && (
+          <ResultModal
+            isOpen={isResultOpen}
+            onClose={closeResultModal}
+            result={result}
           />
         )}
       </AnimatePresence>
 
-      {/* Tùy chỉnh style cho Tooltip */}
       <Tooltip
         id="expand-tooltip"
         place="bottom"
