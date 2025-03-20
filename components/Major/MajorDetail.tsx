@@ -9,6 +9,8 @@ import {
   FaEye,
   FaUndo,
   FaCheckSquare,
+  FaPlus,
+  FaTimes,
 } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 import { useMajorDetail } from "@/hooks/useMajorDetail";
@@ -21,29 +23,6 @@ interface MajorItemWithChildren extends MajorItem {
 interface MajorDetailProps {
   id: string;
 }
-
-// const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
-//   const itemMap = new Map<string, MajorItemWithChildren>();
-//   const roots: MajorItemWithChildren[] = [];
-
-//   items.forEach((item) => {
-//     itemMap.set(item.genCode, { ...item, children: [] });
-//   });
-
-//   items.forEach((item) => {
-//     const node = itemMap.get(item.genCode)!;
-//     if (item.parentGenCode === null) {
-//       roots.push(node);
-//     } else {
-//       const parent = itemMap.get(item.parentGenCode ?? "~");
-//       if (parent) {
-//         parent.children.push(node);
-//       }
-//     }
-//   });
-
-//   return roots;
-// };
 
 const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
   console.log("buildTree input items:", items);
@@ -63,10 +42,6 @@ const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
       const parent = itemMap.get(item.parentGenCode ?? "");
       if (parent) {
         parent.children.push(node);
-      } else {
-        // console.warn(
-        //   "Parent not found for item:",
-        // );
       }
     }
   });
@@ -74,24 +49,6 @@ const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
   console.log("buildTree result:", roots);
   return roots;
 };
-
-// const flattenTree = (
-//   nodes: MajorItemWithChildren[],
-//   expanded: Set<string>,
-//   seen = new Set<string>()
-// ): MajorItemWithChildren[] => {
-//   let result: MajorItemWithChildren[] = [];
-//   nodes.forEach((node) => {
-//     if (!seen.has(node.genCode)) {
-//       seen.add(node.genCode);
-//       result.push({ ...node, level: node.level });
-//       if (expanded.has(node.genCode) && node.children.length > 0) {
-//         result = result.concat(flattenTree(node.children, expanded, seen));
-//       }
-//     }
-//   });
-//   return result;
-// };
 
 const flattenTree = (
   nodes: MajorItemWithChildren[],
@@ -198,44 +155,19 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (major) {
-  //     const items = major.items;
-  //     setData(items);
-  //     setTree(buildTree(items));
-  //     setSelected(new Set());
-  //   } else {
-  //     const mockData: MajorItem[] = [];
-  //     setData(mockData);
-  //     setTree(buildTree(mockData));
-  //     setSelected(new Set());
-  //   }
-  // }, [major]);
+  const [isPlanModalOpen, setIsPlanModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (major) {
-      console.log({ major2: major });
-      const items = Array.isArray(major.items) ? major.items : [];
+      const items = major.items;
       setData(items);
-      const newTree = buildTree(items);
-      setTree(newTree);
+      setTree(buildTree(items));
       setSelected(new Set());
-      const newExpanded = new Set<string>();
-      items
-        .filter((item) => item.level === 0 && !item.isLeaf)
-        .forEach((item) => newExpanded.add(item.genCode));
-      console.log("Expanded nodes:", Array.from(newExpanded));
-      setExpanded(newExpanded);
-      if (items.length === 0) {
-        console.warn("major.items is empty for major id:", major.id);
-      }
     } else {
       const mockData: MajorItem[] = [];
       setData(mockData);
       setTree(buildTree(mockData));
       setSelected(new Set());
-      setExpanded(new Set());
     }
   }, [major]);
 
@@ -268,8 +200,6 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
     if (!isEditMode) return;
 
     const newSelected = new Set(selected);
-
-    // Xử lý tất cả các trường hợp giống nhau, không phân biệt selectionRule
     if (isChecked) {
       newSelected.add(item.genCode);
     } else {
@@ -317,35 +247,65 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   );
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 
+  const openPlanModal = () => {
+    setIsPlanModalOpen(true);
+  };
+
+  const closePlanModal = () => {
+    setIsPlanModalOpen(false);
+  };
+
   if (loading) return <LoadingModal isOpen={loading} />;
 
   if (error) return <p className="text-red-500">Đã xảy ra lỗi: {error}</p>;
 
   return (
     <div className="min-h-screen p-6" style={{ backgroundColor: "#0A1A2F" }}>
-      <div className="flex justify-between items-start mb-6">
-        <div className="flex flex-col space-y-2">
-          <h2 className="text-2xl font-bold text-white">
-            Khung chương trình đào tạo
+      <motion.div
+        className="flex justify-between items-center bg-[#1A2A44] p-4 rounded-lg shadow-lg my-4"
+        style={{ height: "150px" }} // Tăng chiều cao header lên 150px
+      >
+        {/* Bên trái: Tiêu đề và thông tin tổng tín chỉ */}
+        <motion.div
+          className="flex flex-col space-y-2"
+          animate={{
+            y: isEditMode ? 0 : "50%", // Dịch chuyển nội dung xuống giữa khi không ở edit mode
+          }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <h2
+            className="text-2xl font-bold tracking-wide"
+            style={{
+              background: "linear-gradient(to right, #4A90E2, #FFFFFF)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            {major?.name || "Danh Sách Ngành Học"}
           </h2>
           {isEditMode && (
             <motion.span
-              animate={{ opacity: 1, y: 0 }}
-              className="text-lg font-medium text-gray-300"
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
+              className="text-lg font-medium text-gray-300"
             >
               Tổng tín chỉ:{" "}
-              <span className="text-[#4A90E2]">{totalCredits}</span>
+              <span className="text-[#4A90E2] font-semibold">
+                {totalCredits}
+              </span>
             </motion.span>
           )}
-        </div>
+        </motion.div>
 
+        {/* Bên phải: Các nút chức năng */}
         <div className="flex flex-col items-end space-y-2">
           <div className="flex space-x-2">
+            {/* Nút mở/đóng tất cả */}
             <motion.button
               animate={{ opacity: 1 }}
-              className="p-2 bg-[#4A90E2] text-white rounded-full shadow-md hover:bg-[#357ABD] transition-all duration-300 transform hover:scale-105"
+              className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
               data-tooltip-content={allExpanded ? "Đóng tất cả" : "Mở tất cả"}
               data-tooltip-id="expand-tooltip"
               initial={{ opacity: 1 }}
@@ -358,9 +318,11 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                 <FaArrowsAltV size={20} />
               )}
             </motion.button>
+
+            {/* Nút chỉnh sửa/xem */}
             <motion.button
               animate={{ opacity: 1 }}
-              className="p-2 bg-purple-600 text-white rounded-full shadow-md hover:bg-purple-700 transition-all duration-300 transform hover:scale-105"
+              className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
               data-tooltip-content={isEditMode ? "Chỉ xem" : "Chỉnh sửa"}
               data-tooltip-id="mode-tooltip"
               initial={{ opacity: 1 }}
@@ -371,11 +333,13 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
             </motion.button>
           </div>
 
+          {/* Hàng nút thứ hai: Đặt lại và Chọn môn bắt buộc */}
           {isEditMode && (
             <div className="flex space-x-2">
+              {/* Nút đặt lại */}
               <motion.button
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-2 bg-red-600 text-white rounded-full shadow-md hover:bg-red-700 transition-all duration-300 transform hover:scale-105"
+                className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
                 data-tooltip-content="Đặt lại lựa chọn"
                 data-tooltip-id="reset-tooltip"
                 exit={{ opacity: 0, scale: 0.8 }}
@@ -385,9 +349,11 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
               >
                 <FaUndo size={20} />
               </motion.button>
+
+              {/* Nút chọn tất cả môn bắt buộc */}
               <motion.button
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-2 bg-green-600 text-white rounded-full shadow-md hover:bg-green-700 transition-all duration-300 transform hover:scale-105"
+                className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
                 data-tooltip-content="Chọn tất cả môn bắt buộc"
                 data-tooltip-id="select-all-tooltip"
                 exit={{ opacity: 0, scale: 0.8 }}
@@ -399,13 +365,129 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
               </motion.button>
             </div>
           )}
-        </div>
-      </div>
 
-      <Tooltip id="expand-tooltip" />
-      <Tooltip id="mode-tooltip" />
-      <Tooltip id="reset-tooltip" />
-      <Tooltip id="select-all-tooltip" />
+          {/* Hàng nút thứ ba: Tạo plan sử dụng các môn học đã chọn */}
+          {isEditMode && (
+            <div className="w-[80px] flex justify-center">
+              <motion.button
+                animate={{ opacity: 1, scale: 1 }}
+                className={`p-2 bg-gradient-to-r ${
+                  totalCredits === 0
+                    ? "from-gray-500 to-gray-600 cursor-not-allowed"
+                    : "from-[#4A90E2] to-[#357ABD] hover:from-[#357ABD] hover:to-[#2A5F9A]"
+                } text-white rounded-full shadow-md transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]`}
+                data-tooltip-content={
+                  totalCredits > 0
+                    ? "Tạo plan sử dụng các môn học đã chọn"
+                    : "Cần chọn tối thiểu 1 môn để tạo plan"
+                }
+                data-tooltip-id="create-plan-tooltip"
+                exit={{ opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.3 }}
+                onClick={totalCredits > 0 ? openPlanModal : undefined}
+                disabled={totalCredits === 0}
+              >
+                <FaPlus size={20} />
+              </motion.button>
+            </div>
+          )}
+        </div>
+      </motion.div>
+
+      {/* Modal */}
+      {isPlanModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <motion.div
+            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="bg-[#1A2A44] p-6 rounded-lg shadow-lg w-full max-w-md relative"
+          >
+            {/* Nút Close */}
+            <button
+              onClick={closePlanModal}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors duration-200"
+            >
+              <FaTimes size={20} />
+            </button>
+
+            {/* Nội dung modal (tạm thời để trống) */}
+            <div className="text-white">
+              <h3 className="text-xl font-bold mb-4">Tạo Plan</h3>
+              <p>Modal này sẽ được thiết kế chi tiết sau.</p>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Tùy chỉnh style cho Tooltip */}
+      <Tooltip
+        id="expand-tooltip"
+        place="bottom"
+        style={{
+          backgroundColor: "#2A3A54",
+          color: "#FFFFFF",
+          padding: "8px 12px",
+          borderRadius: "4px",
+          zIndex: 1000,
+          whiteSpace: "normal",
+          maxWidth: "300px",
+        }}
+      />
+      <Tooltip
+        id="mode-tooltip"
+        place="bottom"
+        style={{
+          backgroundColor: "#2A3A54",
+          color: "#FFFFFF",
+          padding: "8px 12px",
+          borderRadius: "4px",
+          zIndex: 1000,
+          whiteSpace: "normal",
+          maxWidth: "300px",
+        }}
+      />
+      <Tooltip
+        id="reset-tooltip"
+        place="bottom"
+        style={{
+          backgroundColor: "#2A3A54",
+          color: "#FFFFFF",
+          padding: "8px 12px",
+          borderRadius: "4px",
+          zIndex: 1000,
+          whiteSpace: "normal",
+          maxWidth: "300px",
+        }}
+      />
+      <Tooltip
+        id="select-all-tooltip"
+        place="bottom"
+        style={{
+          backgroundColor: "#2A3A54",
+          color: "#FFFFFF",
+          padding: "8px 12px",
+          borderRadius: "4px",
+          zIndex: 1000,
+          whiteSpace: "normal",
+          maxWidth: "300px",
+        }}
+      />
+      <Tooltip
+        id="create-plan-tooltip"
+        place="bottom"
+        style={{
+          backgroundColor: "#2A3A54",
+          color: "#FFFFFF",
+          padding: "8px 12px",
+          borderRadius: "4px",
+          zIndex: 1000,
+          whiteSpace: "normal",
+          maxWidth: "300px",
+        }}
+      />
 
       <div
         className="rounded-lg shadow-lg overflow-x-auto"
@@ -528,7 +610,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                           opacity: isEditMode ? 1 : 0,
                           pointerEvents: isEditMode ? "auto" : "none",
                         }}
-                        type="checkbox" // Luôn sử dụng checkbox
+                        type="checkbox"
                         onChange={(e) =>
                           handleSelection(node, e.target.checked)
                         }
