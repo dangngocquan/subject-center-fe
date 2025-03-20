@@ -29,10 +29,12 @@ interface MajorDetailProps {
 }
 
 const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
+  console.log("buildTree input items:", items);
   const itemMap = new Map<string, MajorItemWithChildren>();
   const roots: MajorItemWithChildren[] = [];
 
   items.forEach((item) => {
+    console.log(item.genCode);
     itemMap.set(item.genCode, { ...item, children: [] });
   });
 
@@ -47,6 +49,8 @@ const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
       }
     }
   });
+
+  console.log("buildTree result:", roots);
   return roots;
 };
 
@@ -65,6 +69,7 @@ const flattenTree = (
       }
     }
   });
+  console.log("flattenTree result:", result);
   return result;
 };
 
@@ -163,6 +168,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       message: string;
     }[]
   >([]);
+  const [planName, setPlanName] = useState<string>(""); // Thêm state để lưu planName
 
   useEffect(() => {
     if (major) {
@@ -224,7 +230,19 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   };
 
   const selectAllRequired = () => {
+    console.log(
+      "Data for selectAllRequired:",
+      data.map((item) => ({
+        genCode: item.genCode,
+        name: item.name,
+        isLeaf: item.isLeaf,
+        credits: item.credit,
+        minCredits: item.minCredits,
+        minChildren: item.minChildren,
+      }))
+    );
     const requiredSubjects = findRequiredSubjects(tree, data);
+    console.log("Required subjects:", Array.from(requiredSubjects));
     setSelected(requiredSubjects);
   };
 
@@ -243,6 +261,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 
   const openPlanModal = () => {
+    console.log("MajorDetail - Selected items before opening PlanModal:", Array.from(selected));
     setIsPlanModalOpen(true);
   };
 
@@ -250,14 +269,15 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
     setIsPlanModalOpen(false);
   };
 
-  const handlePlanCreated = (
-    result: {
-      name: string;
-      code: string;
-      status: "SUCCEEDED" | "FAILED";
-      message: string;
-    }[]
-  ) => {
+  const handlePlanCreated = ({
+    planName,
+    result,
+  }: {
+    planName: string;
+    result: { name: string; code: string; status: "SUCCEEDED" | "FAILED"; message: string }[];
+  }) => {
+    console.log("MajorDetail - handlePlanCreated - Received result:", result);
+    setPlanName(planName); // Lưu planName vào state
     setResult(result);
     setIsResultOpen(true);
   };
@@ -265,6 +285,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   const closeResultModal = () => {
     setIsResultOpen(false);
     setResult([]);
+    setPlanName(""); // Reset planName khi đóng modal
   };
 
   if (loading) return <LoadingModal isOpen={loading} />;
@@ -415,6 +436,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
           <ResultModal
             isOpen={isResultOpen}
             onClose={closeResultModal}
+            planName={planName} // Truyền planName vào ResultModal
             result={result}
           />
         )}

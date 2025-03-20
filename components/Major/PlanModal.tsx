@@ -16,25 +16,18 @@ interface PlanModalProps {
   onCreatePlan: (plan: Plan) => Promise<{
     isBadRequest: boolean;
     message: string;
-    data: {
-      plan: Plan;
-      result: {
-        name: string;
-        code: string;
-        status: "SUCCEEDED" | "FAILED";
-        message: string;
-      }[];
-    };
+    data: any;
     status: number;
   }>;
-  onPlanCreated: (
+  onPlanCreated: (result: {
+    planName: string; // Thêm planName vào callback
     result: {
       name: string;
       code: string;
       status: "SUCCEEDED" | "FAILED";
       message: string;
-    }[]
-  ) => void;
+    }[];
+  }) => void;
 }
 
 const PlanModal: React.FC<PlanModalProps> = ({
@@ -85,10 +78,16 @@ const PlanModal: React.FC<PlanModalProps> = ({
         ) as PlanItem[],
       });
 
-      
+      console.log("PlanModal - Response from onCreatePlan:", response);
+      console.log("PlanModal - Response.data:", response.data);
+      console.log(
+        "PlanModal - Result to be passed to onPlanCreated:",
+        response.data.result
+      );
 
-      // Truyền result từ response.data.result
-      onPlanCreated(response.data.result || []);
+      // Truyền planName và result qua callback
+      const result = response.data.result || response.data.results || [];
+      onPlanCreated({ planName, result });
       onClose();
     } catch (error) {
       console.error("PlanModal - Error in handleCreate:", error);
