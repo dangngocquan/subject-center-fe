@@ -1,13 +1,13 @@
-import React, { useState, useRef } from "react";
 import { useInView } from "framer-motion";
+import React, { useRef, useState } from "react";
 
-import Sidebar from "./Sidebar/Sidebar";
-import Navbar from "./Navbar/Navbar";
 import Main from "./Main/Main";
+import Navbar from "./Navbar/Navbar";
+import Sidebar from "./Sidebar/Sidebar";
 
+import { usePlanDetails } from "@/hooks/usePlanDetails";
 import { usePlans } from "@/hooks/usePlans";
 import { Plan } from "@/types/plan";
-import { usePlanDetails } from "@/hooks/usePlanDetails";
 
 const Dashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white max-w-7xl mx-auto">
+    <div className="bg-black text-white max-w-7xl mx-auto">
       <div className="flex flex-col">
         <Navbar
           isNextDisabled={
@@ -75,7 +75,7 @@ const Dashboard: React.FC = () => {
               planDetails={planDetails}
               plans={plans}
               selectedPlan={
-                selectedPlan
+                selectedPlan && selectedPlan.id && selectedPlan.name
                   ? { id: selectedPlan.id, name: selectedPlan.name }
                   : null
               }

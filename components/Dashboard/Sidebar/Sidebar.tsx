@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import PlanCard from "./PlanCard";
+import { Plan } from "@/types/plan";
 
 interface SidebarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  plans: { id: string; name: string; createdAt: string }[];
+  plans: Plan[];
   selectedPlanId: string | null | undefined;
   onSelectPlan: (planId: string | null) => void;
 }
@@ -52,10 +53,16 @@ const Sidebar: React.FC<SidebarProps> = ({
     onSelectPlan(null);
   };
 
-  const displayedPlans = showAll ? plans : plans.slice(0, MAX_INITIAL_PLANS);
+  // Lọc danh sách plans dựa trên searchQuery (theo name, không phân biệt hoa thường)
+  const filteredPlans = plans.filter((plan) =>
+    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="w-64 bg-gray-900/80 shadow-lg shadow-cyan-500/20 z-20 l-0 rounded-2xl flex flex-col overflow-hidden">
+    <div
+      className="w-64 bg-gray-900/80 shadow-lg shadow-cyan-500/20 z-20 l-0 rounded-2xl flex flex-col overflow-hidden max-h-screen"
+      style={{ height: "fit-content" }}
+    >
       <div className="p-4">
         <div className="relative mb-6">
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -79,17 +86,17 @@ const Sidebar: React.FC<SidebarProps> = ({
       <div className="flex flex-col">
         <div className={showAll ? "h-auto" : "max-h-[400px] overflow-y-auto"}>
           <ul className="space-y-4 px-4">
-            {displayedPlans.map((plan) => (
+            {filteredPlans.map((plan) => (
               <PlanCard
                 key={plan.id}
                 isSelected={selectedPlanId === plan.id}
                 plan={plan}
-                onClick={() => onSelectPlan(plan.id)}
+                onClick={() => onSelectPlan(plan.id ?? null)}
               />
             ))}
           </ul>
         </div>
-        {plans.length > MAX_INITIAL_PLANS && (
+        {filteredPlans.length > MAX_INITIAL_PLANS && (
           <div className="w-full">
             <ShowMoreToggle
               showAll={showAll}

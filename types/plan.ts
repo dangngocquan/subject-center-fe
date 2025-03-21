@@ -1,5 +1,5 @@
 export interface Plan {
-  id?: string;
+  id?: string | undefined;
   name?: string;
   accountId?: string;
   orderIndex?: number;

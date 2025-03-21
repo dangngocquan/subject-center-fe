@@ -1,11 +1,8 @@
+import { Plan } from "@/types/plan";
 import React from "react";
 
 interface PlanCardProps {
-  plan: {
-    id: string;
-    name: string;
-    createdAt: string;
-  };
+  plan: Plan;
   isSelected: boolean;
   onClick: () => void;
 }
