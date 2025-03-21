@@ -8,6 +8,7 @@ interface SubjectsListProps {
     code: string;
     credit: string;
     grade4: number | null;
+    gradeLatin: string | null;
   }[];
 }
 
@@ -18,10 +19,11 @@ const SubjectsList: React.FC<SubjectsListProps> = ({ subjects }) => {
       <table className="w-full text-left">
         <thead>
           <tr className="text-gray-400 border-b border-gray-800">
-            <th className="py-2">Name</th>
-            <th className="py-2">Code</th>
-            <th className="py-2">Credits</th>
-            <th className="py-2">Grade (4.0)</th>
+            <th className="py-2">Tên học phần</th>
+            <th className="py-2">Mã</th>
+            <th className="py-2">Tín chỉ</th>
+            <th className="py-2">Điểm (4.0)</th>
+            <th className="py-2">Điểm chữ</th>
             <th className="py-2">Actions</th>
           </tr>
         </thead>
@@ -31,7 +33,10 @@ const SubjectsList: React.FC<SubjectsListProps> = ({ subjects }) => {
               <td className="py-3 text-white">{subject.name}</td>
               <td className="py-3 text-gray-300">{subject.code}</td>
               <td className="py-3 text-gray-300">{subject.credit}</td>
-              <td className="py-3 text-gray-300">{subject.grade4 ?? "N/A"}</td>
+              <td className="py-3 text-gray-300">{subject.grade4 ?? "-"}</td>
+              <td className="py-3 text-gray-300">
+                {subject.gradeLatin ?? "-"}
+              </td>
               <td className="py-3 flex space-x-2">
                 <button className="text-cyan-400 hover:text-cyan-300">
                   <PencilIcon className="w-5 h-5" />

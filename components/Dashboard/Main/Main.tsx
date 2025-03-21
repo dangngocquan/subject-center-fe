@@ -29,7 +29,18 @@ const Main: React.FC<MainProps> = ({ selectedPlan, planDetails, plans }) => {
   };
 
   if (!selectedPlan) {
-    return <PlansOverview plans={plans} selectedPlan={selectedPlan} />;
+    return (
+      <PlansOverview
+        plans={
+          plans.filter((plan) => plan.id !== undefined) as {
+            id: string;
+            name: string;
+            createdAt: string;
+          }[]
+        }
+        selectedPlan={selectedPlan}
+      />
+    );
   }
 
   return (
@@ -42,7 +53,20 @@ const Main: React.FC<MainProps> = ({ selectedPlan, planDetails, plans }) => {
     >
       <div className="flex">
         <div className="flex-[6]">
-          <SubjectsList subjects={planDetails?.credits.items || []} />
+          <SubjectsList
+            subjects={
+              (planDetails?.credits.items || []).filter(
+                (item) => item.id !== undefined
+              ) as {
+                id: string;
+                name: string;
+                code: string;
+                credit: string;
+                grade4: number | null;
+                gradeLatin: string | null;
+              }[]
+            }
+          />
         </div>
 
         <div className="flex flex-col flex-[3] ml-2">
