@@ -1,4 +1,3 @@
-import { Mark } from "@/types/plan";
 import React, { useState } from "react";
 import {
   Area,
@@ -11,6 +10,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
+import { Mark } from "@/types/plan";
 
 interface MarksGraphProps {
   cpa:
@@ -45,7 +46,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
     : (cpa?.withoutImprovements.marks ?? []);
 
   const graduationMarks = marks.filter(
-    (mark) => mark.type === "GRADUATION_MARK"
+    (mark) => mark.type === "GRADUATION_MARK",
   );
   const minMark = marks.find((mark) => mark.type === "MIN");
   const maxMark = marks.find((mark) => mark.type === "MAX");

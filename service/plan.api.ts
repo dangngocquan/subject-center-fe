@@ -4,7 +4,7 @@ import BaseRequest from "./base-request.service";
 import { Plan, PlanResultUpsert } from "@/types/plan";
 
 export const apiUpsertPlan = async (
-  plan: Plan
+  plan: Plan,
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -44,7 +44,7 @@ export const apiUpsertPlan = async (
 };
 
 export const createNewPlan = async (
-  plan: Plan
+  plan: Plan,
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -84,7 +84,7 @@ export const createNewPlan = async (
 };
 
 export const deletePlan = async (
-  planId: number
+  planId: number,
 ): Promise<{
   isBadRequest: boolean;
   message: string;

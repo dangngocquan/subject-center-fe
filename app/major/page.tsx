@@ -26,7 +26,7 @@ const MajorsPage: React.FC = () => {
 
   // Filter majors based on search term
   const filteredMajors = majorsWithUpdate.filter((major: Major) =>
-    major.name.toLowerCase().includes(searchTerm.toLowerCase())
+    major.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   if (loading) return <LoadingModal isOpen={loading} />;

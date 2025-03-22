@@ -60,5 +60,4 @@ export interface PlanResultUpsert {
     status: "SUCCEEDED" | "FAILED";
     message: string;
   }[];
-};
-
+}

@@ -39,19 +39,19 @@ const EditPlanModal: React.FC<EditPlanModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70"
-          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70"
           exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
           <motion.div
-            initial="hidden"
             animate="visible"
-            exit="exit"
-            variants={modalVariants}
             className="bg-[#1A2A44] p-6 rounded-lg shadow-xl w-full max-w-lg relative border border-[#2A3A54] backdrop-blur-sm"
+            exit="exit"
+            initial="hidden"
             style={{ background: "rgba(26, 42, 68, 0.95)" }}
+            variants={modalVariants}
           >
             {/* Nút "X" để đóng */}
             <button
@@ -68,11 +68,11 @@ const EditPlanModal: React.FC<EditPlanModalProps> = ({
 
             {/* Input */}
             <input
+              className="w-full bg-gray-700 text-white rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              placeholder="Nhập tên mới..."
               type="text"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              className="w-full bg-gray-700 text-white rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              placeholder="Nhập tên mới..."
             />
 
             {/* Nút hành động */}
@@ -87,10 +87,10 @@ const EditPlanModal: React.FC<EditPlanModalProps> = ({
               </motion.button>
               <motion.button
                 className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
+                disabled={newName.trim() === ""}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleSubmit}
-                disabled={newName.trim() === ""}
               >
                 Submit
               </motion.button>

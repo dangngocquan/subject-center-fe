@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import PlanCard from "./PlanCard";
-import { Plan } from "@/types/plan";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+
+import PlanCard from "./PlanCard";
 import EditPlanModal from "./EditPlanModal";
+
+import { Plan } from "@/types/plan";
 
 interface SidebarProps {
   searchQuery: string;
@@ -30,9 +32,9 @@ const ShowMoreToggle: React.FC<{ showAll: boolean; onToggle: () => void }> = ({
   return (
     <div className="relative w-full overflow-x-hidden overflow-y-hidden">
       <div
+        className="py-4 text-center cursor-pointer bg-gradient-to-b from-white/10 to-gray-900/80 w-[calc(100%+16px)] h-[60px] -mx-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"
         role="button"
         tabIndex={0}
-        className="py-4 text-center cursor-pointer bg-gradient-to-b from-white/10 to-gray-900/80 w-[calc(100%+16px)] h-[60px] -mx-2 focus:outline-none focus:ring-2 focus:ring-cyan-400"
         onClick={onToggle}
         onKeyDown={handleKeyDown}
       >
@@ -84,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const filteredPlans = plans.filter((plan) =>
-    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
+    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -124,16 +126,16 @@ const Sidebar: React.FC<SidebarProps> = ({
                     onClick={() => onSelectPlan(plan.id ?? null)}
                   />
                   <button
-                    onClick={() => handleEditClick(plan)}
-                    className="p-1 text-gray-400 hover:text-cyan-400 transition-colors"
                     aria-label="Edit plan name"
+                    className="p-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                    onClick={() => handleEditClick(plan)}
                   >
                     <PencilIcon className="w-5 h-5" />
                   </button>
                   <button
-                    onClick={() => handleDeleteClick(plan.id ?? "")}
-                    className="p-1 text-gray-400 hover:text-red-400 transition-colors"
                     aria-label="Delete plan"
+                    className="p-1 text-gray-400 hover:text-red-400 transition-colors"
+                    onClick={() => handleDeleteClick(plan.id ?? "")}
                   >
                     <TrashIcon className="w-5 h-5" />
                   </button>
@@ -153,10 +155,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       <EditPlanModal
+        initialName={editingPlan?.name ?? ""}
         isOpen={isEditModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmitEdit}
-        initialName={editingPlan?.name ?? ""}
       />
     </div>
   );

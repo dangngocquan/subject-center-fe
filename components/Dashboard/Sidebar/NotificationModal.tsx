@@ -26,19 +26,19 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50"
-          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50"
           exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
           <motion.div
-            initial="hidden"
             animate="visible"
-            exit="exit"
-            variants={modalVariants}
             className="bg-[#1A2A44] p-6 rounded-lg shadow-xl w-full max-w-lg relative border border-[#2A3A54] backdrop-blur-sm"
+            exit="exit"
+            initial="hidden"
             style={{ background: "rgba(26, 42, 68, 0.95)" }}
+            variants={modalVariants}
           >
             {/* Nút "X" để đóng */}
             <button

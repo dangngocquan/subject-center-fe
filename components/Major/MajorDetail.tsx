@@ -1,8 +1,5 @@
 "use client";
 
-import { useMajorDetail } from "@/hooks/useMajorDetail";
-import { apiUpsertPlan, createNewPlan } from "@/service/plan.api";
-import { MajorItem } from "@/types/major";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -15,9 +12,15 @@ import {
   FaUndo,
 } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
+
+import LoadingModal from "../LoadingModal";
+
 import PlanModal from "./PlanModal";
 import ResultModal from "./ResultModal";
-import LoadingModal from "../LoadingModal";
+
+import { MajorItem } from "@/types/major";
+import { createNewPlan } from "@/service/plan.api";
+import { useMajorDetail } from "@/hooks/useMajorDetail";
 
 interface MajorItemWithChildren extends MajorItem {
   children: MajorItemWithChildren[];
@@ -53,7 +56,7 @@ const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
 const flattenTree = (
   nodes: MajorItemWithChildren[],
   expanded: Set<string>,
-  seen = new Set<string>()
+  seen = new Set<string>(),
 ): MajorItemWithChildren[] => {
   let result: MajorItemWithChildren[] = [];
   nodes.forEach((node) => {
@@ -70,7 +73,7 @@ const flattenTree = (
 
 const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
-  selected: Set<string>
+  selected: Set<string>,
 ): { totalCredits: number; totalCount: number } => {
   let totalCredits = 0;
   let totalCount = 0;
@@ -92,7 +95,7 @@ const calculateTotalCreditsAndCount = (
 
 const findRequiredSubjects = (
   nodes: MajorItemWithChildren[],
-  data: MajorItem[]
+  data: MajorItem[],
 ): Set<string> => {
   const requiredSubjects = new Set<string>();
 
@@ -115,7 +118,7 @@ const findRequiredSubjects = (
 
     const totalDirectLeafCredits = directLeaves.reduce(
       (sum, leaf) => sum + (leaf.credit ?? 0),
-      0
+      0,
     );
 
     if (effectiveMinCredits !== null) {
@@ -128,7 +131,7 @@ const findRequiredSubjects = (
       if (subGroups.length > 0 && directLeaves.length > 0) {
         const sumSubGroupMinCredits = subGroups.reduce(
           (sum, group) => sum + (group.minCredits ?? 0),
-          0
+          0,
         );
         const remainingCredits = effectiveMinCredits - sumSubGroupMinCredits;
         if (remainingCredits === totalDirectLeafCredits) {
@@ -194,7 +197,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       .filter((item) => !item.isLeaf)
       .map((item) => item.genCode);
     const allExpanded = expandableNodes.every((genCode) =>
-      expanded.has(genCode)
+      expanded.has(genCode),
     );
 
     if (allExpanded) {
@@ -239,7 +242,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
 
   const expandableNodes = useMemo(
     () => data.filter((item) => !item.isLeaf).map((item) => item.genCode),
-    [data]
+    [data],
   );
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 
@@ -285,10 +288,10 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         style={{ height: "150px" }}
       >
         <motion.div
-          className="flex flex-col space-y-2"
           animate={{
             y: isEditMode ? 0 : "50%",
           }}
+          className="flex flex-col space-y-2"
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <h2
@@ -303,11 +306,11 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
           </h2>
           {isEditMode && (
             <motion.span
-              initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
               className="text-lg font-medium text-gray-300"
+              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
             >
               Tổng tín chỉ:{" "}
               <span className="text-[#4A90E2] font-semibold">
@@ -393,11 +396,11 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                     : "Cần chọn tối thiểu 1 môn để tạo plan"
                 }
                 data-tooltip-id="create-plan-tooltip"
+                disabled={totalCredits === 0}
                 exit={{ opacity: 0, scale: 0.8 }}
                 initial={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.3 }}
                 onClick={totalCredits > 0 ? openPlanModal : undefined}
-                disabled={totalCredits === 0}
               >
                 <FaPlus size={20} />
               </motion.button>
@@ -410,10 +413,10 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         {isPlanModalOpen && (
           <PlanModal
             isOpen={isPlanModalOpen}
-            onClose={closePlanModal}
             majorItems={major?.items ?? []}
-            tree={tree}
             selected={selected}
+            tree={tree}
+            onClose={closePlanModal}
             onCreatePlan={(plan) => createNewPlan(plan)}
             onPlanCreated={handlePlanCreated}
           />
@@ -421,9 +424,9 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         {isResultOpen && (
           <ResultModal
             isOpen={isResultOpen}
-            onClose={closeResultModal}
             planName={planName} // Truyền planName vào ResultModal
             result={result}
+            onClose={closeResultModal}
           />
         )}
       </AnimatePresence>

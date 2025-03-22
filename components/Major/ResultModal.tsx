@@ -24,7 +24,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
 
   // Tính toán số môn thành công và thất bại
   const succeededCount = result.filter(
-    (item) => item.status === "SUCCEEDED"
+    (item) => item.status === "SUCCEEDED",
   ).length;
   const failedCount = result.filter((item) => item.status === "FAILED").length;
 
@@ -37,12 +37,12 @@ const ResultModal: React.FC<ResultModalProps> = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
       <motion.div
-        initial="hidden"
         animate="visible"
-        exit="exit"
-        variants={modalVariants}
         className="bg-[#1A2A44] p-6 rounded-lg shadow-xl w-full max-w-lg relative border border-[#2A3A54] backdrop-blur-sm"
+        exit="exit"
+        initial="hidden"
         style={{ background: "rgba(26, 42, 68, 0.95)" }}
+        variants={modalVariants}
       >
         {/* Nút "X" để đóng */}
         <button

@@ -27,7 +27,7 @@ export default class BaseRequest {
       },
       (error) => {
         return Promise.reject(error);
-      }
+      },
     );
 
     axios.interceptors.response.use(
@@ -36,7 +36,7 @@ export default class BaseRequest {
       },
       (error) => {
         return Promise.reject(error);
-      }
+      },
     );
   }
 

@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaBook, FaSearch } from "react-icons/fa";
+
 import { Major } from "@/types/major";
 
 interface MajorsListProps {

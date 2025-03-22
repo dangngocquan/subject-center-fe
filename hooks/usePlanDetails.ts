@@ -23,7 +23,7 @@ export const usePlanDetails = (planId: string | null | undefined) => {
           headers: {
             token: `${localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN)}`,
           },
-        }
+        },
       );
       setPlanDetails(response.data);
     } catch (err) {

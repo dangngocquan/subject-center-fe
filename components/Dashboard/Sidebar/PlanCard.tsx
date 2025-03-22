@@ -1,5 +1,6 @@
-import { Plan } from "@/types/plan";
 import React from "react";
+
+import { Plan } from "@/types/plan";
 
 interface PlanCardProps {
   plan: Plan;
