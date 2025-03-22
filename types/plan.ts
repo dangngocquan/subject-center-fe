@@ -51,3 +51,14 @@ export interface PlanDetails {
     withImprovements: { marks: Mark[] };
   };
 }
+
+export interface PlanResultUpsert {
+  plan: Plan;
+  result: {
+    name: string;
+    code: string;
+    status: "SUCCEEDED" | "FAILED";
+    message: string;
+  }[];
+};
+

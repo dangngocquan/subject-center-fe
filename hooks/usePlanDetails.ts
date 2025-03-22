@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+
 import { PlanDetails } from "../types/plan";
+
 import BaseRequest from "@/service/base-request.service";
 import { API_ROUTES } from "@/service/api-route.service";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
@@ -16,7 +18,7 @@ export const usePlanDetails = (planId: string | null | undefined) => {
       const req = await new BaseRequest();
       req.setAuth();
       const response: { data: PlanDetails } = await req.get(
-        API_ROUTES.GET_PLAN_SUMMARY(Number(id)),
+        API_ROUTES.GET_PLAN_DETAILS(Number(id)),
         {
           headers: {
             token: `${localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN)}`,

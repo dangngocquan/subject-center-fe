@@ -15,16 +15,13 @@ export const usePlans = (searchQuery: string) => {
     try {
       const req = await new BaseRequest();
       req.setAuth();
-      const response: { data: { data: Plan[] } } = await req.get(
-        API_ROUTES.GET_PLANS,
-        {
-          headers: {
-            token: `${localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN)}`,
-          },
-          query: { name: query },
-        }
-      );
-      setPlans(response.data.data || []);
+      const response: { data: Plan[] } = await req.get(API_ROUTES.GET_PLANS, {
+        headers: {
+          token: `${localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN)}`,
+        },
+        query: { name: query },
+      });
+      setPlans(response.data || []);
     } catch (err) {
       setError("Failed to fetch plans");
     } finally {

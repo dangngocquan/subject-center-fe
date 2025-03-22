@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import PlanCard from "./PlanCard";
 import { Plan } from "@/types/plan";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import EditPlanModal from "./EditPlanModal";
 
 interface SidebarProps {
   searchQuery: string;
@@ -9,6 +11,9 @@ interface SidebarProps {
   plans: Plan[];
   selectedPlanId: string | null | undefined;
   onSelectPlan: (planId: string | null) => void;
+  onDeletePlan: (planId: string) => void;
+  onUpdatePlanName: (planId: string, newName: string) => void;
+  onOpenDeleteModal: (planId: string) => void;
 }
 
 const ShowMoreToggle: React.FC<{ showAll: boolean; onToggle: () => void }> = ({
@@ -32,7 +37,7 @@ const ShowMoreToggle: React.FC<{ showAll: boolean; onToggle: () => void }> = ({
         onKeyDown={handleKeyDown}
       >
         <span className="text-cyan-400 text-sm font-medium hover:text-cyan-300 transition-colors duration-300">
-          {showAll ? "Show less" : "Show more"}
+          {showAll ? "Show less" : "Show all"}
         </span>
       </div>
     </div>
@@ -45,15 +50,39 @@ const Sidebar: React.FC<SidebarProps> = ({
   plans,
   selectedPlanId,
   onSelectPlan,
+  onDeletePlan,
+  onUpdatePlanName,
+  onOpenDeleteModal,
 }) => {
   const [showAll, setShowAll] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
   const MAX_INITIAL_PLANS = 10;
 
   const handleOverviewClick = () => {
     onSelectPlan(null);
   };
 
-  // Lọc danh sách plans dựa trên searchQuery (theo name, không phân biệt hoa thường)
+  const handleEditClick = (plan: Plan) => {
+    setEditingPlan(plan);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false);
+    setEditingPlan(null);
+  };
+
+  const handleSubmitEdit = (newName: string) => {
+    if (editingPlan) {
+      onUpdatePlanName(editingPlan.id ?? "", newName);
+    }
+  };
+
+  const handleDeleteClick = (planId: string) => {
+    onOpenDeleteModal(planId);
+  };
+
   const filteredPlans = plans.filter((plan) =>
     (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -87,12 +116,29 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className={showAll ? "h-auto" : "max-h-[400px] overflow-y-auto"}>
           <ul className="space-y-4 px-4">
             {filteredPlans.map((plan) => (
-              <PlanCard
-                key={plan.id}
-                isSelected={selectedPlanId === plan.id}
-                plan={plan}
-                onClick={() => onSelectPlan(plan.id ?? null)}
-              />
+              <li key={plan.id} className="relative">
+                <div className="flex items-center gap-2 my-4">
+                  <PlanCard
+                    isSelected={selectedPlanId === plan.id}
+                    plan={plan}
+                    onClick={() => onSelectPlan(plan.id ?? null)}
+                  />
+                  <button
+                    onClick={() => handleEditClick(plan)}
+                    className="p-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                    aria-label="Edit plan name"
+                  >
+                    <PencilIcon className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteClick(plan.id ?? "")}
+                    className="p-1 text-gray-400 hover:text-red-400 transition-colors"
+                    aria-label="Delete plan"
+                  >
+                    <TrashIcon className="w-5 h-5" />
+                  </button>
+                </div>
+              </li>
             ))}
           </ul>
         </div>
@@ -105,6 +151,13 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
         )}
       </div>
+
+      <EditPlanModal
+        isOpen={isEditModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitEdit}
+        initialName={editingPlan?.name ?? ""}
+      />
     </div>
   );
 };

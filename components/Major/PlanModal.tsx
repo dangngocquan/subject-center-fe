@@ -78,19 +78,11 @@ const PlanModal: React.FC<PlanModalProps> = ({
         ) as PlanItem[],
       });
 
-      console.log("PlanModal - Response from onCreatePlan:", response);
-      console.log("PlanModal - Response.data:", response.data);
-      console.log(
-        "PlanModal - Result to be passed to onPlanCreated:",
-        response.data.result
-      );
-
       // Truyền planName và result qua callback
       const result = response.data.result || response.data.results || [];
       onPlanCreated({ planName, result });
       onClose();
     } catch (error) {
-      console.error("PlanModal - Error in handleCreate:", error);
       alert("Đã xảy ra lỗi khi tạo plan!");
     } finally {
       setIsLoading(false);
