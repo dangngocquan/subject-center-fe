@@ -54,11 +54,11 @@ const Main: React.FC<MainProps> = ({ selectedPlan, planDetails, plans }) => {
       <div className="flex">
         <div className="flex-[6]">
           <SubjectsList
-            subjects={
+            items={
               (planDetails?.credits.items || []).filter(
-                (item) => item.id !== undefined,
+                (item) => item.id !== undefined
               ) as {
-                id: string;
+                id: string | number;
                 name: string;
                 code: string;
                 credit: string;

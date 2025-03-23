@@ -9,7 +9,7 @@ export interface Plan {
 }
 
 export interface PlanItem {
-  id?: string;
+  id?: number | string;
   planId?: string;
   name?: string;
   code?: string;
@@ -41,7 +41,13 @@ export interface Credits {
 export interface Mark {
   grade4: number;
   type: string;
-  details: { content: string };
+  details: {
+    content?: string;
+    isPossibly?: boolean;
+    cases?: {
+      grades?: { gradeLatin?: string; credits?: number }[];
+    }[];
+  };
 }
 
 export interface PlanDetails {

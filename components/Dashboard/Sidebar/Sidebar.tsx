@@ -1,11 +1,14 @@
+import {
+  MagnifyingGlassIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 import PlanCard from "./PlanCard";
-import EditPlanModal from "./EditPlanModal";
 
 import { Plan } from "@/types/plan";
+import EditPlanModal from "./SidebarEditPlanModal";
 
 interface SidebarProps {
   searchQuery: string;
@@ -52,7 +55,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   plans,
   selectedPlanId,
   onSelectPlan,
-  onDeletePlan,
   onUpdatePlanName,
   onOpenDeleteModal,
 }) => {
@@ -86,7 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const filteredPlans = plans.filter((plan) =>
-    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
+    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (

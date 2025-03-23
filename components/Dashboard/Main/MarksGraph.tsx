@@ -46,23 +46,22 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
     : (cpa?.withoutImprovements.marks ?? []);
 
   const graduationMarks = marks.filter(
-    (mark) => mark.type === "GRADUATION_MARK",
+    (mark) => mark.type === "GRADUATION_MARK" || mark.type === "NODE"
   );
   const minMark = marks.find((mark) => mark.type === "MIN");
   const maxMark = marks.find((mark) => mark.type === "MAX");
   const currentMark = marks.find((mark) => mark.type === "CURRENT");
 
-  const CustomTooltip: React.FC<CustomTooltipProps> = ({
-    active,
-    payload,
-    label,
-  }) => {
+  const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active) {
       const x = (payload[0]?.payload?.grade4 || 0) / scaleCoefficient;
       const graduations = graduationMarks.filter((e) => x >= e.grade4);
+      if (x < (minMark?.grade4 ?? 5) || x > (maxMark?.grade4 ?? -1)) {
+        return null;
+      }
       return (
         <div className="tooltip bg-gray-500 p-4 rounded-lg shadow-lg">
-          <h4>{graduations[graduations.length - 1].details.content}</h4>
+          <h4>{graduations[graduations.length - 1]?.details?.content}</h4>
           <p>{x}</p>
         </div>
       );
@@ -70,25 +69,27 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
     return null;
   };
 
-  const areaRanges = [
-    {
-      start: minMark?.grade4 || 0,
-      end: maxMark?.grade4 || 0,
-      value: 3,
-      color: "#34D399",
-    },
-  ];
-  const areaData = areaRanges.map((range) => {
-    const data = [];
-    for (
-      let i = range.start * scaleCoefficient;
-      i <= range.end * scaleCoefficient;
-      i++
-    ) {
-      data.push({ grade4: i, value: range.value });
-    }
-    return { data, color: range.color };
-  });
+  const areaRanges = {
+    start: minMark?.grade4 || 0,
+    end: maxMark?.grade4 || 0,
+    value: 3,
+    color: "",
+  };
+  const area: {
+    data: { grade4: number; value: number }[];
+    color: string;
+  } = {
+    data: [],
+    color: "#34D399",
+  };
+  for (let i = 0; i <= 4 * scaleCoefficient; i++) {
+    const value =
+      i >= areaRanges.start * scaleCoefficient &&
+      i <= areaRanges.end * scaleCoefficient
+        ? areaRanges.value
+        : 0;
+    area.data.push({ grade4: i, value });
+  }
 
   return (
     <div className="bg-gray-900 rounded-2xl p-6 shadow-lg shadow-cyan-500/20">
@@ -105,10 +106,10 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
           Improvement
         </label>
       </div>
-      <ResponsiveContainer height={300} width="100%">
+      <ResponsiveContainer height={200} width="100%">
         <ComposedChart
           data={splitMarks}
-          margin={{ top: 50, bottom: 100, right: 30, left: 30 }}
+          margin={{ top: 50, bottom: 20, right: 30, left: 30 }}
         >
           <CartesianGrid stroke="#4B5563" strokeDasharray="3 3" />
           <XAxis
@@ -118,21 +119,15 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
             scale={"linear"}
             stroke="#94A3B8"
             tickFormatter={(value) => (value / scaleCoefficient).toFixed(2)}
-            ticks={marks.map((m) => m.grade4 * scaleCoefficient)}
+            ticks={[
+              0,
+              ...marks
+                .filter((e) => e.type == "GRADUATION_MARK")
+                .map((m) => m.grade4 * scaleCoefficient),
+              4 * scaleCoefficient,
+            ]}
           />
           <YAxis hide domain={[0, 3]} />
-
-          {/* Hiển thị nhiều vùng Area */}
-          {areaData.map((area, index) => (
-            <Area
-              key={`area-${index}`}
-              data={area.data}
-              dataKey="value"
-              fill={area.color}
-              fillOpacity={0.1}
-              stroke="transparent"
-            />
-          ))}
           {/* Các mốc GRADUATION_MARK */}
           {graduationMarks.map((mark) => (
             <ReferenceLine
@@ -143,6 +138,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
               x={mark.grade4 * scaleCoefficient}
             />
           ))}
+
           {/* Mốc MIN */}
           {minMark && (
             <ReferenceLine
@@ -153,9 +149,16 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
               <Label
                 fill="#EF4444"
                 fontSize={12}
-                offset={-40} // Đẩy nhãn xuống 20px từ vị trí mặc định
-                position="insideBottom"
+                offset={-40}
+                position="insideTop"
                 value={`MIN`}
+              />
+              <Label
+                fill="#EF4444"
+                fontSize={12}
+                offset={-20}
+                position="insideTop"
+                value={`${minMark.grade4}`}
               />
             </ReferenceLine>
           )}
@@ -169,9 +172,16 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
               <Label
                 fill="green"
                 fontSize={12}
-                offset={-40} // Đẩy nhãn xuống 20px từ vị trí mặc định
-                position="insideBottom"
+                offset={-40}
+                position="insideTop"
                 value={`CURRENT`}
+              />
+              <Label
+                fill="green"
+                fontSize={12}
+                offset={-20}
+                position="insideTop"
+                value={`${currentMark.grade4}`}
               />
             </ReferenceLine>
           )}
@@ -185,12 +195,29 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
               <Label
                 fill="#EF4444"
                 fontSize={12}
-                offset={-40} // Đẩy nhãn xuống 20px từ vị trí mặc định
-                position="insideBottom"
+                offset={-40}
+                position="insideTop"
                 value={`MAX`}
+              />
+              <Label
+                fill="#EF4444"
+                fontSize={12}
+                offset={-20}
+                position="insideTop"
+                value={`${maxMark.grade4}`}
               />
             </ReferenceLine>
           )}
+          {/* Hiển thị nhiều vùng Area */}
+
+          <Area
+            key={`area`}
+            data={area.data}
+            dataKey="value"
+            fill={area.color}
+            fillOpacity={0.1}
+            stroke="transparent"
+          />
 
           <Tooltip content={<CustomTooltip />} />
         </ComposedChart>
@@ -201,21 +228,118 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
           <thead>
             <tr>
               <th className="py-2 px-4">Graduation Mark</th>
-              <th className="py-2 px-4">Can Achieve</th>
+              <th className="py-2 px-4">Is Possibly</th>
+              <th className="py-2 px-4">Cases</th>
             </tr>
           </thead>
           <tbody>
-            {graduationMarks.map((mark, index) => (
-              <tr key={index} className="border-t border-gray-700">
-                <td className="py-2 px-4">{mark.details.content}</td>
-                <td className="py-2 px-4">
-                  {mark.grade4 >= (minMark?.grade4 || 0) &&
-                  mark.grade4 <= (maxMark?.grade4 || 0)
-                    ? "Yes"
-                    : "No"}
-                </td>
-              </tr>
-            ))}
+            {graduationMarks.map((mark, index) => {
+              // Tìm gradeLatin thấp nhất trong tất cả các case của hàng này
+              const allGrades =
+                mark.details.cases?.flatMap((caseItem) =>
+                  caseItem.grades
+                    ?.map((grade) => grade.gradeLatin)
+                    .filter(Boolean)
+                ) || [];
+
+              // Sắp xếp để tìm grade thấp nhất (D < D+ < C < ... < A+)
+              const gradeOrder = [
+                "A+",
+                "A",
+                "A-",
+                "B+",
+                "B",
+                "B-",
+                "C+",
+                "C",
+                "C-",
+                "D+",
+                "D",
+              ];
+              const lowestGrade =
+                allGrades.sort((a, b) => {
+                  return (
+                    gradeOrder.indexOf(a ?? "") - gradeOrder.indexOf(b ?? "")
+                  );
+                })[allGrades.length - 1] || "D"; // Mặc định là "D" nếu không có grade
+
+              // Tìm grade tiếp theo để làm ví dụ cải thiện
+              const currentIndex = gradeOrder.indexOf(lowestGrade);
+              const nextGrade =
+                currentIndex > 0 ? gradeOrder[currentIndex - 1] : lowestGrade;
+
+              return (
+                <tr key={index} className="border-t border-gray-700">
+                  <td className="py-2 px-4">{mark.details.content}</td>
+                  <td className="py-2 px-4">
+                    {mark.details.isPossibly !== undefined
+                      ? mark.details.isPossibly
+                        ? "Yes"
+                        : "No"
+                      : "N/A"}
+                  </td>
+                  <td className="py-2 px-4">
+                    {mark.details.cases && mark.details.cases.length > 0 ? (
+                      <div className="space-y-4">
+                        <p className="text-gray-400 text-xs mb-2">
+                          You need to earn at least the credits shown for each
+                          grade in the cases below. You can also aim for higher
+                          grades (e.g., improve from {lowestGrade} to{" "}
+                          {nextGrade} or better).
+                        </p>
+                        {mark.details.cases.map((caseItem, caseIndex) => (
+                          <div key={caseIndex}>
+                            <h4 className="text-cyan-400 text-sm mb-1">
+                              Case {caseIndex + 1}
+                            </h4>
+                            <table className="w-full bg-gray-700 rounded-md text-sm">
+                              <thead>
+                                <tr>
+                                  <th className="py-1 px-3 w-1/2 text-center">
+                                    Minimum Grade
+                                  </th>
+                                  <th className="py-1 px-3 w-1/2 text-center">
+                                    Required Credits
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {caseItem.grades &&
+                                caseItem.grades.length > 0 ? (
+                                  caseItem.grades.map((grade, gradeIndex) => (
+                                    <tr key={gradeIndex}>
+                                      <td className="py-1 px-3 w-1/2 text-center">
+                                        {grade.gradeLatin || "N/A"}
+                                      </td>
+                                      <td className="py-1 px-3 w-1/2 text-center">
+                                        {grade.credits !== undefined
+                                          ? grade.credits
+                                          : "N/A"}
+                                      </td>
+                                    </tr>
+                                  ))
+                                ) : (
+                                  <tr>
+                                    <td
+                                      colSpan={2}
+                                      className="py-1 px-3 text-center"
+                                    >
+                                      No grades available
+                                    </td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      "No cases available"
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

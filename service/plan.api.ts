@@ -1,10 +1,10 @@
 import { API_ROUTES } from "./api-route.service";
 import BaseRequest from "./base-request.service";
 
-import { Plan, PlanResultUpsert } from "@/types/plan";
+import { Plan, PlanItem, PlanResultUpsert } from "@/types/plan";
 
 export const apiUpsertPlan = async (
-  plan: Plan,
+  plan: Plan
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -44,7 +44,7 @@ export const apiUpsertPlan = async (
 };
 
 export const createNewPlan = async (
-  plan: Plan,
+  plan: Plan
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -84,7 +84,7 @@ export const createNewPlan = async (
 };
 
 export const deletePlan = async (
-  planId: number,
+  planId: number
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -106,5 +106,41 @@ export const deletePlan = async (
     result.isBadRequest = res.status > 300;
     result.message = res.data.message;
   });
+  return result;
+};
+
+export const updatePlanItem = async (
+  planId: number,
+  item: PlanItem
+): Promise<{
+  isBadRequest: boolean;
+  message: string;
+  status: number;
+}> => {
+  const result: {
+    isBadRequest: boolean;
+    message: string;
+    status: number;
+  } = {
+    isBadRequest: false,
+    message: "",
+    status: 200,
+  };
+  const req = new BaseRequest();
+  req.setAuth();
+  await req
+    .patch(API_ROUTES.PATCH_PLAN_ITEM(planId), {
+      id: item.id,
+      name: item.name,
+      code: item.code,
+      credit: Number(item.credit),
+      prerequisites: item.prerequisites,
+      gradeLatin: item.gradeLatin,
+    })
+    .then((res) => {
+      result.status = res.status;
+      result.isBadRequest = res.status > 300;
+      result.message = res.data.message;
+    });
   return result;
 };

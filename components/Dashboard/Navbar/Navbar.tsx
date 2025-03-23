@@ -50,7 +50,6 @@ const Navbar: React.FC<NavbarProps> = ({
         </button>
         <button className="bg-cyan-500 text-white rounded-full px-2 py-1 md:px-4 md:py-2 text-sm md:text-base flex items-center gap-2 hover:bg-cyan-600 hover:scale-105 transition-all duration-300">
           <PlusIcon className="w-5 h-5" />
-          Create New Plan
         </button>
       </div>
     </nav>
