@@ -27,7 +27,7 @@ export default class BaseRequest {
       },
       (error) => {
         return Promise.reject(error);
-      },
+      }
     );
 
     axios.interceptors.response.use(
@@ -36,7 +36,29 @@ export default class BaseRequest {
       },
       (error) => {
         return Promise.reject(error);
+      }
+    );
+  }
+
+  setHeader(name: string, value: string) {
+    axios.interceptors.request.use(
+      (config) => {
+        config.headers[`${name}`] = value;
+
+        return config;
       },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
+    axios.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
     );
   }
 

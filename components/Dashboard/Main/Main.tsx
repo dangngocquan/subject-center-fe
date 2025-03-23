@@ -1,5 +1,8 @@
+"use client";
+
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useCallback } from "react";
+import { useEffect } from "react";
 
 import GPAChart from "./GPAChart";
 import MarksGraph from "./MarksGraph";
@@ -7,15 +10,22 @@ import PlansOverview from "./PlansOverview";
 import StatsSection from "./StatsSection";
 import SubjectsList from "./SubjectsList";
 
-import { Plan, PlanDetails } from "@/types/plan";
+import { Plan, PlanDetails, PlanItem } from "@/types/plan";
+import { usePlanDetails } from "@/hooks/usePlanDetails";
 
 interface MainProps {
   selectedPlan: { id: string; name: string } | null;
   planDetails: PlanDetails | null;
   plans: Plan[];
+  setPlanDetails: (details: PlanDetails | null) => void; // Thêm prop để cập nhật planDetails
 }
 
-const Main: React.FC<MainProps> = ({ selectedPlan, planDetails, plans }) => {
+const Main: React.FC<MainProps> = ({
+  selectedPlan,
+  planDetails,
+  plans,
+  setPlanDetails,
+}) => {
   const slideInVariants = {
     hidden: (direction: "left" | "right") => ({
       opacity: 0,
@@ -27,6 +37,24 @@ const Main: React.FC<MainProps> = ({ selectedPlan, planDetails, plans }) => {
       transition: { duration: 0.6, delay: i * 0.2, ease: "easeOut" },
     }),
   };
+
+  const planDetailsResponse = usePlanDetails(selectedPlan?.id);
+
+  useEffect(() => {
+    if (planDetailsResponse && !planDetailsResponse.error) {
+      setPlanDetails(planDetailsResponse.planDetails);
+    }
+  }, [planDetailsResponse, setPlanDetails]);
+
+  const reloadData = useCallback(() => {
+    if (planDetailsResponse && !planDetailsResponse.error) {
+      setPlanDetails(planDetailsResponse.planDetails); // Update planDetails
+    }
+  }, [planDetailsResponse, setPlanDetails]);
+
+  useEffect(() => {
+    reloadData(); // Ensure data is loaded initially
+  }, [reloadData]);
 
   if (!selectedPlan) {
     return (
@@ -57,15 +85,10 @@ const Main: React.FC<MainProps> = ({ selectedPlan, planDetails, plans }) => {
             items={
               (planDetails?.credits.items || []).filter(
                 (item) => item.id !== undefined
-              ) as {
-                id: string | number;
-                name: string;
-                code: string;
-                credit: string;
-                grade4: number | null;
-                gradeLatin: string | null;
-              }[]
+              ) as PlanItem[]
             }
+            planId={selectedPlan?.id || null}
+            onDataChange={reloadData} // Pass callback to refresh data
           />
         </div>
 

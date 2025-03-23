@@ -1,7 +1,12 @@
 import { API_ROUTES } from "./api-route.service";
 import BaseRequest from "./base-request.service";
 
-import { Plan, PlanItem, PlanResultUpsert } from "@/types/plan";
+import {
+  Plan,
+  PlanItem,
+  PlanResultUpsert,
+  ResponseImportUpdateGradePlan,
+} from "@/types/plan";
 
 export const apiUpsertPlan = async (
   plan: Plan
@@ -116,15 +121,18 @@ export const updatePlanItem = async (
   isBadRequest: boolean;
   message: string;
   status: number;
+  data?: PlanItem;
 }> => {
   const result: {
     isBadRequest: boolean;
     message: string;
     status: number;
+    data?: PlanItem;
   } = {
     isBadRequest: false,
     message: "",
     status: 200,
+    data: undefined,
   };
   const req = new BaseRequest();
   req.setAuth();
@@ -135,12 +143,85 @@ export const updatePlanItem = async (
       code: item.code,
       credit: Number(item.credit),
       prerequisites: item.prerequisites,
-      gradeLatin: item.gradeLatin,
+      gradeLatin: item.gradeLatin ?? null,
     })
     .then((res) => {
       result.status = res.status;
       result.isBadRequest = res.status > 300;
       result.message = res.data.message;
+      result.data = res.data;
     });
+  return result;
+};
+
+export const updateGradePlanItemByJson = async (
+  planId: number,
+  file: File
+): Promise<{
+  isBadRequest: boolean;
+  message: string;
+  status: number;
+  data: ResponseImportUpdateGradePlan;
+}> => {
+  const result: {
+    isBadRequest: boolean;
+    message: string;
+    status: number;
+    data: ResponseImportUpdateGradePlan;
+  } = {
+    isBadRequest: false,
+    message: "",
+    status: 200,
+    data: { result: [], items: [] },
+  };
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const req = new BaseRequest();
+  req.setAuth();
+  req.setHeader("Content-Type", "multipart/form-data");
+  await req
+    .patch(API_ROUTES.PATCH_PLAN_ITEM_GRADE_JSON(planId), formData)
+    .then((res) => {
+      result.status = res.status;
+      result.isBadRequest = res.status > 300;
+      result.message = res.data.message;
+      result.data = res.data;
+    })
+    .catch((error) => {
+      result.isBadRequest = true;
+      result.message = error.message;
+    });
+
+  return result;
+};
+
+export const deletePlanItem = async (
+  planId: number,
+  itemId: number
+): Promise<{
+  isBadRequest: boolean;
+  message: string;
+  status: number;
+}> => {
+  const result: {
+    isBadRequest: boolean;
+    message: string;
+    status: number;
+  } = {
+    isBadRequest: false,
+    message: "",
+    status: 200,
+  };
+
+  const req = new BaseRequest();
+  req.setAuth();
+  await req.delete(API_ROUTES.DELETE_PLAN_ITEM(planId, itemId)).then((res) => {
+    result.status = res.status;
+    result.isBadRequest = res.status > 300;
+    result.message = res.data.message;
+  });
+
   return result;
 };

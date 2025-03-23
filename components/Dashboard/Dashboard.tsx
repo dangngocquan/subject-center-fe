@@ -218,6 +218,7 @@ const Dashboard: React.FC = () => {
                   ? { id: selectedPlan.id, name: selectedPlan.name }
                   : null
               }
+              setPlanDetails={() => {}}
             />
           </div>
         </div>

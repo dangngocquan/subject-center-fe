@@ -13,7 +13,7 @@ export interface PlanItem {
   planId?: string;
   name?: string;
   code?: string;
-  credit?: string;
+  credit?: number;
   grade4?: number | null;
   gradeLatin?: string | null;
   prerequisites?: string[];
@@ -65,5 +65,21 @@ export interface PlanResultUpsert {
     code: string;
     status: "SUCCEEDED" | "FAILED";
     message: string;
+  }[];
+}
+
+export interface ResponseImportUpdateGradePlan {
+  id?: number;
+  name?: string;
+  items?: PlanItem[];
+  accountId?: number;
+  createdAt?: string;
+  updatedAt?: string;
+  result: {
+    name?: string;
+    code?: string;
+    gradeLatin?: string;
+    status?: "UPDATED" | "FAILED" | "NEW";
+    message?: string;
   }[];
 }

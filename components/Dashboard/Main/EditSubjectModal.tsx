@@ -4,6 +4,19 @@ import { motion } from "framer-motion";
 import GenericModal from "../../Common/GenericModal";
 import { PlanItem } from "@/types/plan";
 
+// Định nghĩa enum EGradeLatin
+export enum EGradeLatin {
+  A_PLUS = "A+",
+  A = "A",
+  B_PLUS = "B+",
+  B = "B",
+  C_PLUS = "C+",
+  C = "C",
+  D_PLUS = "D+",
+  D = "D",
+  F = "F",
+}
+
 interface EditSubjectModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -23,7 +36,9 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
     setFormData(initialData);
   }, [initialData]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -32,7 +47,7 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
     if (
       !formData.name?.trim() ||
       !formData.code?.trim() ||
-      !formData.credit?.trim()
+      !String(formData.credit).trim()
     ) {
       alert("Please fill in all required fields.");
       return;
@@ -74,13 +89,20 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
         value={formData.credit}
         onChange={handleChange}
       />
-      <input
+      {/* Thay input thành select cho gradeLatin */}
+      <select
         className="w-full bg-gray-700 text-white rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-cyan-500"
         name="gradeLatin"
-        placeholder="Grade (Latin)"
         value={formData.gradeLatin || ""}
         onChange={handleChange}
-      />
+      >
+        <option value="">Select Grade (Latin)</option>
+        {Object.values(EGradeLatin).map((grade) => (
+          <option key={grade} value={grade}>
+            {grade}
+          </option>
+        ))}
+      </select>
       <div className="flex justify-end gap-2">
         <motion.button
           className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-500 transition-all duration-200 text-sm font-medium"
