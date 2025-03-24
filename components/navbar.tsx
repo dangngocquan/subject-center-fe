@@ -15,6 +15,7 @@ import NextLink from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Tooltip } from "@nextui-org/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import GenericModal from "./Common/GenericModal"; // Import GenericModal
 
 import {
   ArrowPointingInIcon,
@@ -35,6 +36,7 @@ export const Navbar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false); // Trạng thái cho modal đăng nhập
 
   const authGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -52,6 +54,7 @@ export const Navbar = () => {
         );
         await new Promise((resolve) => setTimeout(resolve, 2000));
         setIsLoading(false);
+        setIsLoginModalOpen(false); // Đóng modal sau khi đăng nhập thành công
       } catch (error) {
         console.error("Login error:", error);
         setIsLoading(false);
@@ -72,18 +75,7 @@ export const Navbar = () => {
   }, [authToken]);
 
   const buttonVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0,
-      x: 0,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-        duration: 0.2,
-      },
-    },
+    hidden: { opacity: 0, scale: 0, x: 0, y: 0 },
     visible: (i: number) => {
       const r = 100;
       const totalButtons = 3;
@@ -119,18 +111,7 @@ export const Navbar = () => {
   };
 
   const mobileButtonVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0,
-      x: 0,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-        duration: 0.2,
-      },
-    },
+    hidden: { opacity: 0, scale: 0, x: 0, y: 0 },
     visible: (i: number) => ({
       opacity: 1,
       scale: 1,
@@ -163,7 +144,15 @@ export const Navbar = () => {
     setIsExpanded(false);
   };
 
-  // Hàm xử lý sự kiện bàn phím cho hamburger button
+  // Hàm kiểm tra khi nhấp vào "Plans"
+  const handlePlansClick = (e: React.MouseEvent) => {
+    if (!authToken) {
+      e.preventDefault(); // Ngăn chuyển hướng nếu chưa đăng nhập
+      setIsLoginModalOpen(true); // Hiển thị modal
+    }
+    setIsMenuOpen(false); // Đóng menu mobile nếu đang mở
+  };
+
   const handleHamburgerKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -171,7 +160,6 @@ export const Navbar = () => {
     }
   };
 
-  // Hàm xử lý sự kiện bàn phím cho overlay
   const handleOverlayKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -245,6 +233,9 @@ export const Navbar = () => {
                       "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
                     )}
                     href={item.href}
+                    onClick={
+                      item.label === "Plans" ? handlePlansClick : undefined
+                    }
                   >
                     {item.label}
                   </NextLink>
@@ -262,7 +253,11 @@ export const Navbar = () => {
                         "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block"
                       )}
                       href={item.href}
-                      onClick={() => setIsMenuOpen(false)}
+                      onClick={
+                        item.label === "Plans"
+                          ? handlePlansClick
+                          : () => setIsMenuOpen(false)
+                      }
                     >
                       {item.label}
                     </NextLink>
@@ -436,6 +431,39 @@ export const Navbar = () => {
       </motion.div>
 
       <LoadingModal isOpen={isLoading} onClose={() => setIsLoading(false)} />
+
+      {/* Modal yêu cầu đăng nhập */}
+      <GenericModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="text-center text-white p-4"
+        >
+          {/* Tiêu đề */}
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+            Vui lòng đăng nhập
+          </h2>
+
+          {/* Nội dung */}
+          <p className="mb-6 text-gray-300 text-base md:text-lg leading-relaxed max-w-xs mx-auto">
+            Bạn cần đăng nhập để khám phá các gói dịch vụ và trải nghiệm đầy đủ
+            tính năng.
+          </p>
+
+          {/* Nút đăng nhập */}
+          <GenericButton
+            onClick={() => authGoogle()}
+            disabled={false}
+            className="bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-600 hover:to-cyan-800 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-cyan-500/50 hover:shadow-cyan-600/60 transition-all duration-300"
+          >
+            Đăng nhập với Google
+          </GenericButton>
+        </motion.div>
+      </GenericModal>
     </>
   );
 };
