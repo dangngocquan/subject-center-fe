@@ -75,7 +75,7 @@ const TestimonialsSection = () => {
                   src={testimonial.avatar}
                 />
                 <p className="text-gray-300 italic mb-2 leading-relaxed">
-                  "{testimonial.text}"
+                  &quot;{testimonial.text}&quot;
                 </p>
                 <p className="text-cyan-400 font-semibold">
                   {testimonial.name}
