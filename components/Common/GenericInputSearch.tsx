@@ -12,7 +12,7 @@ interface GenericInputSearchProps {
 const GenericInputSearch: React.FC<GenericInputSearchProps> = ({
   searchTerm,
   setSearchTerm,
-  placeholder = "Tìm kiếm...",
+  placeholder = "Search...", // Updated placeholder text to English
   className = "",
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);

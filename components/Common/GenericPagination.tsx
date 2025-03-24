@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { FaChevronLeft, FaChevronRight, FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 import { GenericButton } from "./GenericButton";
 
@@ -46,7 +46,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
   };
 
   const handleJumpToPageOnEnter = (
-    e: React.KeyboardEvent<HTMLInputElement>,
+    e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (e.key === "Enter") {
       handleJumpToPage();
@@ -65,11 +65,11 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
 
   return (
     <div className="flex flex-col items-center gap-2">
-      {/* Nhóm 1: Nút điều hướng và chấm tròn */}
+      {/* Group 1: Navigation buttons and dots */}
       <div className="flex items-center gap-4">
         <GenericButton
           disabled={currentPage === 1}
-          tooltipContent="Trang trước"
+          tooltipContent="Previous page"
           tooltipId="prev-page-tooltip"
           onClick={() => handlePageChange(currentPage - 1)}
         >
@@ -102,7 +102,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
 
         <GenericButton
           disabled={currentPage === totalPages}
-          tooltipContent="Trang sau"
+          tooltipContent="Next page"
           tooltipId="next-page-tooltip"
           onClick={() => handlePageChange(currentPage + 1)}
         >
@@ -110,14 +110,14 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
         </GenericButton>
       </div>
 
-      {/* Nhóm 2: Input nhảy trang (với nút xác nhận bên trong) và thông tin phân trang */}
+      {/* Group 2: Jump to page input (with confirm button inside) and pagination info */}
       <div className="flex items-center justify-between w-full max-w-[300px]">
         <div className="relative">
           <input
             className="w-16 sm:w-16 py-1 pl-2 pr-8 rounded-full bg-gray-900/80 backdrop-blur-md text-cyan-400/50 border border-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 hover:border-cyan-400 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             max={totalPages}
             min={1}
-            placeholder="Trang"
+            placeholder="Page"
             type="number"
             value={inputPage}
             onBlur={handleJumpToPage}
@@ -134,12 +134,10 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
           </motion.button>
         </div>
 
-        {totalPages > 0 && (
-          <span className="text-cyan-400/70 text-sm bg-gray-900/80 backdrop-blur-md px-3 py-1 rounded-full shadow-lg shadow-cyan-500/20">
-            {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, totalItems)}/
-            {totalItems} • Trang {currentPage}/{totalPages}
-          </span>
-        )}
+        <span className="ml-2 text-cyan-400/70 text-sm bg-gray-900/80 backdrop-blur-md px-3 py-1 rounded-full shadow-lg shadow-cyan-500/20">
+          {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, totalItems)}/
+          {totalItems} • Page {currentPage}/{totalPages}
+        </span>
       </div>
     </div>
   );

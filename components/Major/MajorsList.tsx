@@ -24,18 +24,18 @@ const MajorsList: React.FC<MajorsListProps> = ({
 
   const currentMajors = majors.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   return (
     <div className="flex flex-col gap-6 max-w-7xl mx-auto px-4 sm:px-6">
       <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent mb-8 text-center">
-        Danh Sách Ngành Học
+        List of Majors
       </h1>
       {/* Thanh tìm kiếm và phân trang */}
       <div className="flex flex-col sm:flex-row items-center justify-between max-w-4xl mx-auto mb-12 gap-4">
         <GenericInputSearch
-          placeholder="Tìm kiếm ngành đào tạo..."
+          placeholder="Search for a major..."
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
         />
@@ -49,7 +49,7 @@ const MajorsList: React.FC<MajorsListProps> = ({
         />
       </div>
 
-      {/* Danh sách ngành */}
+      {/* List of majors */}
       {currentMajors.length > 0 &&
         currentMajors.map((major: Major, index: number) => (
           <motion.div
@@ -91,9 +91,11 @@ const MajorsList: React.FC<MajorsListProps> = ({
           </motion.div>
         ))}
       {currentMajors.length === 0 && (
-        <p className="text-cyan-400/50 text-center py-10 text-lg bg-gray-900/80 backdrop-blur-md rounded-lg shadow-lg shadow-cyan-500/20">
-          Không có ngành nào để hiển thị.
-        </p>
+        <div className="rounded-lg bg-gray-900/80 backdrop-blur-md border border-cyan-500/30 p-6 shadow-lg shadow-cyan-500/20 flex items-center justify-center h-[96px]">
+          <p className="text-cyan-400/50 text-center text-lg">
+            No majors to display.
+          </p>
+        </div>
       )}
     </div>
   );

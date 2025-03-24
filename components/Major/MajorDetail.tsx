@@ -12,13 +12,10 @@ import {
   FaUndo,
 } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
-
-import { GenericButton } from "../Common/GenericButton"; // Import GenericButton
+import { GenericButton } from "../Common/GenericButton";
 import LoadingModal from "../LoadingModal";
-
 import PlanModal from "./PlanModal";
 import ResultModal from "./ResultModal";
-
 import { useMajorDetail } from "@/hooks/useMajorDetail";
 import { createNewPlan } from "@/service/plan.api";
 import { MajorItem } from "@/types/major";
@@ -57,7 +54,7 @@ const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
 const flattenTree = (
   nodes: MajorItemWithChildren[],
   expanded: Set<string>,
-  seen = new Set<string>(),
+  seen = new Set<string>()
 ): MajorItemWithChildren[] => {
   let result: MajorItemWithChildren[] = [];
   nodes.forEach((node) => {
@@ -74,7 +71,7 @@ const flattenTree = (
 
 const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
-  selected: Set<string>,
+  selected: Set<string>
 ): { totalCredits: number; totalCount: number } => {
   let totalCredits = 0;
   let totalCount = 0;
@@ -96,7 +93,7 @@ const calculateTotalCreditsAndCount = (
 
 const findRequiredSubjects = (
   nodes: MajorItemWithChildren[],
-  data: MajorItem[],
+  data: MajorItem[]
 ): Set<string> => {
   const requiredSubjects = new Set<string>();
 
@@ -119,7 +116,7 @@ const findRequiredSubjects = (
 
     const totalDirectLeafCredits = directLeaves.reduce(
       (sum, leaf) => sum + (leaf.credit ?? 0),
-      0,
+      0
     );
 
     if (effectiveMinCredits !== null) {
@@ -132,7 +129,7 @@ const findRequiredSubjects = (
       if (subGroups.length > 0 && directLeaves.length > 0) {
         const sumSubGroupMinCredits = subGroups.reduce(
           (sum, group) => sum + (group.minCredits ?? 0),
-          0,
+          0
         );
         const remainingCredits = effectiveMinCredits - sumSubGroupMinCredits;
         if (remainingCredits === totalDirectLeafCredits) {
@@ -167,7 +164,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       message: string;
     }[]
   >([]);
-  const [planName, setPlanName] = useState<string>(""); // Thêm state để lưu planName
+  const [planName, setPlanName] = useState<string>("");
 
   useEffect(() => {
     if (major) {
@@ -198,7 +195,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       .filter((item) => !item.isLeaf)
       .map((item) => item.genCode);
     const allExpanded = expandableNodes.every((genCode) =>
-      expanded.has(genCode),
+      expanded.has(genCode)
     );
 
     if (allExpanded) {
@@ -240,10 +237,9 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   }, [data, selected]);
 
   const flatData = useMemo(() => flattenTree(tree, expanded), [tree, expanded]);
-
   const expandableNodes = useMemo(
     () => data.filter((item) => !item.isLeaf).map((item) => item.genCode),
-    [data],
+    [data]
   );
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 
@@ -267,7 +263,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       message: string;
     }[];
   }) => {
-    setPlanName(planName); // Lưu planName vào state
+    setPlanName(planName);
     setResult(result);
     setIsResultOpen(true);
   };
@@ -275,40 +271,31 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   const closeResultModal = () => {
     setIsResultOpen(false);
     setResult([]);
-    setPlanName(""); // Reset planName khi đóng modal
+    setPlanName("");
   };
 
   if (loading) return <LoadingModal isOpen={loading} />;
-
   if (error) return <p className="text-red-500">Đã xảy ra lỗi: {error}</p>;
 
   return (
-    <div className="min-h-screen p-6" style={{ backgroundColor: "#0A1A2F" }}>
+    <div className="min-h-screen p-4 sm:p-6 bg-[#0A1A2F]">
+      {/* Header */}
       <motion.div
-        className="flex justify-between items-center bg-[#1A2A44] p-4 rounded-lg shadow-lg my-4"
-        style={{ height: "150px" }}
+        className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#1A2A44] p-4 rounded-lg shadow-lg mb-4"
+        style={{ minHeight: "120px" }}
       >
         <motion.div
-          animate={{
-            y: isEditMode ? 0 : "50%",
-          }}
-          className="flex flex-col space-y-2"
+          animate={{ y: isEditMode ? 0 : "20%" }}
+          className="flex flex-col space-y-2 w-full sm:w-auto"
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <h2
-            className="text-2xl font-bold tracking-wide"
-            style={{
-              background: "linear-gradient(to right, #4A90E2, #FFFFFF)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
+          <h2 className="text-xl sm:text-2xl font-bold tracking-wide bg-gradient-to-r from-[#4A90E2] to-white bg-clip-text text-transparent">
             {major?.name || "Danh Sách Ngành Học"}
           </h2>
           {isEditMode && (
             <motion.span
               animate={{ opacity: 1 }}
-              className="text-lg font-medium text-gray-300"
+              className="text-base sm:text-lg font-medium text-gray-300"
               exit={{ opacity: 0 }}
               initial={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
@@ -322,10 +309,10 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         </motion.div>
 
         <motion.div
-          className="flex flex-col items-end space-y-2"
+          className="flex flex-col items-start sm:items-end space-y-2 mt-4 sm:mt-0 w-full sm:w-auto"
           transition={{ duration: 0.3 }}
         >
-          <motion.div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2 mt-2">
             <GenericButton
               tooltipContent={allExpanded ? "Đóng tất cả" : "Mở tất cả"}
               tooltipId="expand-tooltip"
@@ -337,7 +324,6 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                 <FaArrowsAltV size={20} />
               )}
             </GenericButton>
-
             <GenericButton
               tooltipContent={isEditMode ? "Chỉ xem" : "Chỉnh sửa"}
               tooltipId="mode-tooltip"
@@ -345,47 +331,41 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
             >
               {isEditMode ? <FaEye size={20} /> : <FaEdit size={20} />}
             </GenericButton>
-          </motion.div>
-
-          {isEditMode && (
-            <motion.div className="flex space-x-2">
-              <GenericButton
-                tooltipContent="Đặt lại lựa chọn"
-                tooltipId="reset-tooltip"
-                onClick={resetSelected}
-              >
-                <FaUndo size={20} />
-              </GenericButton>
-
-              <GenericButton
-                tooltipContent="Chọn tất cả môn bắt buộc"
-                tooltipId="select-all-tooltip"
-                onClick={selectAllRequired}
-              >
-                <FaCheckSquare size={20} />
-              </GenericButton>
-            </motion.div>
-          )}
-
-          {isEditMode && (
-            <motion.div className="w-[80px] flex justify-center">
-              <GenericButton
-                disabled={totalCredits === 0}
-                tooltipContent={
-                  totalCredits > 0
-                    ? "Tạo plan sử dụng các môn học đã chọn"
-                    : "Cần chọn tối thiểu 1 môn để tạo plan"
-                }
-                tooltipId="create-plan-tooltip"
-                onClick={totalCredits > 0 ? openPlanModal : undefined}
-              >
-                <FaPlus size={20} />
-              </GenericButton>
-            </motion.div>
-          )}
+            {isEditMode && (
+              <>
+                <GenericButton
+                  tooltipContent="Đặt lại lựa chọn"
+                  tooltipId="reset-tooltip"
+                  onClick={resetSelected}
+                >
+                  <FaUndo size={20} />
+                </GenericButton>
+                <GenericButton
+                  tooltipContent="Chọn tất cả môn bắt buộc"
+                  tooltipId="select-all-tooltip"
+                  onClick={selectAllRequired}
+                >
+                  <FaCheckSquare size={20} />
+                </GenericButton>
+                <GenericButton
+                  disabled={totalCredits === 0}
+                  tooltipContent={
+                    totalCredits > 0
+                      ? "Tạo plan sử dụng các môn học đã chọn"
+                      : "Cần chọn tối thiểu 1 môn để tạo plan"
+                  }
+                  tooltipId="create-plan-tooltip"
+                  onClick={totalCredits > 0 ? openPlanModal : undefined}
+                >
+                  <FaPlus size={20} />
+                </GenericButton>
+              </>
+            )}
+          </div>
         </motion.div>
       </motion.div>
 
+      {/* Modals */}
       <AnimatePresence>
         {isPlanModalOpen && (
           <PlanModal
@@ -401,129 +381,64 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         {isResultOpen && (
           <ResultModal
             isOpen={isResultOpen}
-            planName={planName} // Truyền planName vào ResultModal
+            planName={planName}
             result={result}
             onClose={closeResultModal}
           />
         )}
       </AnimatePresence>
 
+      {/* Tooltips */}
       <Tooltip
         id="expand-tooltip"
         place="bottom"
-        style={{
-          backgroundColor: "#2A3A54",
-          color: "#FFFFFF",
-          padding: "8px 12px",
-          borderRadius: "4px",
-          zIndex: 1000,
-          whiteSpace: "normal",
-          maxWidth: "300px",
-        }}
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
       <Tooltip
         id="mode-tooltip"
         place="bottom"
-        style={{
-          backgroundColor: "#2A3A54",
-          color: "#FFFFFF",
-          padding: "8px 12px",
-          borderRadius: "4px",
-          zIndex: 1000,
-          whiteSpace: "normal",
-          maxWidth: "300px",
-        }}
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
       <Tooltip
         id="reset-tooltip"
         place="bottom"
-        style={{
-          backgroundColor: "#2A3A54",
-          color: "#FFFFFF",
-          padding: "8px 12px",
-          borderRadius: "4px",
-          zIndex: 1000,
-          whiteSpace: "normal",
-          maxWidth: "300px",
-        }}
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
       <Tooltip
         id="select-all-tooltip"
         place="bottom"
-        style={{
-          backgroundColor: "#2A3A54",
-          color: "#FFFFFF",
-          padding: "8px 12px",
-          borderRadius: "4px",
-          zIndex: 1000,
-          whiteSpace: "normal",
-          maxWidth: "300px",
-        }}
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
       <Tooltip
         id="create-plan-tooltip"
         place="bottom"
-        style={{
-          backgroundColor: "#2A3A54",
-          color: "#FFFFFF",
-          padding: "8px 12px",
-          borderRadius: "4px",
-          zIndex: 1000,
-          whiteSpace: "normal",
-          maxWidth: "300px",
-        }}
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
 
-      <div
-        className="rounded-lg shadow-lg overflow-x-auto"
-        style={{ backgroundColor: "#1A2A44" }}
-      >
-        <table
-          className="min-w-full divide-y divide-gray-700"
-          style={{ tableLayout: "fixed" }}
-        >
-          <thead style={{ backgroundColor: "#2A3A54" }}>
+      {/* Table */}
+      <div className="rounded-lg shadow-lg overflow-x-auto bg-[#1A2A44]">
+        <table className="min-w-full divide-y divide-gray-700">
+          <thead className="bg-[#2A3A54]">
             <tr>
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                style={{ width: "60px", maxWidth: "60px" }}
-              >
+              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[60px]">
                 Chọn
               </th>
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                style={{ width: "80px", maxWidth: "80px" }}
-              >
+              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[80px]">
                 STT
               </th>
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                style={{ width: "300px", maxWidth: "300px" }}
-              >
+              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider min-w-[200px]">
                 Tên học phần
               </th>
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                style={{ width: "120px", maxWidth: "120px" }}
-              >
+              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[120px]">
                 Mã HP
               </th>
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                style={{ width: "100px", maxWidth: "100px" }}
-              >
+              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[100px]">
                 Tín chỉ
               </th>
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                style={{ width: "150px", maxWidth: "150px" }}
-              >
+              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[150px]">
                 Tiên quyết
               </th>
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
-                style={{ width: "250px", maxWidth: "250px" }}
-              >
+              <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider min-w-[200px]">
                 Yêu cầu
               </th>
             </tr>
@@ -576,15 +491,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                     }
                   }}
                 >
-                  <td
-                    className="px-6 py-4"
-                    style={{
-                      width: "60px",
-                      maxWidth: "60px",
-                      whiteSpace: "normal",
-                      verticalAlign: "top",
-                    }}
-                  >
+                  <td className="px-2 sm:px-6 py-4 w-[60px] align-top">
                     {node.isLeaf && node.parentGenCode && (
                       <input
                         checked={isSelected}
@@ -602,30 +509,14 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                       />
                     )}
                   </td>
-                  <td
-                    className="px-6 py-4"
-                    style={{
-                      width: "80px",
-                      maxWidth: "80px",
-                      whiteSpace: "normal",
-                      verticalAlign: "top",
-                    }}
-                  >
+                  <td className="px-2 sm:px-6 py-4 w-[80px] align-top">
                     {node.stt}
                   </td>
-                  <td
-                    className="px-6 py-4"
-                    style={{
-                      width: "300px",
-                      maxWidth: "300px",
-                      whiteSpace: "normal",
-                      verticalAlign: "top",
-                    }}
-                  >
+                  <td className="px-2 sm:px-6 py-4 min-w-[200px] align-top">
                     <span
-                      className={`${
-                        node.level > 0 ? `ml-${node.level * 4}` : ""
-                      } ${!node.isLeaf ? "font-semibold" : ""}`}
+                      className={`${node.level > 0 ? `ml-${node.level * 2} sm:ml-${node.level * 4}` : ""} ${
+                        !node.isLeaf ? "font-semibold" : ""
+                      }`}
                     >
                       {node.name}
                       {isExpandable && (
@@ -635,48 +526,16 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                       )}
                     </span>
                   </td>
-                  <td
-                    className="px-6 py-4"
-                    style={{
-                      width: "120px",
-                      maxWidth: "120px",
-                      whiteSpace: "normal",
-                      verticalAlign: "top",
-                    }}
-                  >
+                  <td className="px-2 sm:px-6 py-4 w-[120px] align-top">
                     {node.code || "-"}
                   </td>
-                  <td
-                    className="px-6 py-4"
-                    style={{
-                      width: "100px",
-                      maxWidth: "100px",
-                      whiteSpace: "normal",
-                      verticalAlign: "top",
-                    }}
-                  >
+                  <td className="px-2 sm:px-6 py-4 w-[100px] align-top">
                     {node.credit || "-"}
                   </td>
-                  <td
-                    className="px-6 py-4"
-                    style={{
-                      width: "150px",
-                      maxWidth: "150px",
-                      whiteSpace: "normal",
-                      verticalAlign: "top",
-                    }}
-                  >
+                  <td className="px-2 sm:px-6 py-4 w-[150px] align-top truncate">
                     {node.prerequisites?.join(", ") || "-"}
                   </td>
-                  <td
-                    className="px-6 py-4"
-                    style={{
-                      width: "250px",
-                      maxWidth: "250px",
-                      whiteSpace: "normal",
-                      verticalAlign: "top",
-                    }}
-                  >
+                  <td className="px-2 sm:px-6 py-4 min-w-[200px] align-top">
                     {!node.isLeaf && (node.minCredits || node.minChildren) && (
                       <span>
                         {node.minCredits && (
