@@ -6,7 +6,10 @@ import BaseRequest from "@/service/base-request.service";
 import { API_ROUTES } from "@/service/api-route.service";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
 
-export const usePlanDetails = (planId: string | null | undefined) => {
+export const usePlanDetails = (
+  planId: string | null | undefined,
+  refreshTrigger: number = 0 // Thêm tham số trigger
+) => {
   const [planDetails, setPlanDetails] = useState<PlanDetails | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +26,7 @@ export const usePlanDetails = (planId: string | null | undefined) => {
           headers: {
             token: `${localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN)}`,
           },
-        },
+        }
       );
       setPlanDetails(response.data);
     } catch (err) {
@@ -34,8 +37,10 @@ export const usePlanDetails = (planId: string | null | undefined) => {
   };
 
   useEffect(() => {
-    if (planId) fetchPlanDetails(planId);
-  }, [planId]);
+    if (planId) {
+      fetchPlanDetails(planId);
+    }
+  }, [planId, refreshTrigger]); // Thêm refreshTrigger vào dependencies
 
   return { planDetails, loading, error };
 };

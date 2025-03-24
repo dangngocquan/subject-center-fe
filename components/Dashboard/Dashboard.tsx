@@ -2,23 +2,21 @@ import { useInView } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 import LoadingModal from "../LoadingModal";
-
 import Main from "./Main/Main";
 import PlanHeader from "./Header/Header";
 import Sidebar from "./Sidebar/Sidebar";
 import NotificationModal from "./Sidebar/SidebarNotificationModal";
 import ConfirmDeleteModal from "./Sidebar/SidebarConfirmDeleteModal";
-
-import { usePlanDetails } from "@/hooks/usePlanDetails";
 import { usePlans } from "@/hooks/usePlans";
-import { Plan } from "@/types/plan";
+import { Plan, PlanDetails } from "@/types/plan";
 import { apiUpsertPlan, deletePlan } from "@/service/plan.api";
 
 const Dashboard: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar ẩn mặc định trên mobile
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [localPlans, setLocalPlans] = useState<Plan[]>([]);
+  const [planDetails, setPlanDetails] = useState<PlanDetails | null>(null);
   const [modal, setModal] = useState<{
     isOpen: boolean;
     message: string;
@@ -37,12 +35,9 @@ const Dashboard: React.FC = () => {
   });
 
   const { plans, loading, error } = usePlans(searchQuery);
-  const { planDetails } = usePlanDetails(selectedPlan?.id);
 
   useEffect(() => {
-    if (plans) {
-      setLocalPlans(plans);
-    }
+    if (plans) setLocalPlans(plans);
   }, [plans]);
 
   const mainRef = useRef(null);
@@ -51,15 +46,18 @@ const Dashboard: React.FC = () => {
   const handleSelectPlan = (planId: string | null) => {
     if (planId === null) {
       setSelectedPlan(null);
+      setPlanDetails(null);
     } else {
       const plan = localPlans.find((p) => p.id === planId) || null;
       setSelectedPlan(plan);
     }
-    setIsSidebarOpen(false);
+    setIsSidebarOpen(false); // Đóng Sidebar khi chọn plan trên mobile
   };
 
   const handleSelectOverview = () => {
-    setSelectedPlan(null); // Ensure overview is selected
+    setSelectedPlan(null);
+    setPlanDetails(null);
+    setIsSidebarOpen(false); // Đóng Sidebar trên mobile
   };
 
   const handlePrevPlan = () => {
@@ -93,6 +91,7 @@ const Dashboard: React.FC = () => {
           );
           if (selectedPlan?.id === deleteModal.planId) {
             setSelectedPlan(null);
+            setPlanDetails(null);
           }
         } else {
           setModal({
@@ -135,16 +134,15 @@ const Dashboard: React.FC = () => {
       if (!response.isBadRequest) {
         setModal({
           isOpen: true,
-          message: "Cập nhật tên plan thành công!",
+          message: "Plan name updated successfully!",
           isSuccess: true,
         });
       } else {
         setModal({
           isOpen: true,
-          message: response.message || "Cập nhật tên plan thất bại!",
+          message: response.message || "Failed to update plan name!",
           isSuccess: false,
         });
-
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
             plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
@@ -159,10 +157,9 @@ const Dashboard: React.FC = () => {
     } catch (error) {
       setModal({
         isOpen: true,
-        message: "Đã có lỗi xảy ra khi cập nhật tên plan!",
+        message: "An error occurred while updating the plan name!",
         isSuccess: false,
       });
-
       const planToUpdate = localPlans.find((plan) => plan.id === planId);
       if (planToUpdate) {
         setLocalPlans((prevPlans) =>
@@ -184,26 +181,30 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="bg-black text-white max-w-7xl mx-auto">
-      <div className="flex flex-col">
-        <PlanHeader
-          isNextDisabled={
-            !selectedPlan ||
-            localPlans.findIndex((p) => p.id === selectedPlan.id) ===
-              localPlans.length - 1
-          }
-          isPrevDisabled={
-            !selectedPlan ||
-            localPlans.findIndex((p) => p.id === selectedPlan.id) === 0
-          }
-          selectedPlanName={selectedPlan?.name}
-          onNextPlan={handleNextPlan}
-          onPrevPlan={handlePrevPlan}
-          onSelectOverview={handleSelectOverview} // Pass the new function
-          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        />
-
-        <div className="flex mt-8">
+    <div className="bg-black text-white min-h-screen flex flex-col max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <PlanHeader
+        isNextDisabled={
+          !selectedPlan ||
+          localPlans.findIndex((p) => p.id === selectedPlan.id) ===
+            localPlans.length - 1
+        }
+        isPrevDisabled={
+          !selectedPlan ||
+          localPlans.findIndex((p) => p.id === selectedPlan.id) === 0
+        }
+        selectedPlanName={selectedPlan?.name}
+        onNextPlan={handleNextPlan}
+        onPrevPlan={handlePrevPlan}
+        onSelectOverview={handleSelectOverview}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
+      <div className="flex flex-col md:flex-row mt-6 gap-6">
+        {/* Sidebar: Hiển thị luôn trên desktop, chỉ hiển thị khi isSidebarOpen trên mobile */}
+        <div
+          className={`w-full md:w-64 md:flex-shrink-0 ${
+            isSidebarOpen ? "block" : "hidden md:block"
+          }`}
+        >
           <Sidebar
             plans={localPlans}
             searchQuery={searchQuery}
@@ -214,7 +215,13 @@ const Dashboard: React.FC = () => {
             onSelectPlan={handleSelectPlan}
             onUpdatePlanName={handleUpdatePlanName}
           />
-          <div ref={mainRef} className="flex-1 ml-8">
+        </div>
+        <div ref={mainRef} className="flex-1">
+          {loading ? (
+            <p className="text-gray-400">Loading plans...</p>
+          ) : error ? (
+            <p className="text-red-400">Error loading plans: {error}</p>
+          ) : (
             <Main
               planDetails={planDetails}
               plans={localPlans}
@@ -223,27 +230,23 @@ const Dashboard: React.FC = () => {
                   ? { id: selectedPlan.id, name: selectedPlan.name }
                   : null
               }
-              setPlanDetails={() => {}}
+              setPlanDetails={setPlanDetails}
             />
-          </div>
+          )}
         </div>
-
-        {/* Hiển thị LoadingModal khi đang tải danh sách plan */}
-        <LoadingModal isOpen={loading} />
-
-        <NotificationModal
-          isOpen={modal.isOpen}
-          isSuccess={modal.isSuccess}
-          message={modal.message}
-          onClose={closeModal}
-        />
-
-        <ConfirmDeleteModal
-          isOpen={deleteModal.isOpen}
-          onClose={handleCloseDeleteModal}
-          onConfirm={handleConfirmDelete}
-        />
       </div>
+      <LoadingModal isOpen={loading} />
+      <NotificationModal
+        isOpen={modal.isOpen}
+        isSuccess={modal.isSuccess}
+        message={modal.message}
+        onClose={closeModal}
+      />
+      <ConfirmDeleteModal
+        isOpen={deleteModal.isOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 };

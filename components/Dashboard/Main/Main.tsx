@@ -2,14 +2,11 @@
 
 import { motion } from "framer-motion";
 import React, { useCallback, useState } from "react";
-import { useEffect } from "react";
-
 import GPAChart from "./GPAChart";
 import MarksGraph from "./MarksGraph";
 import PlansOverview from "./PlansOverview";
 import StatsSection from "./StatsSection";
 import SubjectsList from "./SubjectsList";
-
 import { Plan, PlanDetails, PlanItem } from "@/types/plan";
 import { usePlanDetails } from "@/hooks/usePlanDetails";
 
@@ -17,7 +14,7 @@ interface MainProps {
   selectedPlan: { id: string; name: string } | null;
   planDetails: PlanDetails | null;
   plans: Plan[];
-  setPlanDetails: (details: PlanDetails | null) => void; // Thêm prop để cập nhật planDetails
+  setPlanDetails: (details: PlanDetails | null) => void;
 }
 
 const Main: React.FC<MainProps> = ({
@@ -26,7 +23,13 @@ const Main: React.FC<MainProps> = ({
   plans,
   setPlanDetails,
 }) => {
-  const [activeTab, setActiveTab] = useState("overview"); // Add state for active tab
+  const [activeTab, setActiveTab] = useState("overview");
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const {
+    planDetails: fetchedPlanDetails,
+    loading,
+    error,
+  } = usePlanDetails(selectedPlan?.id, refreshTrigger);
 
   const slideInVariants = {
     hidden: (direction: "left" | "right") => ({
@@ -40,23 +43,16 @@ const Main: React.FC<MainProps> = ({
     }),
   };
 
-  const planDetailsResponse = usePlanDetails(selectedPlan?.id);
-
-  useEffect(() => {
-    if (planDetailsResponse && !planDetailsResponse.error) {
-      setPlanDetails(planDetailsResponse.planDetails);
-    }
-  }, [planDetailsResponse, setPlanDetails]);
-
   const reloadData = useCallback(() => {
-    if (planDetailsResponse && !planDetailsResponse.error) {
-      setPlanDetails(planDetailsResponse.planDetails); // Update planDetails
-    }
-  }, [planDetailsResponse, setPlanDetails]);
+    if (!selectedPlan?.id) return;
+    setRefreshTrigger((prev) => prev + 1);
+  }, [selectedPlan?.id]);
 
-  useEffect(() => {
-    reloadData(); // Ensure data is loaded initially
-  }, [reloadData]);
+  React.useEffect(() => {
+    if (fetchedPlanDetails && !error) {
+      setPlanDetails(fetchedPlanDetails);
+    }
+  }, [fetchedPlanDetails, error, setPlanDetails]);
 
   if (!selectedPlan) {
     return (
@@ -76,15 +72,14 @@ const Main: React.FC<MainProps> = ({
   return (
     <motion.div
       animate="visible"
-      className="grid grid-cols-1 gap-8"
+      className="grid grid-cols-1 gap-4"
       custom="left"
       initial="hidden"
       variants={slideInVariants}
     >
-      {/* Tab Navigation */}
-      <div className="flex space-x-4 mb-4">
+      <div className="flex flex-wrap gap-2 mb-4">
         <button
-          className={`px-4 py-2 rounded ${
+          className={`flex-1 py-2 px-3 rounded text-sm ${
             activeTab === "overview"
               ? "bg-cyan-500 text-white"
               : "bg-gray-700 text-gray-300"
@@ -94,7 +89,7 @@ const Main: React.FC<MainProps> = ({
           Overview
         </button>
         <button
-          className={`px-4 py-2 rounded ${
+          className={`flex-1 py-2 px-3 rounded text-sm ${
             activeTab === "marks"
               ? "bg-cyan-500 text-white"
               : "bg-gray-700 text-gray-300"
@@ -105,33 +100,48 @@ const Main: React.FC<MainProps> = ({
         </button>
       </div>
 
-      {/* Tab Content */}
       {activeTab === "overview" && (
-        <div>
-          <div className="flex">
-            <div className="flex-[6]">
-              <SubjectsList
-                items={
-                  (planDetails?.credits.items || []).filter(
-                    (item) => item.id !== undefined
-                  ) as PlanItem[]
-                }
-                planId={selectedPlan?.id || null}
-                onDataChange={reloadData} // Pass callback to refresh data
-              />
-            </div>
-
-            <div className="flex flex-col flex-[3] ml-2">
+        <div className="flex flex-col gap-4">
+          {/* Sử dụng Flexbox với items-stretch để đồng bộ chiều cao */}
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch">
+            <div className="w-full sm:w-1/2 min-h-[300px]">
               <GPAChart currentCPA={planDetails?.credits.currentCPA || 0} />
+            </div>
+            <div className="w-full sm:w-1/2 min-h-[300px]">
               <StatsSection
                 totalCredits={planDetails?.credits.totalCredits || 0}
                 totalSubjects={planDetails?.credits.totalSubjects || 0}
                 totalSubjectsCompleted={
                   planDetails?.credits.totalSubjectsCompleted || 0
                 }
+                totalCreditsCompleted={
+                  planDetails?.credits.totalCreditsCompleted || 0
+                }
+                totalSubjectsIncomplete={
+                  planDetails?.credits.totalSubjectsIncomplete || 0
+                }
+                totalCreditsIncomplete={
+                  planDetails?.credits.totalCreditsIncomplete || 0
+                }
+                totalSubjectsCanImprovement={
+                  planDetails?.credits.totalSubjectsCanImprovement || 0
+                }
+                totalCreditsCanImprovement={
+                  planDetails?.credits.totalCreditsCanImprovement || 0
+                }
+                currentCPA={planDetails?.credits.currentCPA || 0}
               />
             </div>
           </div>
+          <SubjectsList
+            items={
+              (planDetails?.credits.items || []).filter(
+                (item) => item.id !== undefined
+              ) as PlanItem[]
+            }
+            planId={selectedPlan?.id || null}
+            onDataChange={reloadData}
+          />
         </div>
       )}
 
