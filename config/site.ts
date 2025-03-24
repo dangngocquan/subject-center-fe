@@ -55,5 +55,6 @@ export const siteConfig = {
     docs: "/docs",
     login: "/login",
     register: "/register",
+    googleLogin: "/",
   },
 };
