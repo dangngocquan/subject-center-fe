@@ -87,8 +87,13 @@ const Sidebar: React.FC<SidebarProps> = ({
     onOpenDeleteModal(planId);
   };
 
+  const handleAddPlan = () => {
+    // Logic for adding a new plan
+    console.log("Add Plan button clicked");
+  };
+
   const filteredPlans = plans.filter((plan) =>
-    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
+    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -108,12 +113,12 @@ const Sidebar: React.FC<SidebarProps> = ({
           />
         </div>
         <button
-          aria-label="View overview of all plans"
+          aria-label="Add a new plan"
           className="w-full bg-cyan-500 text-white rounded-lg px-4 py-2 mb-6 text-sm font-medium hover:bg-cyan-600 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
           type="button"
-          onClick={handleOverviewClick}
+          onClick={handleAddPlan}
         >
-          Overview
+          Add Plan
         </button>
       </div>
       <div className="flex flex-col">
@@ -155,7 +160,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
         )}
       </div>
-
       <EditPlanModal
         initialName={editingPlan?.name ?? ""}
         isOpen={isEditModalOpen}

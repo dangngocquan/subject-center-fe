@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import LoadingModal from "../LoadingModal";
 
 import Main from "./Main/Main";
-import Navbar from "./Navbar/Navbar";
+import PlanHeader from "./Header/Header";
 import Sidebar from "./Sidebar/Sidebar";
 import NotificationModal from "./Sidebar/SidebarNotificationModal";
 import ConfirmDeleteModal from "./Sidebar/SidebarConfirmDeleteModal";
@@ -58,6 +58,10 @@ const Dashboard: React.FC = () => {
     setIsSidebarOpen(false);
   };
 
+  const handleSelectOverview = () => {
+    setSelectedPlan(null); // Ensure overview is selected
+  };
+
   const handlePrevPlan = () => {
     if (!selectedPlan) return;
     const currentIndex = localPlans.findIndex((p) => p.id === selectedPlan.id);
@@ -85,7 +89,7 @@ const Dashboard: React.FC = () => {
         const response = await deletePlan(Number(deleteModal.planId));
         if (!response.isBadRequest) {
           setLocalPlans((prevPlans) =>
-            prevPlans.filter((plan) => plan.id !== deleteModal.planId),
+            prevPlans.filter((plan) => plan.id !== deleteModal.planId)
           );
           if (selectedPlan?.id === deleteModal.planId) {
             setSelectedPlan(null);
@@ -115,8 +119,8 @@ const Dashboard: React.FC = () => {
 
       setLocalPlans((prevPlans) =>
         prevPlans.map((plan) =>
-          plan.id === planId ? { ...plan, name: newName } : plan,
-        ),
+          plan.id === planId ? { ...plan, name: newName } : plan
+        )
       );
       if (selectedPlan?.id === planId) {
         setSelectedPlan((prev) => (prev ? { ...prev, name: newName } : null));
@@ -143,12 +147,12 @@ const Dashboard: React.FC = () => {
 
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
-          ),
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
+          )
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null,
+            prev ? { ...prev, name: planToUpdate.name } : null
           );
         }
       }
@@ -163,12 +167,12 @@ const Dashboard: React.FC = () => {
       if (planToUpdate) {
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
-          ),
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
+          )
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null,
+            prev ? { ...prev, name: planToUpdate.name } : null
           );
         }
       }
@@ -182,7 +186,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="bg-black text-white max-w-7xl mx-auto">
       <div className="flex flex-col">
-        <Navbar
+        <PlanHeader
           isNextDisabled={
             !selectedPlan ||
             localPlans.findIndex((p) => p.id === selectedPlan.id) ===
@@ -195,6 +199,7 @@ const Dashboard: React.FC = () => {
           selectedPlanName={selectedPlan?.name}
           onNextPlan={handleNextPlan}
           onPrevPlan={handlePrevPlan}
+          onSelectOverview={handleSelectOverview} // Pass the new function
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />
 
