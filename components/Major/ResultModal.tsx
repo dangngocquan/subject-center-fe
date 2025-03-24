@@ -26,7 +26,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
   if (!isOpen) return null;
 
   const succeededCount = result.filter(
-    (item) => item.status === "SUCCEEDED"
+    (item) => item.status === "SUCCEEDED",
   ).length;
   const failedCount = result.filter((item) => item.status === "FAILED").length;
 

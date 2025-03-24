@@ -57,7 +57,7 @@ const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
 const flattenTree = (
   nodes: MajorItemWithChildren[],
   expanded: Set<string>,
-  seen = new Set<string>()
+  seen = new Set<string>(),
 ): MajorItemWithChildren[] => {
   let result: MajorItemWithChildren[] = [];
   nodes.forEach((node) => {
@@ -74,7 +74,7 @@ const flattenTree = (
 
 const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
-  selected: Set<string>
+  selected: Set<string>,
 ): { totalCredits: number; totalCount: number } => {
   let totalCredits = 0;
   let totalCount = 0;
@@ -96,7 +96,7 @@ const calculateTotalCreditsAndCount = (
 
 const findRequiredSubjects = (
   nodes: MajorItemWithChildren[],
-  data: MajorItem[]
+  data: MajorItem[],
 ): Set<string> => {
   const requiredSubjects = new Set<string>();
 
@@ -119,7 +119,7 @@ const findRequiredSubjects = (
 
     const totalDirectLeafCredits = directLeaves.reduce(
       (sum, leaf) => sum + (leaf.credit ?? 0),
-      0
+      0,
     );
 
     if (effectiveMinCredits !== null) {
@@ -132,7 +132,7 @@ const findRequiredSubjects = (
       if (subGroups.length > 0 && directLeaves.length > 0) {
         const sumSubGroupMinCredits = subGroups.reduce(
           (sum, group) => sum + (group.minCredits ?? 0),
-          0
+          0,
         );
         const remainingCredits = effectiveMinCredits - sumSubGroupMinCredits;
         if (remainingCredits === totalDirectLeafCredits) {
@@ -198,7 +198,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       .filter((item) => !item.isLeaf)
       .map((item) => item.genCode);
     const allExpanded = expandableNodes.every((genCode) =>
-      expanded.has(genCode)
+      expanded.has(genCode),
     );
 
     if (allExpanded) {
@@ -243,7 +243,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
 
   const expandableNodes = useMemo(
     () => data.filter((item) => !item.isLeaf).map((item) => item.genCode),
-    [data]
+    [data],
   );
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 

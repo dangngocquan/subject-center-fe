@@ -46,7 +46,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
     : (cpa?.withoutImprovements.marks ?? []);
 
   const graduationMarks = marks.filter(
-    (mark) => mark.type === "GRADUATION_MARK" || mark.type === "NODE"
+    (mark) => mark.type === "GRADUATION_MARK" || mark.type === "NODE",
   );
   const minMark = marks.find((mark) => mark.type === "MIN");
   const maxMark = marks.find((mark) => mark.type === "MAX");
@@ -239,7 +239,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
                 mark.details.cases?.flatMap((caseItem) =>
                   caseItem.grades
                     ?.map((grade) => grade.gradeLatin)
-                    .filter(Boolean)
+                    .filter(Boolean),
                 ) || [];
 
               // Sắp xếp để tìm grade thấp nhất (D < D+ < C < ... < A+)
@@ -321,8 +321,8 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
                                 ) : (
                                   <tr>
                                     <td
-                                      colSpan={2}
                                       className="py-1 px-3 text-center"
+                                      colSpan={2}
                                     >
                                       No grades available
                                     </td>

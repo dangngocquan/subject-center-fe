@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@heroui/button";
 import {
   Navbar as HeroUINavbar,
   NavbarBrand,
@@ -14,7 +13,11 @@ import NextLink from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Tooltip } from "@nextui-org/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
+import { useGoogleLogin } from "@react-oauth/google"; // Import for Google login
+
 import GenericModal from "./Common/GenericModal";
+import { GenericButton } from "./Common/GenericButton";
+
 import {
   ArrowPointingInIcon,
   Logo,
@@ -23,9 +26,7 @@ import {
   SettingsIcon,
 } from "@/components/icons";
 import { siteConfig } from "@/config/site";
-import { GenericButton } from "./Common/GenericButton";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
-import { useGoogleLogin } from "@react-oauth/google"; // Import for Google login
 import { API_ROUTES } from "@/service/api-route.service"; // Import API routes
 import BaseRequest from "@/service/base-request.service"; // Import BaseRequest
 
@@ -184,22 +185,22 @@ export const Navbar = () => {
       {/* Overlay when expanded */}
       {isExpanded && (
         <div
+          aria-label="Close expanded menu"
           className="fixed inset-0 bg-black/50 z-40"
-          onClick={() => setIsExpanded(false)}
-          onKeyDown={handleOverlayKeyDown}
           role="button"
           tabIndex={0}
-          aria-label="Close expanded menu"
+          onClick={() => setIsExpanded(false)}
+          onKeyDown={handleOverlayKeyDown}
         />
       )}
 
       <motion.div
         ref={navbarRef}
         animate={isInView ? "visible" : "hidden"}
-        initial="hidden"
-        variants={navbarVariants}
         className="sticky top-0 z-50 w-full"
+        initial="hidden"
         style={{ position: "fixed", top: 0 }}
+        variants={navbarVariants}
       >
         <HeroUINavbar
           className="bg-gray-900/80 backdrop-blur-md shadow-lg shadow-cyan-500/20 z-50 w-full"
@@ -208,10 +209,10 @@ export const Navbar = () => {
         >
           <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
             <button
+              aria-label="Toggle menu"
               className="lg:hidden text-white mr-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               onKeyDown={handleHamburgerKeyDown}
-              aria-label="Toggle menu"
             >
               <Bars3Icon className="w-6 h-6" />
             </button>
@@ -234,7 +235,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
+                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium",
                     )}
                     href={item.href}
                     onClick={
@@ -254,7 +255,7 @@ export const Navbar = () => {
                     <NextLink
                       className={clsx(
                         linkStyles({ color: "foreground" }),
-                        "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block"
+                        "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block",
                       )}
                       href={item.href}
                       onClick={
@@ -282,15 +283,15 @@ export const Navbar = () => {
                 }
               >
                 <GenericButton
+                  className={
+                    authToken && isExpanded ? "bg-red-500 hover:bg-red-600" : ""
+                  }
+                  disabled={false}
                   onClick={() => {
                     authToken
                       ? setIsExpanded(!isExpanded)
                       : setIsLoginModalOpen(true);
                   }}
-                  disabled={false}
-                  className={
-                    authToken && isExpanded ? "bg-red-500 hover:bg-red-600" : ""
-                  }
                 >
                   {authToken ? (
                     isExpanded ? (
@@ -342,8 +343,8 @@ export const Navbar = () => {
                     >
                       <Tooltip content="Logout">
                         <GenericButton
-                          onClick={handleLogout}
                           className="bg-red-500 hover:bg-red-600"
+                          onClick={handleLogout}
                         >
                           <LogoutIcon className="w-6 h-6" />
                         </GenericButton>
@@ -387,8 +388,8 @@ export const Navbar = () => {
                     >
                       <Tooltip content="Logout">
                         <GenericButton
-                          onClick={handleLogout}
                           className="bg-red-500 hover:bg-red-600"
+                          onClick={handleLogout}
                         >
                           <LogoutIcon className="w-6 h-6" />
                         </GenericButton>
@@ -408,10 +409,10 @@ export const Navbar = () => {
         onClose={() => setIsLoginModalOpen(false)}
       >
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
           className="text-center text-white p-4"
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
         >
           <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
             Please Sign In
@@ -421,9 +422,9 @@ export const Navbar = () => {
             features.
           </p>
           <GenericButton
-            onClick={() => authGoogle()} // Use the local authGoogle function
-            disabled={isLoading}
             className="bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-600 hover:to-cyan-800 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-cyan-500/50 hover:shadow-cyan-600/60 transition-all duration-300"
+            disabled={isLoading}
+            onClick={() => authGoogle()} // Use the local authGoogle function
           >
             {isLoading ? "Signing In..." : "Sign In with Google"}
           </GenericButton>

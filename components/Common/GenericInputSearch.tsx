@@ -25,9 +25,9 @@ const GenericInputSearch: React.FC<GenericInputSearchProps> = ({
   return (
     <motion.div
       animate={{ opacity: 1, y: 0 }}
+      className={`relative flex-grow w-full sm:w-auto ${className}`}
       initial={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.6, delay: 0.2 }}
-      className={`relative flex-grow w-full sm:w-auto ${className}`}
     >
       <div className="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none z-10">
         <FaSearch className="w-6 h-6 text-cyan-400" />
@@ -43,9 +43,9 @@ const GenericInputSearch: React.FC<GenericInputSearchProps> = ({
       {searchTerm && (
         <motion.button
           className="absolute inset-y-0 right-0 flex items-center pr-5 z-10"
-          onClick={handleClearSearch}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          onClick={handleClearSearch}
         >
           <FaTimes className="w-5 h-5 text-cyan-400 hover:text-cyan-300 transition-all duration-300" />
         </motion.button>

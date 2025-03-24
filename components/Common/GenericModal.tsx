@@ -56,7 +56,7 @@ const GenericModal: React.FC<GenericModalProps> = ({
               className="absolute top-3 sm:top-4 right-3 sm:right-4 text-gray-400 hover:text-gray-200 transition-colors duration-200"
               onClick={onClose}
             >
-              <FaTimes size={14} className="sm:w-4 sm:h-4" />
+              <FaTimes className="sm:w-4 sm:h-4" size={14} />
             </button>
             {children}
           </motion.div>

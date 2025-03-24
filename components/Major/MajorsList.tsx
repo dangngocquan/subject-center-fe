@@ -3,9 +3,10 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { FaBook } from "react-icons/fa";
 
-import { Major } from "@/types/major";
 import GenericInputSearch from "../Common/GenericInputSearch";
 import GenericPagination from "../Common/GenericPagination";
+
+import { Major } from "@/types/major";
 
 interface MajorsListProps {
   majors: Major[];
@@ -23,7 +24,7 @@ const MajorsList: React.FC<MajorsListProps> = ({
 
   const currentMajors = majors.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   return (
@@ -34,17 +35,17 @@ const MajorsList: React.FC<MajorsListProps> = ({
       {/* Thanh tìm kiếm và phân trang */}
       <div className="flex flex-col sm:flex-row items-center justify-between max-w-4xl mx-auto mb-12 gap-4">
         <GenericInputSearch
+          placeholder="Tìm kiếm ngành đào tạo..."
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-          placeholder="Tìm kiếm ngành đào tạo..."
         />
 
         <GenericPagination
           currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalItems={majors.length}
           itemsPerPage={itemsPerPage}
           maxVisiblePages={5}
+          setCurrentPage={setCurrentPage}
+          totalItems={majors.length}
         />
       </div>
 

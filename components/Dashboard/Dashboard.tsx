@@ -6,13 +6,13 @@ import LoadingModal from "../LoadingModal";
 import Main from "./Main/Main";
 import Navbar from "./Navbar/Navbar";
 import Sidebar from "./Sidebar/Sidebar";
+import NotificationModal from "./Sidebar/SidebarNotificationModal";
+import ConfirmDeleteModal from "./Sidebar/SidebarConfirmDeleteModal";
 
 import { usePlanDetails } from "@/hooks/usePlanDetails";
 import { usePlans } from "@/hooks/usePlans";
 import { Plan } from "@/types/plan";
 import { apiUpsertPlan, deletePlan } from "@/service/plan.api";
-import NotificationModal from "./Sidebar/SidebarNotificationModal";
-import ConfirmDeleteModal from "./Sidebar/SidebarConfirmDeleteModal";
 
 const Dashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -85,7 +85,7 @@ const Dashboard: React.FC = () => {
         const response = await deletePlan(Number(deleteModal.planId));
         if (!response.isBadRequest) {
           setLocalPlans((prevPlans) =>
-            prevPlans.filter((plan) => plan.id !== deleteModal.planId)
+            prevPlans.filter((plan) => plan.id !== deleteModal.planId),
           );
           if (selectedPlan?.id === deleteModal.planId) {
             setSelectedPlan(null);
@@ -115,8 +115,8 @@ const Dashboard: React.FC = () => {
 
       setLocalPlans((prevPlans) =>
         prevPlans.map((plan) =>
-          plan.id === planId ? { ...plan, name: newName } : plan
-        )
+          plan.id === planId ? { ...plan, name: newName } : plan,
+        ),
       );
       if (selectedPlan?.id === planId) {
         setSelectedPlan((prev) => (prev ? { ...prev, name: newName } : null));
@@ -143,12 +143,12 @@ const Dashboard: React.FC = () => {
 
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
-          )
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
+          ),
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null
+            prev ? { ...prev, name: planToUpdate.name } : null,
           );
         }
       }
@@ -163,12 +163,12 @@ const Dashboard: React.FC = () => {
       if (planToUpdate) {
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
-          )
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
+          ),
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null
+            prev ? { ...prev, name: planToUpdate.name } : null,
           );
         }
       }

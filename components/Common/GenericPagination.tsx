@@ -46,7 +46,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
   };
 
   const handleJumpToPageOnEnter = (
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (e.key === "Enter") {
       handleJumpToPage();
@@ -68,10 +68,10 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
       {/* Nhóm 1: Nút điều hướng và chấm tròn */}
       <div className="flex items-center gap-4">
         <GenericButton
-          onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           tooltipContent="Trang trước"
           tooltipId="prev-page-tooltip"
+          onClick={() => handlePageChange(currentPage - 1)}
         >
           <FaChevronLeft className="w-5 h-5" />
         </GenericButton>
@@ -84,7 +84,6 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
           {visiblePages.map((page) => (
             <motion.button
               key={page}
-              onClick={() => handlePageChange(page)}
               className={`w-3 h-3 rounded-full border border-cyan-500/30 shadow-lg shadow-cyan-500/20 ${
                 currentPage === page
                   ? "bg-cyan-400"
@@ -92,6 +91,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
               } transition-all duration-300`}
               whileHover={{ scale: 1.3 }}
               whileTap={{ scale: 0.9 }}
+              onClick={() => handlePageChange(page)}
             />
           ))}
 
@@ -101,10 +101,10 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
         </div>
 
         <GenericButton
-          onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           tooltipContent="Trang sau"
           tooltipId="next-page-tooltip"
+          onClick={() => handlePageChange(currentPage + 1)}
         >
           <FaChevronRight className="w-5 h-5" />
         </GenericButton>
@@ -114,21 +114,21 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
       <div className="flex items-center justify-between w-full max-w-[300px]">
         <div className="relative">
           <input
-            type="number"
-            min={1}
-            max={totalPages}
-            value={inputPage}
-            onChange={handleInputChange}
-            onBlur={handleJumpToPage}
-            onKeyDown={handleJumpToPageOnEnter}
             className="w-16 sm:w-16 py-1 pl-2 pr-8 rounded-full bg-gray-900/80 backdrop-blur-md text-cyan-400/50 border border-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 hover:border-cyan-400 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            max={totalPages}
+            min={1}
             placeholder="Trang"
+            type="number"
+            value={inputPage}
+            onBlur={handleJumpToPage}
+            onChange={handleInputChange}
+            onKeyDown={handleJumpToPageOnEnter}
           />
           <motion.button
-            onClick={handleJumpToPage}
             className="absolute inset-y-0 right-0 flex items-center pr-2"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
+            onClick={handleJumpToPage}
           >
             <FaArrowRight className="w-4 h-4 text-cyan-400 hover:text-cyan-300 transition-all duration-300" />
           </motion.button>

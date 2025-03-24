@@ -6,9 +6,9 @@ import {
 import React, { useState } from "react";
 
 import PlanCard from "./PlanCard";
+import EditPlanModal from "./SidebarEditPlanModal";
 
 import { Plan } from "@/types/plan";
-import EditPlanModal from "./SidebarEditPlanModal";
 
 interface SidebarProps {
   searchQuery: string;
@@ -88,7 +88,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const filteredPlans = plans.filter((plan) =>
-    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
+    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (

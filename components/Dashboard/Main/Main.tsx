@@ -84,7 +84,7 @@ const Main: React.FC<MainProps> = ({
           <SubjectsList
             items={
               (planDetails?.credits.items || []).filter(
-                (item) => item.id !== undefined
+                (item) => item.id !== undefined,
               ) as PlanItem[]
             }
             planId={selectedPlan?.id || null}

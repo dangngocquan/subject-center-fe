@@ -353,7 +353,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
     let result = subjects.filter((subject) =>
       String(subject.name ?? "")
         .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+        .includes(searchTerm.toLowerCase()),
     );
 
     if (sortConfig.direction) {
@@ -420,7 +420,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
             const updatedSubjects = [...prevSubjects];
             (data.items ?? []).forEach((newItem) => {
               const index = updatedSubjects.findIndex(
-                (subject) => subject.id === newItem.id
+                (subject) => subject.id === newItem.id,
               );
               if (index !== -1) {
                 // Cập nhật môn học nếu đã tồn tại
@@ -505,7 +505,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
       const response = await deletePlanItem(Number(planId), subjectToDelete.id);
       if (!response.isBadRequest) {
         const updatedSubjects = subjects.filter(
-          (subject) => subject.id !== subjectToDelete.id
+          (subject) => subject.id !== subjectToDelete.id,
         );
         setSubjects(updatedSubjects);
         onDataChange?.(); // Notify parent to reload data
@@ -569,7 +569,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
         const updatedSubjects = subjects.map((subject) =>
           subject.id === updatedSubject.id
             ? { ...subject, ...result.data }
-            : subject
+            : subject,
         );
         setSubjects(updatedSubjects);
         onDataChange?.(); // Notify parent to reload data

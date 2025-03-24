@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 import GenericModal from "../../Common/GenericModal";
+
 import { PlanItem } from "@/types/plan";
 
 // Định nghĩa enum EGradeLatin
@@ -37,7 +38,7 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
   }, [initialData]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
