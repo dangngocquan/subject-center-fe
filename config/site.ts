@@ -52,7 +52,7 @@ export const siteConfig = {
     },
   ],
   links: {
-    docs: "/docs",
+    majors: "/major",
     login: "/login",
     register: "/register",
     googleLogin: "/",

@@ -8,15 +8,13 @@ import {
   NavbarItem,
 } from "@heroui/navbar";
 import { link as linkStyles } from "@heroui/theme";
-import { useGoogleLogin } from "@react-oauth/google";
 import clsx from "clsx";
 import { motion, useInView } from "framer-motion";
 import NextLink from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Tooltip } from "@nextui-org/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import GenericModal from "./Common/GenericModal"; // Import GenericModal
-
+import GenericModal from "./Common/GenericModal";
 import {
   ArrowPointingInIcon,
   Logo,
@@ -24,20 +22,21 @@ import {
   ProfileIcon,
   SettingsIcon,
 } from "@/components/icons";
-import LoadingModal from "@/components/LoadingModal";
-import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
 import { siteConfig } from "@/config/site";
-import { API_ROUTES } from "@/service/api-route.service";
-import BaseRequest from "@/service/base-request.service";
 import { GenericButton } from "./Common/GenericButton";
+import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
+import { useGoogleLogin } from "@react-oauth/google"; // Import for Google login
+import { API_ROUTES } from "@/service/api-route.service"; // Import API routes
+import BaseRequest from "@/service/base-request.service"; // Import BaseRequest
 
 export const Navbar = () => {
   const [authToken, setAuthToken] = useState<string | undefined>(undefined);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false); // Trạng thái cho modal đăng nhập
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Add loading state for modal
 
+  // Define authGoogle for Navbar's login functionality
   const authGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       setIsLoading(true);
@@ -45,34 +44,76 @@ export const Navbar = () => {
         const response = await new BaseRequest().post(API_ROUTES.AUTH_GOOGLE, {
           token: tokenResponse,
         });
-
-        setAuthToken(response?.data?.token);
-        localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-        localStorage.setItem(
-          LOCAL_STORAGE_KEYS.AUTH_TOKEN,
-          response?.data?.token
-        );
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        const token = response?.data?.token;
+        localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, token); // Save token to localStorage
+        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulated delay
         setIsLoading(false);
-        setIsLoginModalOpen(false); // Đóng modal sau khi đăng nhập thành công
+        setIsLoginModalOpen(false);
+
+        // Dispatch custom event to notify successful sign-in
+        window.dispatchEvent(new Event("authChange"));
       } catch (error) {
-        console.error("Login error:", error);
+        console.error("Sign in error:", error);
         setIsLoading(false);
       }
     },
     onError: (error) => {
-      console.error("Google login error:", error);
-      localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+      console.error("Google sign in error:", error);
       setIsLoading(false);
     },
   });
 
-  useEffect(() => {
+  // Function to update authToken from localStorage
+  const updateAuthToken = () => {
     const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-    if (token) {
-      setAuthToken(token);
+    setAuthToken(token || undefined);
+  };
+
+  // Check token on mount and listen to authChange event
+  useEffect(() => {
+    updateAuthToken(); // Initial check
+    window.addEventListener("authChange", updateAuthToken); // Listen to event
+    return () => {
+      window.removeEventListener("authChange", updateAuthToken); // Cleanup listener
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
+    setAuthToken(undefined);
+    setIsExpanded(false);
+    window.dispatchEvent(new Event("authChange")); // Dispatch event on logout
+  };
+
+  const handlePlansClick = (e: React.MouseEvent) => {
+    if (!authToken) {
+      e.preventDefault();
+      setIsLoginModalOpen(true);
     }
-  }, [authToken]);
+    setIsMenuOpen(false);
+  };
+
+  const handleHamburgerKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setIsMenuOpen(!isMenuOpen);
+    }
+  };
+
+  const handleOverlayKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setIsExpanded(false);
+    }
+  };
+
+  const navbarRef = useRef(null);
+  const isInView = useInView(navbarRef, { once: true });
+
+  const navbarVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
 
   const buttonVariants = {
     hidden: { opacity: 0, scale: 0, x: 0, y: 0 },
@@ -138,46 +179,9 @@ export const Navbar = () => {
     }),
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
-    setAuthToken(undefined);
-    setIsExpanded(false);
-  };
-
-  // Hàm kiểm tra khi nhấp vào "Plans"
-  const handlePlansClick = (e: React.MouseEvent) => {
-    if (!authToken) {
-      e.preventDefault(); // Ngăn chuyển hướng nếu chưa đăng nhập
-      setIsLoginModalOpen(true); // Hiển thị modal
-    }
-    setIsMenuOpen(false); // Đóng menu mobile nếu đang mở
-  };
-
-  const handleHamburgerKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      setIsMenuOpen(!isMenuOpen);
-    }
-  };
-
-  const handleOverlayKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      setIsExpanded(false);
-    }
-  };
-
-  const navbarRef = useRef(null);
-  const isInView = useInView(navbarRef, { once: true });
-
-  const navbarVariants = {
-    hidden: { opacity: 0, y: -50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  };
-
   return (
     <>
-      {/* Overlay khi expand */}
+      {/* Overlay when expanded */}
       {isExpanded && (
         <div
           className="fixed inset-0 bg-black/50 z-40"
@@ -279,13 +283,11 @@ export const Navbar = () => {
               >
                 <GenericButton
                   onClick={() => {
-                    authToken ? setIsExpanded(!isExpanded) : authGoogle();
+                    authToken
+                      ? setIsExpanded(!isExpanded)
+                      : setIsLoginModalOpen(true);
                   }}
                   disabled={false}
-                  tooltipContent={
-                    authToken ? (isExpanded ? "Exit" : "Expand") : "Sign In"
-                  }
-                  tooltipId="auth-button-tooltip"
                   className={
                     authToken && isExpanded ? "bg-red-500 hover:bg-red-600" : ""
                   }
@@ -313,17 +315,11 @@ export const Navbar = () => {
                       variants={buttonVariants}
                     >
                       <Tooltip content="Profile">
-                        <GenericButton
-                          onClick={() => {}}
-                          disabled={false}
-                          tooltipContent="Profile"
-                          tooltipId="profile-tooltip"
-                        >
+                        <GenericButton>
                           <ProfileIcon className="w-6 h-6" />
                         </GenericButton>
                       </Tooltip>
                     </motion.div>
-
                     <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
@@ -332,17 +328,11 @@ export const Navbar = () => {
                       variants={buttonVariants}
                     >
                       <Tooltip content="Settings">
-                        <GenericButton
-                          onClick={() => {}}
-                          disabled={false}
-                          tooltipContent="Settings"
-                          tooltipId="settings-tooltip"
-                        >
+                        <GenericButton>
                           <SettingsIcon className="w-6 h-6" />
                         </GenericButton>
                       </Tooltip>
                     </motion.div>
-
                     <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
@@ -353,9 +343,6 @@ export const Navbar = () => {
                       <Tooltip content="Logout">
                         <GenericButton
                           onClick={handleLogout}
-                          disabled={false}
-                          tooltipContent="Logout"
-                          tooltipId="logout-tooltip"
                           className="bg-red-500 hover:bg-red-600"
                         >
                           <LogoutIcon className="w-6 h-6" />
@@ -373,17 +360,11 @@ export const Navbar = () => {
                       variants={mobileButtonVariants}
                     >
                       <Tooltip content="Profile">
-                        <GenericButton
-                          onClick={() => {}}
-                          disabled={false}
-                          tooltipContent="Profile"
-                          tooltipId="profile-tooltip"
-                        >
+                        <GenericButton>
                           <ProfileIcon className="w-6 h-6" />
                         </GenericButton>
                       </Tooltip>
                     </motion.div>
-
                     <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
@@ -392,17 +373,11 @@ export const Navbar = () => {
                       variants={mobileButtonVariants}
                     >
                       <Tooltip content="Settings">
-                        <GenericButton
-                          onClick={() => {}}
-                          disabled={false}
-                          tooltipContent="Settings"
-                          tooltipId="settings-tooltip"
-                        >
+                        <GenericButton>
                           <SettingsIcon className="w-6 h-6" />
                         </GenericButton>
                       </Tooltip>
                     </motion.div>
-
                     <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
@@ -413,9 +388,6 @@ export const Navbar = () => {
                       <Tooltip content="Logout">
                         <GenericButton
                           onClick={handleLogout}
-                          disabled={false}
-                          tooltipContent="Logout"
-                          tooltipId="logout-tooltip"
                           className="bg-red-500 hover:bg-red-600"
                         >
                           <LogoutIcon className="w-6 h-6" />
@@ -430,9 +402,7 @@ export const Navbar = () => {
         </HeroUINavbar>
       </motion.div>
 
-      <LoadingModal isOpen={isLoading} onClose={() => setIsLoading(false)} />
-
-      {/* Modal yêu cầu đăng nhập */}
+      {/* Login Modal */}
       <GenericModal
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
@@ -443,27 +413,24 @@ export const Navbar = () => {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="text-center text-white p-4"
         >
-          {/* Tiêu đề */}
           <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
-            Vui lòng đăng nhập
+            Please Sign In
           </h2>
-
-          {/* Nội dung */}
           <p className="mb-6 text-gray-300 text-base md:text-lg leading-relaxed max-w-xs mx-auto">
-            Bạn cần đăng nhập để khám phá các gói dịch vụ và trải nghiệm đầy đủ
-            tính năng.
+            You need to sign in to explore service plans and access all
+            features.
           </p>
-
-          {/* Nút đăng nhập */}
           <GenericButton
-            onClick={() => authGoogle()}
-            disabled={false}
+            onClick={() => authGoogle()} // Use the local authGoogle function
+            disabled={isLoading}
             className="bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-600 hover:to-cyan-800 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-cyan-500/50 hover:shadow-cyan-600/60 transition-all duration-300"
           >
-            Đăng nhập với Google
+            {isLoading ? "Signing In..." : "Sign In with Google"}
           </GenericButton>
         </motion.div>
       </GenericModal>
     </>
   );
 };
+
+export default Navbar;
