@@ -13,14 +13,15 @@ import {
 } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 
+import { GenericButton } from "../Common/GenericButton"; // Import GenericButton
 import LoadingModal from "../LoadingModal";
 
 import PlanModal from "./PlanModal";
 import ResultModal from "./ResultModal";
 
-import { MajorItem } from "@/types/major";
-import { createNewPlan } from "@/service/plan.api";
 import { useMajorDetail } from "@/hooks/useMajorDetail";
+import { createNewPlan } from "@/service/plan.api";
+import { MajorItem } from "@/types/major";
 
 interface MajorItemWithChildren extends MajorItem {
   children: MajorItemWithChildren[];
@@ -56,7 +57,7 @@ const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
 const flattenTree = (
   nodes: MajorItemWithChildren[],
   expanded: Set<string>,
-  seen = new Set<string>(),
+  seen = new Set<string>()
 ): MajorItemWithChildren[] => {
   let result: MajorItemWithChildren[] = [];
   nodes.forEach((node) => {
@@ -73,7 +74,7 @@ const flattenTree = (
 
 const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
-  selected: Set<string>,
+  selected: Set<string>
 ): { totalCredits: number; totalCount: number } => {
   let totalCredits = 0;
   let totalCount = 0;
@@ -95,7 +96,7 @@ const calculateTotalCreditsAndCount = (
 
 const findRequiredSubjects = (
   nodes: MajorItemWithChildren[],
-  data: MajorItem[],
+  data: MajorItem[]
 ): Set<string> => {
   const requiredSubjects = new Set<string>();
 
@@ -118,7 +119,7 @@ const findRequiredSubjects = (
 
     const totalDirectLeafCredits = directLeaves.reduce(
       (sum, leaf) => sum + (leaf.credit ?? 0),
-      0,
+      0
     );
 
     if (effectiveMinCredits !== null) {
@@ -131,7 +132,7 @@ const findRequiredSubjects = (
       if (subGroups.length > 0 && directLeaves.length > 0) {
         const sumSubGroupMinCredits = subGroups.reduce(
           (sum, group) => sum + (group.minCredits ?? 0),
-          0,
+          0
         );
         const remainingCredits = effectiveMinCredits - sumSubGroupMinCredits;
         if (remainingCredits === totalDirectLeafCredits) {
@@ -197,7 +198,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       .filter((item) => !item.isLeaf)
       .map((item) => item.genCode);
     const allExpanded = expandableNodes.every((genCode) =>
-      expanded.has(genCode),
+      expanded.has(genCode)
     );
 
     if (allExpanded) {
@@ -242,7 +243,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
 
   const expandableNodes = useMemo(
     () => data.filter((item) => !item.isLeaf).map((item) => item.genCode),
-    [data],
+    [data]
   );
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 
@@ -320,15 +321,14 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
           )}
         </motion.div>
 
-        <div className="flex flex-col items-end space-y-2">
-          <div className="flex space-x-2">
-            <motion.button
-              animate={{ opacity: 1 }}
-              className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
-              data-tooltip-content={allExpanded ? "Đóng tất cả" : "Mở tất cả"}
-              data-tooltip-id="expand-tooltip"
-              initial={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
+        <motion.div
+          className="flex flex-col items-end space-y-2"
+          transition={{ duration: 0.3 }}
+        >
+          <motion.div className="flex space-x-2">
+            <GenericButton
+              tooltipContent={allExpanded ? "Đóng tất cả" : "Mở tất cả"}
+              tooltipId="expand-tooltip"
               onClick={toggleAllExpand}
             >
               {allExpanded ? (
@@ -336,77 +336,54 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
               ) : (
                 <FaArrowsAltV size={20} />
               )}
-            </motion.button>
+            </GenericButton>
 
-            <motion.button
-              animate={{ opacity: 1 }}
-              className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
-              data-tooltip-content={isEditMode ? "Chỉ xem" : "Chỉnh sửa"}
-              data-tooltip-id="mode-tooltip"
-              initial={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
+            <GenericButton
+              tooltipContent={isEditMode ? "Chỉ xem" : "Chỉnh sửa"}
+              tooltipId="mode-tooltip"
               onClick={toggleMode}
             >
               {isEditMode ? <FaEye size={20} /> : <FaEdit size={20} />}
-            </motion.button>
-          </div>
+            </GenericButton>
+          </motion.div>
 
           {isEditMode && (
-            <div className="flex space-x-2">
-              <motion.button
-                animate={{ opacity: 1, scale: 1 }}
-                className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
-                data-tooltip-content="Đặt lại lựa chọn"
-                data-tooltip-id="reset-tooltip"
-                exit={{ opacity: 0, scale: 0.8 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3 }}
+            <motion.div className="flex space-x-2">
+              <GenericButton
+                tooltipContent="Đặt lại lựa chọn"
+                tooltipId="reset-tooltip"
                 onClick={resetSelected}
               >
                 <FaUndo size={20} />
-              </motion.button>
+              </GenericButton>
 
-              <motion.button
-                animate={{ opacity: 1, scale: 1 }}
-                className="p-2 bg-gradient-to-r from-[#4A90E2] to-[#357ABD] text-white rounded-full shadow-md hover:from-[#357ABD] hover:to-[#2A5F9A] transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]"
-                data-tooltip-content="Chọn tất cả môn bắt buộc"
-                data-tooltip-id="select-all-tooltip"
-                exit={{ opacity: 0, scale: 0.8 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3 }}
+              <GenericButton
+                tooltipContent="Chọn tất cả môn bắt buộc"
+                tooltipId="select-all-tooltip"
                 onClick={selectAllRequired}
               >
                 <FaCheckSquare size={20} />
-              </motion.button>
-            </div>
+              </GenericButton>
+            </motion.div>
           )}
 
           {isEditMode && (
-            <div className="w-[80px] flex justify-center">
-              <motion.button
-                animate={{ opacity: 1, scale: 1 }}
-                className={`p-2 bg-gradient-to-r ${
-                  totalCredits === 0
-                    ? "from-gray-500 to-gray-600 cursor-not-allowed"
-                    : "from-[#4A90E2] to-[#357ABD] hover:from-[#357ABD] hover:to-[#2A5F9A]"
-                } text-white rounded-full shadow-md transition-all duration-300 transform hover:scale-105 border border-[#4A90E2] shadow-[0_0_8px_rgba(74,144,226,0.5)]`}
-                data-tooltip-content={
+            <motion.div className="w-[80px] flex justify-center">
+              <GenericButton
+                disabled={totalCredits === 0}
+                tooltipContent={
                   totalCredits > 0
                     ? "Tạo plan sử dụng các môn học đã chọn"
                     : "Cần chọn tối thiểu 1 môn để tạo plan"
                 }
-                data-tooltip-id="create-plan-tooltip"
-                disabled={totalCredits === 0}
-                exit={{ opacity: 0, scale: 0.8 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3 }}
+                tooltipId="create-plan-tooltip"
                 onClick={totalCredits > 0 ? openPlanModal : undefined}
               >
                 <FaPlus size={20} />
-              </motion.button>
-            </div>
+              </GenericButton>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
       </motion.div>
 
       <AnimatePresence>

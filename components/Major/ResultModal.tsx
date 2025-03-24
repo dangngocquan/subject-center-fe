@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { FaTimes } from "react-icons/fa";
 
 import GenericModal from "../Common/GenericModal"; // Import GenericModal
+import { GenericButton } from "../Common/GenericButton"; // Import GenericButton
 
 interface ResultModalProps {
   isOpen: boolean;
@@ -32,12 +33,14 @@ const ResultModal: React.FC<ResultModalProps> = ({
   return (
     <GenericModal isOpen={isOpen} onClose={onClose}>
       {/* Nút "X" để đóng */}
-      <button
+      <GenericButton
         className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition-colors duration-200"
+        tooltipContent="Đóng"
+        tooltipId="close-tooltip"
         onClick={onClose}
       >
         <FaTimes size={16} />
-      </button>
+      </GenericButton>
 
       {/* Tiêu đề */}
       <h3 className="text-xl font-semibold text-white mb-2">

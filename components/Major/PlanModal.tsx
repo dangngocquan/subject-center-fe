@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 
 import LoadingModal from "../LoadingModal"; // Import LoadingModal
 import GenericModal from "../Common/GenericModal"; // Import GenericModal
 
 import { MajorItem, MajorItemWithChildren } from "@/types/major";
 import { Plan, PlanItem } from "@/types/plan";
+import { GenericButton } from "../Common/GenericButton";
 
 interface PlanModalProps {
   isOpen: boolean;
@@ -158,24 +158,23 @@ const PlanModal: React.FC<PlanModalProps> = ({
         )}
 
         <div className="flex justify-end space-x-2">
-          <motion.button
+          <GenericButton
             className="px-4 py-2 bg-[#3A4A64] text-gray-200 rounded-md hover:bg-[#4A5A74] transition-all duration-200 text-sm font-medium"
-            style={{ background: "rgba(58, 74, 100, 0.8)" }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            tooltipContent="Tiếp tục chọn thêm"
+            tooltipId="continue-tooltip"
             onClick={onClose}
           >
             Tiếp tục chọn thêm
-          </motion.button>
-          <motion.button
+          </GenericButton>
+          <GenericButton
             className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
             disabled={isLoading}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            tooltipContent="Tạo Plan"
+            tooltipId="create-tooltip"
             onClick={handleCreate}
           >
             Tạo Plan
-          </motion.button>
+          </GenericButton>
         </div>
       </GenericModal>
     </>

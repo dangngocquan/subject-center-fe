@@ -24,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({
   isNextDisabled,
 }) => {
   return (
-    <nav className="bg-gray-900/80 backdrop-blur-md p-4 flex justify-between items-center sticky top-0 z-30 shadow-lg shadow-cyan-500/20 w-full">
+    <nav className="bg-gray-900/80 backdrop-blur-md p-4 flex justify-between items-center top-0 z-30 shadow-lg shadow-cyan-500/20 w-full">
       <div className="flex items-center space-x-4">
         <button className="md:hidden text-white" onClick={onToggleSidebar}>
           <Bars3Icon className="w-6 h-6" />
