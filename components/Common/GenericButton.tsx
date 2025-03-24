@@ -1,4 +1,3 @@
-// components/GenericButton.tsx
 "use client";
 
 import { motion } from "framer-motion";
@@ -24,20 +23,31 @@ export const GenericButton: React.FC<GenericButtonProps> = ({
   return (
     <motion.button
       animate={{ opacity: 1, scale: 1 }}
-      className={`p-2 bg-gradient-to-r ${
+      className={`p-3 bg-gray-900/80 backdrop-blur-md text-cyan-400 rounded-full border border-cyan-500/30 transition-all duration-300 ${
         disabled
-          ? "from-gray-500 to-gray-600 cursor-not-allowed"
-          : "from-cyan-400 to-cyan-600 hover:from-cyan-500 hover:to-cyan-700"
-      } text-white rounded-full transition-all duration-300 hover:scale-105 disabled:cursor-not-allowed ${className}`}
+          ? "opacity-50 cursor-not-allowed"
+          : "hover:bg-cyan-400 hover:text-gray-900"
+      } shadow-lg shadow-cyan-500/20 ${className}`}
       data-tooltip-content={tooltipContent}
       data-tooltip-id={tooltipId}
       disabled={disabled}
       exit={{ opacity: 0, scale: 0.8 }}
       initial={{ opacity: 0, scale: 0.8 }}
       transition={{ duration: 0.3 }}
+      whileHover={
+        disabled
+          ? undefined
+          : {
+              scale: 1.1,
+              boxShadow: "0 0 12px rgba(0, 255, 255, 0.4)",
+            }
+      }
+      whileTap={disabled ? undefined : { scale: 0.95 }}
       onClick={onClick}
     >
       {children}
     </motion.button>
   );
 };
+
+export default GenericButton;

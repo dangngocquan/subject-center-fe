@@ -1,9 +1,11 @@
-import React from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { FaBook, FaSearch } from "react-icons/fa";
+import Link from "next/link";
+import React, { useState } from "react";
+import { FaBook } from "react-icons/fa";
 
 import { Major } from "@/types/major";
+import GenericInputSearch from "../Common/GenericInputSearch";
+import GenericPagination from "../Common/GenericPagination";
 
 interface MajorsListProps {
   majors: Major[];
@@ -16,60 +18,67 @@ const MajorsList: React.FC<MajorsListProps> = ({
   searchTerm,
   setSearchTerm,
 }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+
+  const currentMajors = majors.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
-    <div className="flex flex-col gap-4 max-w-7xl mx-auto px-4 sm:px-6">
-      <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent mb-6">
+    <div className="flex flex-col gap-6 max-w-7xl mx-auto px-4 sm:px-6">
+      <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent mb-8 text-center">
         Danh Sách Ngành Học
       </h1>
-      {/* Search Bar */}
-      <motion.div
-        animate={{ opacity: 1, y: 0 }}
-        className="relative max-w-4xl mx-auto mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <div className="absolute inset-y-0 left-0 flex items-center pl-5">
-          <FaSearch className="w-6 h-6 text-gray-400" />
-        </div>
-        <input
-          className="w-full py-4 pl-14 pr-5 rounded-full bg-[#1A2A44] text-white placeholder-gray-400 border border-transparent focus:outline-none focus:ring-4 focus:ring-cyan-500 transition-all duration-300 shadow-lg hover:shadow-xl hover:border-gradient-to-r hover:from-cyan-400 hover:to-blue-500"
+      {/* Thanh tìm kiếm và phân trang */}
+      <div className="flex flex-col sm:flex-row items-center justify-between max-w-4xl mx-auto mb-12 gap-4">
+        <GenericInputSearch
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
           placeholder="Tìm kiếm ngành đào tạo..."
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
         />
-      </motion.div>
-      {majors.length > 0 &&
-        majors.map((major: Major, index: number) => (
+
+        <GenericPagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalItems={majors.length}
+          itemsPerPage={itemsPerPage}
+          maxVisiblePages={5}
+        />
+      </div>
+
+      {/* Danh sách ngành */}
+      {currentMajors.length > 0 &&
+        currentMajors.map((major: Major, index: number) => (
           <motion.div
             key={major.id}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-lg bg-gray-900 border border-gray-700 p-6 hover:bg-gray-800 transition-all duration-300"
+            className="rounded-lg bg-gray-900/80 backdrop-blur-md border border-cyan-500/30 p-6 hover:bg-gray-800/90 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30"
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
             whileHover={{
-              scale: 1.01,
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+              scale: 1.02,
+              boxShadow: "0 8px 24px rgba(0, 255, 255, 0.3)",
             }}
           >
             <Link href={`/major/${major.id}`}>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between h-full gap-4">
-                {/* Left Section: Icon and Major Name */}
                 <div className="flex items-center mb-2 sm:mb-0 flex-grow">
-                  <FaBook className="text-cyan-400 ml-3 mr-8" size={25} />
-                  <h2 className="text-lg font-semibold text-white">
+                  <FaBook
+                    className="text-cyan-400 mr-4 flex-shrink-0"
+                    size={24}
+                  />
+                  <h2 className="text-xl font-semibold text-white bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
                     {major.name}
                   </h2>
                 </div>
-
-                {/* Right Section: Details Button */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 sm:flex-shrink-0">
                   <motion.button
-                    className="py-2 px-4 border border-cyan-400 text-cyan-400 font-medium rounded-md hover:text-cyan-300 hover:border-cyan-300 transition-all duration-300"
+                    className="py-2 px-6 bg-gray-900/80 backdrop-blur-md text-cyan-400 font-medium rounded-md border border-cyan-500/30 hover:bg-cyan-400 hover:text-gray-900 transition-all duration-300 shadow-lg shadow-cyan-500/20"
                     whileHover={{
-                      borderColor: "#00ACC1",
-                      color: "#00ACC1",
-                      boxShadow: "0 0 8px rgba(0, 172, 193, 0.2)",
+                      scale: 1.05,
+                      boxShadow: "0 0 12px rgba(0, 255, 255, 0.4)",
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -80,8 +89,8 @@ const MajorsList: React.FC<MajorsListProps> = ({
             </Link>
           </motion.div>
         ))}
-      {majors.length === 0 && (
-        <p className="text-gray-400 text-center py-10 text-lg">
+      {currentMajors.length === 0 && (
+        <p className="text-cyan-400/50 text-center py-10 text-lg bg-gray-900/80 backdrop-blur-md rounded-lg shadow-lg shadow-cyan-500/20">
           Không có ngành nào để hiển thị.
         </p>
       )}
