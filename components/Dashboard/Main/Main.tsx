@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useEffect } from "react";
 
 import GPAChart from "./GPAChart";
@@ -26,6 +26,8 @@ const Main: React.FC<MainProps> = ({
   plans,
   setPlanDetails,
 }) => {
+  const [activeTab, setActiveTab] = useState("overview"); // Add state for active tab
+
   const slideInVariants = {
     hidden: (direction: "left" | "right") => ({
       opacity: 0,
@@ -79,32 +81,61 @@ const Main: React.FC<MainProps> = ({
       initial="hidden"
       variants={slideInVariants}
     >
-      <div className="flex">
-        <div className="flex-[6]">
-          <SubjectsList
-            items={
-              (planDetails?.credits.items || []).filter(
-                (item) => item.id !== undefined,
-              ) as PlanItem[]
-            }
-            planId={selectedPlan?.id || null}
-            onDataChange={reloadData} // Pass callback to refresh data
-          />
-        </div>
-
-        <div className="flex flex-col flex-[3] ml-2">
-          <GPAChart currentCPA={planDetails?.credits.currentCPA || 0} />
-          <StatsSection
-            totalCredits={planDetails?.credits.totalCredits || 0}
-            totalSubjects={planDetails?.credits.totalSubjects || 0}
-            totalSubjectsCompleted={
-              planDetails?.credits.totalSubjectsCompleted || 0
-            }
-          />
-        </div>
+      {/* Tab Navigation */}
+      <div className="flex space-x-4 mb-4">
+        <button
+          className={`px-4 py-2 rounded ${
+            activeTab === "overview"
+              ? "bg-cyan-500 text-white"
+              : "bg-gray-700 text-gray-300"
+          }`}
+          onClick={() => setActiveTab("overview")}
+        >
+          Overview
+        </button>
+        <button
+          className={`px-4 py-2 rounded ${
+            activeTab === "marks"
+              ? "bg-cyan-500 text-white"
+              : "bg-gray-700 text-gray-300"
+          }`}
+          onClick={() => setActiveTab("marks")}
+        >
+          CPA Marks
+        </button>
       </div>
 
-      <MarksGraph cpa={planDetails?.cpa} />
+      {/* Tab Content */}
+      {activeTab === "overview" && (
+        <div>
+          <div className="flex">
+            <div className="flex-[6]">
+              <SubjectsList
+                items={
+                  (planDetails?.credits.items || []).filter(
+                    (item) => item.id !== undefined
+                  ) as PlanItem[]
+                }
+                planId={selectedPlan?.id || null}
+                onDataChange={reloadData} // Pass callback to refresh data
+              />
+            </div>
+
+            <div className="flex flex-col flex-[3] ml-2">
+              <GPAChart currentCPA={planDetails?.credits.currentCPA || 0} />
+              <StatsSection
+                totalCredits={planDetails?.credits.totalCredits || 0}
+                totalSubjects={planDetails?.credits.totalSubjects || 0}
+                totalSubjectsCompleted={
+                  planDetails?.credits.totalSubjectsCompleted || 0
+                }
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === "marks" && <MarksGraph cpa={planDetails?.cpa} />}
     </motion.div>
   );
 };
