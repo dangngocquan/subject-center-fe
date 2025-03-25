@@ -43,7 +43,7 @@ export const Navbar = () => {
       setIsLoading(true);
       try {
         const response = await new BaseRequest().post(API_ROUTES.AUTH_GOOGLE, {
-          token: tokenResponse,
+          token: tokenResponse.access_token,
         });
         const token = response?.data?.token;
         localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, token); // Save token to localStorage
