@@ -42,7 +42,7 @@ export const Navbar = () => {
     onSuccess: async (tokenResponse) => {
       setIsLoading(true);
       try {
-        const response = await new BaseRequest().post(Api_ROUTES.AUTH_GOOGLE, {
+        const response = await new BaseRequest().post(API_ROUTES.AUTH_GOOGLE, {
           token: tokenResponse.access_token,
         });
         const token = response?.data?.token;
