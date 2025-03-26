@@ -72,7 +72,7 @@ const Main: React.FC<MainProps> = ({
   return (
     <motion.div
       animate="visible"
-      className="grid grid-cols-1 gap-4"
+      className="grid grid-cols-1 gap-4 p-2 sm:p-4"
       custom="left"
       initial="hidden"
       variants={slideInVariants}
@@ -102,7 +102,6 @@ const Main: React.FC<MainProps> = ({
 
       {activeTab === "overview" && (
         <div className="flex flex-col gap-4">
-          {/* Sử dụng Flexbox với items-stretch để đồng bộ chiều cao */}
           <div className="flex flex-col sm:flex-row gap-4 items-stretch">
             <div className="w-full sm:w-1/2 min-h-[300px]">
               <GPAChart currentCPA={planDetails?.credits.currentCPA || 0} />

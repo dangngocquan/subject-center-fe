@@ -13,7 +13,7 @@ import NextLink from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Tooltip } from "@nextui-org/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import { useGoogleLogin } from "@react-oauth/google"; // Import for Google login
+import { useGoogleLogin } from "@react-oauth/google";
 
 import GenericModal from "./Common/GenericModal";
 import { GenericButton } from "./Common/GenericButton";
@@ -27,31 +27,29 @@ import {
 } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
-import { API_ROUTES } from "@/service/api-route.service"; // Import API routes
-import BaseRequest from "@/service/base-request.service"; // Import BaseRequest
+import { API_ROUTES } from "@/service/api-route.service";
+import BaseRequest from "@/service/base-request.service";
 
 export const Navbar = () => {
   const [authToken, setAuthToken] = useState<string | undefined>(undefined);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // Add loading state for modal
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Define authGoogle for Navbar's login functionality
   const authGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       setIsLoading(true);
       try {
-        const response = await new BaseRequest().post(API_ROUTES.AUTH_GOOGLE, {
+        const response = await new BaseRequest().post(Api_ROUTES.AUTH_GOOGLE, {
           token: tokenResponse.access_token,
         });
         const token = response?.data?.token;
-        localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, token); // Save token to localStorage
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulated delay
+        localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, token);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         setIsLoading(false);
         setIsLoginModalOpen(false);
-
-        // Dispatch custom event to notify successful sign-in
         window.dispatchEvent(new Event("authChange"));
       } catch (error) {
         console.error("Sign in error:", error);
@@ -64,26 +62,44 @@ export const Navbar = () => {
     },
   });
 
-  // Function to update authToken from localStorage
   const updateAuthToken = () => {
     const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
     setAuthToken(token || undefined);
   };
 
-  // Check token on mount and listen to authChange event
   useEffect(() => {
-    updateAuthToken(); // Initial check
-    window.addEventListener("authChange", updateAuthToken); // Listen to event
+    updateAuthToken();
+    window.addEventListener("authChange", updateAuthToken);
     return () => {
-      window.removeEventListener("authChange", updateAuthToken); // Cleanup listener
+      window.removeEventListener("authChange", updateAuthToken);
     };
   }, []);
+
+  // Ngăn cuộn trên body khi menu mở
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "100vh";
+      setIsMenuVisible(true);
+    } else {
+      const timer = setTimeout(() => {
+        document.body.style.overflow = "auto";
+        document.body.style.height = "auto";
+        setIsMenuVisible(false);
+      }, 400); // Tăng thời gian để khớp với duration mới
+      return () => clearTimeout(timer);
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+      document.body.style.height = "auto";
+    };
+  }, [isMenuOpen]);
 
   const handleLogout = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);
     setAuthToken(undefined);
     setIsExpanded(false);
-    window.dispatchEvent(new Event("authChange")); // Dispatch event on logout
+    window.dispatchEvent(new Event("authChange"));
   };
 
   const handlePlansClick = (e: React.MouseEvent) => {
@@ -105,6 +121,13 @@ export const Navbar = () => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       setIsExpanded(false);
+    }
+  };
+
+  const handleMenuOverlayKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setIsMenuOpen(false);
     }
   };
 
@@ -180,9 +203,46 @@ export const Navbar = () => {
     }),
   };
 
+  // Animation cho các mục menu
+  const menuItemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.4,
+        ease: [0.4, 0, 0.2, 1], // Custom easing cho cảm giác mượt mà
+        delay: i * 0.1,
+      },
+    }),
+    exit: (i: number) => ({
+      opacity: 0,
+      x: -20,
+      transition: {
+        duration: 0.3,
+        ease: [0.4, 0, 0.2, 1],
+        delay: (siteConfig.navItems.length - 1 - i) * 0.05,
+      },
+    }),
+  };
+
   return (
     <>
-      {/* Overlay when expanded */}
+      {/* Overlay khi menu mở trên mobile */}
+      {isMenuVisible && (
+        <div
+          aria-label="Close menu"
+          className={`fixed inset-0 bg-black/70 z-40 lg:hidden cursor-pointer transition-opacity duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            isMenuOpen ? "opacity-100" : "opacity-0"
+          }`}
+          role="button"
+          tabIndex={0}
+          onClick={() => setIsMenuOpen(false)}
+          onKeyDown={handleMenuOverlayKeyDown}
+        />
+      )}
+
+      {/* Overlay khi expanded (cho profile menu) */}
       {isExpanded && (
         <div
           aria-label="Close expanded menu"
@@ -235,7 +295,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium",
+                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
                     )}
                     href={item.href}
                     onClick={
@@ -248,26 +308,53 @@ export const Navbar = () => {
               ))}
             </ul>
 
-            {isMenuOpen && (
-              <div className="lg:hidden absolute top-14 left-0 w-full bg-gray-900/90 backdrop-blur-md z-40 flex flex-col items-start p-4">
-                {siteConfig.navItems.map((item) => (
-                  <NavbarItem key={item.href} className="w-full py-2">
+            {isMenuVisible && (
+              <div
+                className={`lg:hidden fixed top-0 left-0 w-4/5 max-w-xs h-screen bg-gray-900/90 backdrop-blur-md z-50 transition-transform duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform ${
+                  isMenuOpen ? "translate-x-0" : "-translate-x-full"
+                }`}
+              >
+                <div className="flex items-center p-4 border-b border-gray-800/50">
+                  <NavbarBrand as="li" className="gap-3 max-w-fit">
                     <NextLink
-                      className={clsx(
-                        linkStyles({ color: "foreground" }),
-                        "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block",
-                      )}
-                      href={item.href}
-                      onClick={
-                        item.label === "Plans"
-                          ? handlePlansClick
-                          : () => setIsMenuOpen(false)
-                      }
+                      className="flex justify-start items-center gap-1"
+                      href="/"
+                      onClick={() => setIsMenuOpen(false)}
                     >
-                      {item.label}
+                      <Logo />
+                      <p className="font-bold text-xl bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+                        S-CENTER
+                      </p>
                     </NextLink>
-                  </NavbarItem>
-                ))}
+                  </NavbarBrand>
+                </div>
+                <ul className="flex flex-col p-4">
+                  {siteConfig.navItems.map((item, index) => (
+                    <motion.li
+                      key={item.href}
+                      custom={index}
+                      initial="hidden"
+                      animate={isMenuOpen ? "visible" : "exit"}
+                      variants={menuItemVariants}
+                      className="w-full py-2"
+                    >
+                      <NextLink
+                        className={clsx(
+                          linkStyles({ color: "foreground" }),
+                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block"
+                        )}
+                        href={item.href}
+                        onClick={
+                          item.label === "Plans"
+                            ? handlePlansClick
+                            : () => setIsMenuOpen(false)
+                        }
+                      >
+                        {item.label}
+                      </NextLink>
+                    </motion.li>
+                  ))}
+                </ul>
               </div>
             )}
           </NavbarContent>
@@ -424,7 +511,7 @@ export const Navbar = () => {
           <GenericButton
             className="bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-600 hover:to-cyan-800 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-cyan-500/50 hover:shadow-cyan-600/60 transition-all duration-300"
             disabled={isLoading}
-            onClick={() => authGoogle()} // Use the local authGoogle function
+            onClick={() => authGoogle()}
           >
             {isLoading ? "Signing In..." : "Sign In with Google"}
           </GenericButton>

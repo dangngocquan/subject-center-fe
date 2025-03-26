@@ -25,7 +25,7 @@ const PlanHeader: React.FC<PlanHeaderProps> = ({
   isNextDisabled,
 }) => {
   return (
-    <nav className="bg-gray-900/80 backdrop-blur-md p-2 sm:p-3 md:p-4 flex justify-between items-center shadow-lg shadow-cyan-500/20 w-full">
+    <nav className="bg-gray-900/80 backdrop-blur-md p-2 sm:p-3 md:p-4 flex justify-between items-center shadow-lg shadow-cyan-500/20 w-full flex-wrap gap-2">
       <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4 min-w-0">
         {/* Nút toggle sidebar chỉ hiển thị trên màn hình nhỏ */}
         <button

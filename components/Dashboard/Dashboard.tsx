@@ -13,6 +13,7 @@ import { apiUpsertPlan, deletePlan } from "@/service/plan.api";
 
 const Dashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Trạng thái để kiểm soát animation
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [localPlans, setLocalPlans] = useState<Plan[]>([]);
@@ -39,6 +40,28 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     if (plans) setLocalPlans(plans);
   }, [plans]);
+
+  // Ngăn cuộn trên body khi sidebar mở
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "100vh";
+      setIsSidebarVisible(true);
+    } else {
+      // Delay để animation exit hoàn thành trước khi khôi phục cuộn
+      const timer = setTimeout(() => {
+        document.body.style.overflow = "auto";
+        document.body.style.height = "auto";
+        setIsSidebarVisible(false);
+      }, 300); // Thời gian khớp với duration của animation
+      return () => clearTimeout(timer);
+    }
+    // Cleanup khi component unmount
+    return () => {
+      document.body.style.overflow = "auto";
+      document.body.style.height = "auto";
+    };
+  }, [isSidebarOpen]);
 
   const mainRef = useRef(null);
   useInView(mainRef, { once: true, margin: "-100px" });
@@ -184,8 +207,17 @@ const Dashboard: React.FC = () => {
     setModal({ isOpen: false, message: "", isSuccess: false });
   };
 
+  const handleOverlayKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setIsSidebarOpen(false);
+    }
+  };
+
   return (
-    <div className="bg-black text-white min-h-screen flex flex-col max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div
+      className={`bg-black text-white min-h-screen flex flex-col max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative ${isSidebarOpen ? "overflow-hidden" : ""}`}
+    >
       <PlanHeader
         isNextDisabled={
           !selectedPlan ||
@@ -202,10 +234,24 @@ const Dashboard: React.FC = () => {
         onSelectOverview={handleSelectOverview}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
+      {/* Overlay với animation */}
+      {isSidebarVisible && (
+        <div
+          className={`fixed inset-0 bg-black/70 z-40 md:hidden cursor-pointer transition-opacity duration-300 ease-in-out ${
+            isSidebarOpen ? "opacity-100" : "opacity-0"
+          }`}
+          role="button"
+          tabIndex={0}
+          onClick={() => setIsSidebarOpen(false)}
+          onKeyDown={handleOverlayKeyDown}
+        />
+      )}
       <div className="flex flex-col md:flex-row mt-6 gap-6">
         <div
-          className={`w-full md:w-64 md:flex-shrink-0 ${
-            isSidebarOpen ? "block" : "hidden md:block"
+          className={`w-full md:w-64 md:flex-shrink-0 transition-transform duration-300 ease-in-out ${
+            isSidebarVisible
+              ? `${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} fixed top-0 left-0 w-4/5 max-w-xs h-screen z-50 md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block`
+              : "fixed top-0 left-0 -translate-x-full md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block"
           }`}
         >
           <Sidebar
@@ -217,10 +263,13 @@ const Dashboard: React.FC = () => {
             onOpenDeleteModal={handleOpenDeleteModal}
             onSelectPlan={handleSelectPlan}
             onUpdatePlanName={handleUpdatePlanName}
-            onAddPlan={handleAddPlan} // Truyền hàm handleAddPlan
+            onAddPlan={handleAddPlan}
           />
         </div>
-        <div ref={mainRef} className="flex-1">
+        <div
+          ref={mainRef}
+          className={`flex-1 transition-opacity duration-300 ${isSidebarOpen ? "pointer-events-none opacity-50 md:pointer-events-auto md:opacity-100" : "opacity-100"}`}
+        >
           {loading ? (
             <p className="text-gray-400">Loading plans...</p>
           ) : error ? (
