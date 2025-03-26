@@ -1,28 +1,31 @@
+import React, { useEffect, useMemo, useState } from "react";
 import {
-  ArrowDownIcon,
   ArrowDownTrayIcon,
-  ArrowsUpDownIcon,
-  ArrowUpIcon,
   ArrowUpTrayIcon,
   MagnifyingGlassIcon,
   PencilIcon,
   PlusIcon,
   TrashIcon,
+  ArrowsUpDownIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
-import React, { useEffect, useMemo, useState } from "react";
 import { Tooltip } from "react-tooltip";
-import { FaTimes } from "react-icons/fa";
+
 import EditSubjectModal from "./EditSubjectModal";
-import GenericModal from "@/components/Common/GenericModal";
-import ResultModal from "@/components/Dashboard/Main/ResultModal";
+import ConfirmDeleteModal from "./modals/ConfirmDeleteModal";
+import ImportJsonModal from "./modals/ImportJsonModal";
+
 import LoadingModal from "@/components/LoadingModal";
+import ResultModal from "@/components/Dashboard/Main/ResultModal";
 import {
   updateGradePlanItemByJson,
   updatePlanItem,
   deletePlanItem,
 } from "@/service/plan.api";
 import { PlanItem } from "@/types/plan";
+import ImportResultModal from "./modals/ImportResultModal";
 
 interface SubjectsListProps {
   items: PlanItem[];
@@ -45,220 +48,6 @@ interface ResponseImportUpdateGradePlan {
     message?: string;
   }[];
 }
-
-const ConfirmDeleteModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  subjectName: string;
-}> = ({ isOpen, onClose, onConfirm, subjectName }) => {
-  return (
-    <GenericModal isOpen={isOpen} onClose={onClose}>
-      <div className="text-center">
-        <h3 className="text-lg font-semibold text-white mb-4">
-          Confirm Deletion
-        </h3>
-        <p className="text-gray-300 mb-6">
-          Are you sure you want to delete the subject{" "}
-          <span className="font-semibold text-cyan-400">{subjectName}</span>?
-        </p>
-        <div className="flex justify-center space-x-4">
-          <button
-            className="bg-gray-600 text-white rounded-full px-4 py-2 hover:bg-gray-500 transition-all duration-300"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-red-500 text-white rounded-full px-4 py-2 hover:bg-red-600 transition-all duration-300"
-            onClick={onConfirm}
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </GenericModal>
-  );
-};
-
-const ImportJsonModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (file: File) => void;
-}> = ({ isOpen, onClose, onSubmit }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file && file.type === "application/json") {
-      setSelectedFile(file);
-    } else {
-      alert("Please select a valid JSON file.");
-    }
-  };
-
-  const handleSubmit = () => {
-    if (selectedFile) {
-      onSubmit(selectedFile);
-    } else {
-      alert("Please select a JSON file before submitting.");
-    }
-  };
-
-  return (
-    <GenericModal isOpen={isOpen} onClose={onClose}>
-      <div className="text-center">
-        <h3 className="text-lg font-semibold text-white mb-4">
-          Import JSON to Update Grades
-        </h3>
-        <p className="text-gray-300 mb-4">
-          The JSON file should follow this format:
-        </p>
-        <pre className="bg-gray-800 text-gray-300 p-4 rounded-lg mb-6 text-left whitespace-pre-wrap overflow-x-auto">
-          {`{
-  "subjects": [
-    {
-      "name": "Advanced Math",
-      "code": "MATH101",
-      "credit": 3,
-      "gradeLatin": "A"
-    },
-    {
-      "name": "General Physics",
-      "code": "PHYS102",
-      "credit": 4,
-      "gradeLatin": "B+"
-    }
-  ]
-}`}
-        </pre>
-        <div className="mb-6">
-          <label className="inline-block bg-gray-700 text-gray-300 rounded-full px-4 py-2 cursor-pointer hover:bg-gray-600 transition-all duration-300 border border-gray-500">
-            Import File from Device
-            <input
-              accept="application/json"
-              className="hidden"
-              type="file"
-              onChange={handleFileChange}
-            />
-          </label>
-          {selectedFile && (
-            <p className="text-gray-400 mt-2">Selected: {selectedFile.name}</p>
-          )}
-        </div>
-        <div className="flex justify-center space-x-4">
-          <button
-            className="bg-gray-600 text-white rounded-full px-4 py-2 hover:bg-gray-700 transition-all duration-300"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-blue-600 text-white rounded-full px-4 py-2 hover:bg-blue-700 transition-all duration-300"
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
-        </div>
-      </div>
-    </GenericModal>
-  );
-};
-
-const ImportResultModal: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  result: ResponseImportUpdateGradePlan["result"];
-}> = ({ isOpen, onClose, result }) => {
-  if (!isOpen) return null;
-
-  const updatedCount =
-    result?.filter((item) => item.status === "UPDATED").length ?? 0;
-  const newCount = result?.filter((item) => item.status === "NEW").length ?? 0;
-  const failedCount =
-    result?.filter((item) => item.status === "FAILED").length ?? 0;
-
-  return (
-    <GenericModal isOpen={isOpen} onClose={onClose}>
-      <button
-        className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition-colors duration-200"
-        onClick={onClose}
-      >
-        <FaTimes size={16} />
-      </button>
-      <h3 className="text-xl font-semibold text-white mb-2">Import Results</h3>
-      <div className="text-sm text-gray-300 mb-4">
-        Updated Subjects: <span className="text-green-400">{updatedCount}</span>{" "}
-        | New Subjects: <span className="text-yellow-400">{newCount}</span> |
-        Failed Subjects: <span className="text-red-400">{failedCount}</span>
-      </div>
-      {result && result.length > 0 ? (
-        <div className="text-sm max-h-60 overflow-y-auto overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-700">
-            <thead style={{ backgroundColor: "#2A3A54" }}>
-              <tr>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  Name
-                </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  Code
-                </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  Grade
-                </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-700">
-              {result.map((item, index) => (
-                <tr
-                  key={index}
-                  className={`${
-                    item.status === "UPDATED"
-                      ? "bg-green-500/20 text-green-400"
-                      : item.status === "NEW"
-                        ? "bg-yellow-500/20 text-yellow-400"
-                        : "bg-red-500/20 text-red-400"
-                  } hover:bg-[#2A3A54]`}
-                >
-                  <td className="px-4 py-2 whitespace-nowrap text-white">
-                    {item.name || "-"}
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap text-white">
-                    {item.code || "-"}
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap text-white">
-                    {item.gradeLatin || "-"}
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap text-white">
-                    {item.status || "-"}
-                    {item.message && (
-                      <span className="text-gray-500"> ({item.message})</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <p className="text-gray-300 text-sm">No results to display.</p>
-      )}
-      <div className="flex justify-end mt-4">
-        <motion.button
-          className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onClose}
-        >
-          Close
-        </motion.button>
-      </div>
-    </GenericModal>
-  );
-};
 
 const SubjectsList: React.FC<SubjectsListProps> = ({
   items,

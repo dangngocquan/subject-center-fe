@@ -12,7 +12,7 @@ import { Plan, PlanDetails } from "@/types/plan";
 import { apiUpsertPlan, deletePlan } from "@/service/plan.api";
 
 const Dashboard: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar ẩn mặc định trên mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [localPlans, setLocalPlans] = useState<Plan[]>([]);
@@ -51,13 +51,13 @@ const Dashboard: React.FC = () => {
       const plan = localPlans.find((p) => p.id === planId) || null;
       setSelectedPlan(plan);
     }
-    setIsSidebarOpen(false); // Đóng Sidebar khi chọn plan trên mobile
+    setIsSidebarOpen(false);
   };
 
   const handleSelectOverview = () => {
     setSelectedPlan(null);
     setPlanDetails(null);
-    setIsSidebarOpen(false); // Đóng Sidebar trên mobile
+    setIsSidebarOpen(false);
   };
 
   const handlePrevPlan = () => {
@@ -176,6 +176,10 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const handleAddPlan = (plan: Plan) => {
+    setLocalPlans((prevPlans) => [...prevPlans, plan]);
+  };
+
   const closeModal = () => {
     setModal({ isOpen: false, message: "", isSuccess: false });
   };
@@ -199,7 +203,6 @@ const Dashboard: React.FC = () => {
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
       <div className="flex flex-col md:flex-row mt-6 gap-6">
-        {/* Sidebar: Hiển thị luôn trên desktop, chỉ hiển thị khi isSidebarOpen trên mobile */}
         <div
           className={`w-full md:w-64 md:flex-shrink-0 ${
             isSidebarOpen ? "block" : "hidden md:block"
@@ -214,6 +217,7 @@ const Dashboard: React.FC = () => {
             onOpenDeleteModal={handleOpenDeleteModal}
             onSelectPlan={handleSelectPlan}
             onUpdatePlanName={handleUpdatePlanName}
+            onAddPlan={handleAddPlan} // Truyền hàm handleAddPlan
           />
         </div>
         <div ref={mainRef} className="flex-1">

@@ -3,6 +3,7 @@ export const API_ROUTES = {
   PATCH_PLAN: (id: number) => `/plans/${id}`,
   POST_PLAN: "/plans",
   GET_PLANS: "/plans",
+  POST_PLAN_BY_JSON: "/plans/import/json",
   GET_PLAN_DETAILS: (id: number) => `/plans/${id}/details`,
   DELETE_PLAN: (id: number) => `/plans/${id}`,
   DELETE_PLAN_ITEM: (id: number, itemId: number) =>

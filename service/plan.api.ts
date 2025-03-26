@@ -6,10 +6,11 @@ import {
   PlanItem,
   PlanResultUpsert,
   ResponseImportUpdateGradePlan,
+  ResponsePlanUpsert,
 } from "@/types/plan";
 
 export const apiUpsertPlan = async (
-  plan: Plan,
+  plan: Plan
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -49,7 +50,7 @@ export const apiUpsertPlan = async (
 };
 
 export const createNewPlan = async (
-  plan: Plan,
+  plan: Plan
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -89,7 +90,7 @@ export const createNewPlan = async (
 };
 
 export const deletePlan = async (
-  planId: number,
+  planId: number
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -116,7 +117,7 @@ export const deletePlan = async (
 
 export const updatePlanItem = async (
   planId: number,
-  item: PlanItem,
+  item: PlanItem
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -156,7 +157,7 @@ export const updatePlanItem = async (
 
 export const updateGradePlanItemByJson = async (
   planId: number,
-  file: File,
+  file: File
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -199,7 +200,7 @@ export const updateGradePlanItemByJson = async (
 
 export const deletePlanItem = async (
   planId: number,
-  itemId: number,
+  itemId: number
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -223,5 +224,47 @@ export const deletePlanItem = async (
     result.message = res.data.message;
   });
 
+  return result;
+};
+
+export const createPlanByImportJSON = async (
+  file: File
+): Promise<{
+  isBadRequest: boolean;
+  message: string;
+  status: number;
+  data?: ResponsePlanUpsert;
+}> => {
+  const result: {
+    isBadRequest: boolean;
+    message: string;
+    status: number;
+    data?: ResponsePlanUpsert;
+  } = {
+    isBadRequest: false,
+    message: "",
+    status: 200,
+    data: undefined,
+  };
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const req = new BaseRequest();
+  req.setAuth();
+  req.setHeader("Content-Type", "multipart/form-data");
+  await req
+    .post(API_ROUTES.POST_PLAN_BY_JSON, formData)
+    .then((res) => {
+      result.status = res.status;
+      result.isBadRequest = res.status > 300;
+      result.message = res.data.message;
+      result.data = res.data; // Assign the response data to the result
+    })
+    .catch((error) => {
+      result.isBadRequest = true;
+      result.message = error.message;
+    });
+  console.log(result);
   return result;
 };

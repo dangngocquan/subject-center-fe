@@ -83,3 +83,22 @@ export interface ResponseImportUpdateGradePlan {
     message?: string;
   }[];
 }
+
+export interface ResponsePlanBulkUpsertResult {
+  name: string;
+  code: string;
+  gradeLatin: string;
+  status: "UPDATED" | "FAILED" | "NEW";
+  message: string;
+}
+
+export interface ResponsePlanUpsert {
+  id: number;
+  name: string;
+  items: PlanItem[];
+  accountId: number;
+  createdAt: string;
+  updatedAt: string;
+  result?: ResponsePlanBulkUpsertResult[];
+  plan: Plan;
+}

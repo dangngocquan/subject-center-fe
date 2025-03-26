@@ -6,7 +6,14 @@ import {
 import React, { useState } from "react";
 import PlanCard from "./PlanCard";
 import EditPlanModal from "./SidebarEditPlanModal";
+import AddPlanMethodModal from "./AddPlanMethodModal";
 import { Plan } from "@/types/plan";
+import { useRouter } from "next/navigation";
+import CustomPlanModal from "./CustomPlanModal";
+import SelectSubjectsGuideModal from "./SelectSubjectsGuideModal";
+import ImportJsonModal from "./ImportJsonModal";
+import ImportResultModal from "./ImportResultModal";
+import { createPlanByImportJSON } from "@/service/plan.api";
 
 interface SidebarProps {
   searchQuery: string;
@@ -17,6 +24,7 @@ interface SidebarProps {
   onDeletePlan: (planId: string) => void;
   onUpdatePlanName: (planId: string, newName: string) => void;
   onOpenDeleteModal: (planId: string) => void;
+  onAddPlan: (plan: Plan) => void;
 }
 
 const ShowMoreToggle: React.FC<{ showAll: boolean; onToggle: () => void }> = ({
@@ -55,10 +63,18 @@ const Sidebar: React.FC<SidebarProps> = ({
   onSelectPlan,
   onUpdatePlanName,
   onOpenDeleteModal,
+  onAddPlan,
 }) => {
   const [showAll, setShowAll] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
+  const [isAddMethodModalOpen, setIsAddMethodModalOpen] = useState(false);
+  const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
+  const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [importResult, setImportResult] = useState<any>(null);
+  const router = useRouter();
   const MAX_INITIAL_PLANS = 10;
 
   const handleEditClick = (plan: Plan) => {
@@ -75,6 +91,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     if (editingPlan) {
       onUpdatePlanName(editingPlan.id ?? "", newName);
     }
+    handleCloseModal();
   };
 
   const handleDeleteClick = (planId: string) => {
@@ -82,7 +99,62 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const handleAddPlan = () => {
-    console.log("Add Plan button clicked");
+    setIsAddMethodModalOpen(true);
+  };
+
+  const handleMethodSelect = (method: string) => {
+    setIsAddMethodModalOpen(false);
+    if (method === "custom") {
+      setIsCustomModalOpen(true);
+    } else if (method === "select-subjects") {
+      setIsGuideModalOpen(true);
+    } else if (method === "import-json") {
+      setIsImportModalOpen(true);
+    }
+  };
+
+  const handleImportJsonSubmit = async (file: File) => {
+    try {
+      const response = await createPlanByImportJSON(file);
+      console.log(1, { response });
+      if (!response.isBadRequest && response.data) {
+        const resultData = {
+          plan: {
+            id: response.data.plan.id?.toString(),
+            name: response.data.plan.name,
+            // accountId: response.data.accountId.toString(),
+            items: response.data.plan.items,
+          },
+          result: response.data.result || [],
+        };
+        setImportResult(resultData);
+        setIsImportModalOpen(false);
+        setIsResultModalOpen(true);
+
+        onAddPlan({
+          id: response.data.plan.id?.toString(),
+          name: response.data.plan.name,
+          items: response.data.plan.items,
+        });
+      } else {
+        setImportResult({
+          plan: { name: "Unknown" },
+          result: [{ status: "FAILED", message: response.message }],
+        });
+        setIsImportModalOpen(false);
+        setIsResultModalOpen(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setImportResult({
+        plan: { name: "Unknown" },
+        result: [
+          { status: "FAILED", message: "An error occurred while importing." },
+        ],
+      });
+      setIsImportModalOpen(false);
+      setIsResultModalOpen(true);
+    }
   };
 
   const filteredPlans = plans.filter((plan) =>
@@ -151,6 +223,34 @@ const Sidebar: React.FC<SidebarProps> = ({
         isOpen={isEditModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleSubmitEdit}
+      />
+      <AddPlanMethodModal
+        isOpen={isAddMethodModalOpen}
+        onClose={() => setIsAddMethodModalOpen(false)}
+        onMethodSelect={handleMethodSelect}
+      />
+      <CustomPlanModal
+        isOpen={isCustomModalOpen}
+        onClose={() => setIsCustomModalOpen(false)}
+        onSubmit={onAddPlan}
+      />
+      <SelectSubjectsGuideModal
+        isOpen={isGuideModalOpen}
+        onClose={() => setIsGuideModalOpen(false)}
+        onNavigate={() => {
+          setIsGuideModalOpen(false);
+          router.push("/major");
+        }}
+      />
+      <ImportJsonModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onSubmit={handleImportJsonSubmit}
+      />
+      <ImportResultModal
+        isOpen={isResultModalOpen}
+        onClose={() => setIsResultModalOpen(false)}
+        result={importResult}
       />
     </div>
   );

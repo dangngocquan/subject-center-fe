@@ -46,7 +46,7 @@ const GenericModal: React.FC<GenericModalProps> = ({
         >
           <motion.div
             animate="visible"
-            className="bg-[#1A2A44] p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-[90%] sm:max-w-md relative border border-[#2A3A54] backdrop-blur-sm"
+            className="bg-[#1A2A44] p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-[90%] sm:max-w-4xl relative border border-[#2A3A54] backdrop-blur-sm"
             exit="exit"
             initial="hidden"
             style={{ background: "rgba(26, 42, 68, 0.95)" }}
