@@ -164,7 +164,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   );
 
   return (
-    <div className="w-full h-full md:w-64 bg-gray-900/80 shadow-lg rounded-2xl md:rounded-2xl flex flex-col overflow-hidden">
+    <div className="w-full h-full md:w-64 bg-gray-900/80 shadow-lg rounded-2xl md:rounded-2xl flex flex-col">
       <div className="p-4 md:p-4 border-b border-gray-800/50">
         <div className="relative mb-4">
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -185,8 +185,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           Add Plan
         </button>
       </div>
-      <div className="flex-1 overflow-y-auto">
-        <ul className="space-y-2 px-4 py-4 mb-4 md:mb-0">
+      <div className="flex-1 overflow-y-auto flex flex-col">
+        <ul className="space-y-2 px-4 py-4 flex-1">
           {filteredPlans
             .slice(0, showAll ? undefined : MAX_INITIAL_PLANS)
             .map((plan) => (
@@ -213,14 +213,14 @@ const Sidebar: React.FC<SidebarProps> = ({
               </li>
             ))}
         </ul>
+        {filteredPlans.length > MAX_INITIAL_PLANS && (
+          <ShowMoreToggle
+            showAll={showAll}
+            onToggle={() => setShowAll(!showAll)}
+            totalPlans={filteredPlans.length}
+          />
+        )}
       </div>
-      {filteredPlans.length > MAX_INITIAL_PLANS && (
-        <ShowMoreToggle
-          showAll={showAll}
-          onToggle={() => setShowAll(!showAll)}
-          totalPlans={filteredPlans.length}
-        />
-      )}
       <EditPlanModal
         initialName={editingPlan?.name ?? ""}
         isOpen={isEditModalOpen}

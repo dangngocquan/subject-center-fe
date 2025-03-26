@@ -10,9 +10,10 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { Credits } from "@/types/plan";
 
 interface PlansOverviewProps {
-  plans: { id: string; name: string; createdAt: string }[];
+  plans: { id: string; name: string; createdAt: string; summary?: Credits }[];
   selectedPlan: { id: string; name: string } | null;
 }
 

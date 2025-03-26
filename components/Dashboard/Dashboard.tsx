@@ -13,7 +13,7 @@ import { apiUpsertPlan, deletePlan } from "@/service/plan.api";
 
 const Dashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Trạng thái để kiểm soát animation
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [localPlans, setLocalPlans] = useState<Plan[]>([]);
@@ -48,15 +48,13 @@ const Dashboard: React.FC = () => {
       document.body.style.height = "100vh";
       setIsSidebarVisible(true);
     } else {
-      // Delay để animation exit hoàn thành trước khi khôi phục cuộn
       const timer = setTimeout(() => {
         document.body.style.overflow = "auto";
         document.body.style.height = "auto";
         setIsSidebarVisible(false);
-      }, 300); // Thời gian khớp với duration của animation
+      }, 300);
       return () => clearTimeout(timer);
     }
-    // Cleanup khi component unmount
     return () => {
       document.body.style.overflow = "auto";
       document.body.style.height = "auto";
@@ -234,7 +232,6 @@ const Dashboard: React.FC = () => {
         onSelectOverview={handleSelectOverview}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
       />
-      {/* Overlay với animation */}
       {isSidebarVisible && (
         <div
           className={`fixed inset-0 bg-black/70 z-40 md:hidden cursor-pointer transition-opacity duration-300 ease-in-out ${
@@ -250,7 +247,7 @@ const Dashboard: React.FC = () => {
         <div
           className={`w-full md:w-64 md:flex-shrink-0 transition-transform duration-300 ease-in-out ${
             isSidebarVisible
-              ? `${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} fixed top-0 left-0 w-4/5 max-w-xs h-screen z-50 md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block`
+              ? `${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} fixed top-0 left-0 w-4/5 max-w-xs h-[100dvh] z-50 md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block`
               : "fixed top-0 left-0 -translate-x-full md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block"
           }`}
         >
