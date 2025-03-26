@@ -15,6 +15,10 @@ interface MainProps {
   planDetails: PlanDetails | null;
   plans: Plan[];
   setPlanDetails: (details: PlanDetails | null) => void;
+  onSelectPlan: (planId: string | null) => void;
+  onUpdatePlanName: (planId: string, newName: string) => void;
+  onOpenDeleteModal: (planId: string) => void;
+  onAddPlan: (plan: Plan) => void;
 }
 
 const Main: React.FC<MainProps> = ({
@@ -22,6 +26,10 @@ const Main: React.FC<MainProps> = ({
   planDetails,
   plans,
   setPlanDetails,
+  onSelectPlan,
+  onUpdatePlanName,
+  onOpenDeleteModal,
+  onAddPlan,
 }) => {
   const [activeTab, setActiveTab] = useState("overview");
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -57,14 +65,11 @@ const Main: React.FC<MainProps> = ({
   if (!selectedPlan) {
     return (
       <PlansOverview
-        plans={
-          plans.filter((plan) => plan.id !== undefined) as {
-            id: string;
-            name: string;
-            createdAt: string;
-          }[]
-        }
-        selectedPlan={selectedPlan}
+        plans={plans.filter((plan) => plan.id !== undefined)}
+        onSelectPlan={onSelectPlan}
+        onUpdatePlanName={onUpdatePlanName}
+        onOpenDeleteModal={onOpenDeleteModal}
+        onAddPlan={onAddPlan}
       />
     );
   }

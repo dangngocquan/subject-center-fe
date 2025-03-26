@@ -2,7 +2,6 @@ import { useInView } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 import LoadingModal from "../LoadingModal";
-import Main from "./Main/Main";
 import PlanHeader from "./Header/Header";
 import Sidebar from "./Sidebar/Sidebar";
 import NotificationModal from "./Sidebar/SidebarNotificationModal";
@@ -10,6 +9,7 @@ import ConfirmDeleteModal from "./Sidebar/SidebarConfirmDeleteModal";
 import { usePlans } from "@/hooks/usePlans";
 import { Plan, PlanDetails } from "@/types/plan";
 import { apiUpsertPlan, deletePlan } from "@/service/plan.api";
+import Main from "./Main/Main";
 
 const Dashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -244,25 +244,28 @@ const Dashboard: React.FC = () => {
         />
       )}
       <div className="flex flex-col md:flex-row mt-6 gap-6">
-        <div
-          className={`w-full md:w-64 md:flex-shrink-0 transition-transform duration-300 ease-in-out ${
-            isSidebarVisible
-              ? `${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} fixed top-0 left-0 w-4/5 max-w-xs h-[100dvh] z-50 md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block`
-              : "fixed top-0 left-0 -translate-x-full md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block"
-          }`}
-        >
-          <Sidebar
-            plans={localPlans}
-            searchQuery={searchQuery}
-            selectedPlanId={selectedPlan?.id}
-            setSearchQuery={setSearchQuery}
-            onDeletePlan={handleConfirmDelete}
-            onOpenDeleteModal={handleOpenDeleteModal}
-            onSelectPlan={handleSelectPlan}
-            onUpdatePlanName={handleUpdatePlanName}
-            onAddPlan={handleAddPlan}
-          />
-        </div>
+        {/* Ẩn sidebar khi chưa chọn plan */}
+        {selectedPlan && (
+          <div
+            className={`w-full md:w-64 md:flex-shrink-0 transition-transform duration-300 ease-in-out ${
+              isSidebarVisible
+                ? `${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} fixed top-0 left-0 w-4/5 max-w-xs h-[100dvh] z-50 md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block`
+                : "fixed top-0 left-0 -translate-x-full md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block"
+            }`}
+          >
+            <Sidebar
+              plans={localPlans}
+              searchQuery={searchQuery}
+              selectedPlanId={selectedPlan?.id}
+              setSearchQuery={setSearchQuery}
+              onDeletePlan={handleConfirmDelete}
+              onOpenDeleteModal={handleOpenDeleteModal}
+              onSelectPlan={handleSelectPlan}
+              onUpdatePlanName={handleUpdatePlanName}
+              onAddPlan={handleAddPlan}
+            />
+          </div>
+        )}
         <div
           ref={mainRef}
           className={`flex-1 transition-opacity duration-300 ${isSidebarOpen ? "pointer-events-none opacity-50 md:pointer-events-auto md:opacity-100" : "opacity-100"}`}
@@ -281,6 +284,10 @@ const Dashboard: React.FC = () => {
                   : null
               }
               setPlanDetails={setPlanDetails}
+              onSelectPlan={handleSelectPlan}
+              onUpdatePlanName={handleUpdatePlanName}
+              onOpenDeleteModal={handleOpenDeleteModal}
+              onAddPlan={handleAddPlan}
             />
           )}
         </div>

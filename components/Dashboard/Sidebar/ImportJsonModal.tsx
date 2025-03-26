@@ -1,5 +1,6 @@
-import GenericModal from "@/components/Common/GenericModal";
 import React, { useState } from "react";
+
+import GenericModal from "@/components/Common/GenericModal";
 
 interface ImportJsonModalProps {
   isOpen: boolean;
@@ -7,7 +8,7 @@ interface ImportJsonModalProps {
   onSubmit: (file: File) => void;
 }
 
-const ImportJsonModal: React.FC<ImportJsonModalProps> = ({
+const ImportPlanByJsonModal: React.FC<ImportJsonModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
@@ -93,4 +94,4 @@ const ImportJsonModal: React.FC<ImportJsonModalProps> = ({
   );
 };
 
-export default ImportJsonModal;
+export default ImportPlanByJsonModal;

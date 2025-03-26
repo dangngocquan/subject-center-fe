@@ -5,15 +5,17 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
-import PlanCard from "./PlanCard";
-import EditPlanModal from "./SidebarEditPlanModal";
-import AddPlanMethodModal from "./AddPlanMethodModal";
-import { Plan } from "@/types/plan";
 import { useRouter } from "next/navigation";
+
+import AddPlanMethodModal from "./AddPlanMethodModal";
+import EditPlanModal from "./SidebarEditPlanModal";
+import PlanCard from "./PlanCard";
 import CustomPlanModal from "./CustomPlanModal";
 import SelectSubjectsGuideModal from "./SelectSubjectsGuideModal";
-import ImportJsonModal from "./ImportJsonModal";
-import ImportResultModal from "./ImportResultModal";
+import ImportPlanByJsonModal from "./ImportJsonModal";
+import ImportPlanResultByJsonModal from "./ImportResultModal";
+
+import { Plan } from "@/types/plan";
 import { createPlanByImportJSON } from "@/service/plan.api";
 
 interface SidebarProps {
@@ -216,8 +218,8 @@ const Sidebar: React.FC<SidebarProps> = ({
         {filteredPlans.length > MAX_INITIAL_PLANS && (
           <ShowMoreToggle
             showAll={showAll}
-            onToggle={() => setShowAll(!showAll)}
             totalPlans={filteredPlans.length}
+            onToggle={() => setShowAll(!showAll)}
           />
         )}
       </div>
@@ -245,15 +247,15 @@ const Sidebar: React.FC<SidebarProps> = ({
           router.push("/major");
         }}
       />
-      <ImportJsonModal
+      <ImportPlanByJsonModal
         isOpen={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}
         onSubmit={handleImportJsonSubmit}
       />
-      <ImportResultModal
+      <ImportPlanResultByJsonModal
         isOpen={isResultModalOpen}
-        onClose={() => setIsResultModalOpen(false)}
         result={importResult}
+        onClose={() => setIsResultModalOpen(false)}
       />
     </div>
   );

@@ -1,5 +1,6 @@
-import GenericModal from "@/components/Common/GenericModal";
 import React from "react";
+
+import GenericModal from "@/components/Common/GenericModal";
 
 interface ImportResult {
   plan: {
@@ -22,7 +23,7 @@ interface ImportResultModalProps {
   result: ImportResult | null;
 }
 
-const ImportResultModal: React.FC<ImportResultModalProps> = ({
+const ImportPlanResultByJsonModal: React.FC<ImportResultModalProps> = ({
   isOpen,
   onClose,
   result,
@@ -142,4 +143,4 @@ const ImportResultModal: React.FC<ImportResultModalProps> = ({
   );
 };
 
-export default ImportResultModal;
+export default ImportPlanResultByJsonModal;

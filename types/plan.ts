@@ -6,6 +6,7 @@ export interface Plan {
   createdAt?: string;
   updatedAt?: string;
   items?: PlanItem[];
+  summary?: Credits;
 }
 
 export interface PlanItem {
