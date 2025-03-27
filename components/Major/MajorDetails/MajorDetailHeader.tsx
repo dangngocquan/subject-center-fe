@@ -36,31 +36,32 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
   onSelectAllRequired,
   onOpenPlanModal,
 }) => {
+  const viewModeTooltip = "Only active in Edit Mode";
+
   return (
     <motion.div
       className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#1A2A44] p-4 rounded-lg shadow-lg mb-4"
       style={{ minHeight: "120px" }}
     >
       <motion.div
-        animate={{ y: isEditMode ? 0 : "20%" }}
+        animate={{ y: isEditMode ? 0 : "0%" }}
         className="flex flex-col space-y-2 w-full sm:w-auto"
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <h2 className="text-xl sm:text-2xl font-bold tracking-wide bg-gradient-to-r from-[#4A90E2] to-white bg-clip-text text-transparent">
           {majorName || "Major List"}
         </h2>
-        {isEditMode && (
-          <motion.span
-            animate={{ opacity: 1 }}
-            className="text-base sm:text-lg font-medium text-gray-300"
-            exit={{ opacity: 0 }}
-            initial={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            Total Credits:{" "}
-            <span className="text-[#4A90E2] font-semibold">{totalCredits}</span>
-          </motion.span>
-        )}
+
+        <motion.span
+          animate={{ opacity: 1 }}
+          className="text-base sm:text-lg font-medium text-gray-300"
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          Selected Credits:{" "}
+          <span className="text-[#4A90E2] font-semibold">{totalCredits}</span>
+        </motion.span>
       </motion.div>
 
       <motion.div
@@ -80,42 +81,48 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
             )}
           </GenericButton>
           <GenericButton
-            tooltipContent={isEditMode ? "View Only" : "Edit"}
+            tooltipContent={
+              isEditMode ? "Switch to View Mode" : "Switch to Edit Mode"
+            }
             tooltipId="mode-tooltip"
             onClick={onToggleMode}
           >
             {isEditMode ? <FaEye size={20} /> : <FaEdit size={20} />}
           </GenericButton>
-          {isEditMode && (
-            <>
-              <GenericButton
-                tooltipContent="Reset Selection"
-                tooltipId="reset-tooltip"
-                onClick={onResetSelected}
-              >
-                <FaUndo size={20} />
-              </GenericButton>
-              <GenericButton
-                tooltipContent="Select All Required"
-                tooltipId="select-all-tooltip"
-                onClick={onSelectAllRequired}
-              >
-                <FaCheckSquare size={20} />
-              </GenericButton>
-              <GenericButton
-                disabled={totalCredits === 0}
-                tooltipContent={
-                  totalCredits > 0
-                    ? "Create Plan with Selected Subjects"
-                    : "Select at least 1 subject to create a plan"
-                }
-                tooltipId="create-plan-tooltip"
-                onClick={totalCredits > 0 ? onOpenPlanModal : undefined}
-              >
-                <FaPlus size={20} />
-              </GenericButton>
-            </>
-          )}
+          <GenericButton
+            tooltipContent={isEditMode ? "Reset Selection" : viewModeTooltip}
+            tooltipId="reset-tooltip"
+            onClick={isEditMode ? onResetSelected : undefined}
+            disabled={!isEditMode}
+          >
+            <FaUndo size={20} />
+          </GenericButton>
+          <GenericButton
+            tooltipContent={
+              isEditMode ? "Select All Required" : viewModeTooltip
+            }
+            tooltipId="select-all-tooltip"
+            onClick={isEditMode ? onSelectAllRequired : undefined}
+            disabled={!isEditMode}
+          >
+            <FaCheckSquare size={20} />
+          </GenericButton>
+          <GenericButton
+            tooltipContent={
+              isEditMode
+                ? totalCredits > 0
+                  ? "Create Plan with Selected Subjects"
+                  : "Select at least 1 subject to create a plan"
+                : viewModeTooltip
+            }
+            tooltipId="create-plan-tooltip"
+            onClick={
+              isEditMode && totalCredits > 0 ? onOpenPlanModal : undefined
+            }
+            disabled={!isEditMode || totalCredits === 0}
+          >
+            <FaPlus size={20} />
+          </GenericButton>
         </div>
       </motion.div>
     </motion.div>
