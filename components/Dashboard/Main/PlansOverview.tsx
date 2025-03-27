@@ -148,7 +148,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = ({
   // Lọc plan theo searchTerm
   const filteredPlans = useMemo(() => {
     return plans.filter((plan) =>
-      plan?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      plan?.name?.toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }, [plans, searchTerm]);
 

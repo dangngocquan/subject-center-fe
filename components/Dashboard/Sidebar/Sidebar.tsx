@@ -162,7 +162,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const filteredPlans = plans.filter((plan) =>
-    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
+    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (

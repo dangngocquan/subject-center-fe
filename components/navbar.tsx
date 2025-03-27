@@ -295,7 +295,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
+                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium",
                     )}
                     href={item.href}
                     onClick={
@@ -332,16 +332,16 @@ export const Navbar = () => {
                   {siteConfig.navItems.map((item, index) => (
                     <motion.li
                       key={item.href}
+                      animate={isMenuOpen ? "visible" : "exit"}
+                      className="w-full py-2"
                       custom={index}
                       initial="hidden"
-                      animate={isMenuOpen ? "visible" : "exit"}
                       variants={menuItemVariants}
-                      className="w-full py-2"
                     >
                       <NextLink
                         className={clsx(
                           linkStyles({ color: "foreground" }),
-                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block"
+                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block",
                         )}
                         href={item.href}
                         onClick={

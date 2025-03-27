@@ -2,11 +2,13 @@
 
 import { motion } from "framer-motion";
 import React, { useCallback, useState } from "react";
+
 import GPAChart from "./GPAChart";
 import MarksGraph from "./MarksGraph";
 import PlansOverview from "./PlansOverview";
 import StatsSection from "./StatsSection";
 import SubjectsList from "./SubjectsList";
+
 import { Plan, PlanDetails, PlanItem } from "@/types/plan";
 import { usePlanDetails } from "@/hooks/usePlanDetails";
 
@@ -66,10 +68,10 @@ const Main: React.FC<MainProps> = ({
     return (
       <PlansOverview
         plans={plans.filter((plan) => plan.id !== undefined)}
+        onAddPlan={onAddPlan}
+        onOpenDeleteModal={onOpenDeleteModal}
         onSelectPlan={onSelectPlan}
         onUpdatePlanName={onUpdatePlanName}
-        onOpenDeleteModal={onOpenDeleteModal}
-        onAddPlan={onAddPlan}
       />
     );
   }
@@ -113,34 +115,34 @@ const Main: React.FC<MainProps> = ({
             </div>
             <div className="w-full sm:w-1/2 min-h-[300px]">
               <StatsSection
+                currentCPA={planDetails?.credits.currentCPA || 0}
                 totalCredits={planDetails?.credits.totalCredits || 0}
-                totalSubjects={planDetails?.credits.totalSubjects || 0}
-                totalSubjectsCompleted={
-                  planDetails?.credits.totalSubjectsCompleted || 0
+                totalCreditsCanImprovement={
+                  planDetails?.credits.totalCreditsCanImprovement || 0
                 }
                 totalCreditsCompleted={
                   planDetails?.credits.totalCreditsCompleted || 0
                 }
-                totalSubjectsIncomplete={
-                  planDetails?.credits.totalSubjectsIncomplete || 0
-                }
                 totalCreditsIncomplete={
                   planDetails?.credits.totalCreditsIncomplete || 0
                 }
+                totalSubjects={planDetails?.credits.totalSubjects || 0}
                 totalSubjectsCanImprovement={
                   planDetails?.credits.totalSubjectsCanImprovement || 0
                 }
-                totalCreditsCanImprovement={
-                  planDetails?.credits.totalCreditsCanImprovement || 0
+                totalSubjectsCompleted={
+                  planDetails?.credits.totalSubjectsCompleted || 0
                 }
-                currentCPA={planDetails?.credits.currentCPA || 0}
+                totalSubjectsIncomplete={
+                  planDetails?.credits.totalSubjectsIncomplete || 0
+                }
               />
             </div>
           </div>
           <SubjectsList
             items={
               (planDetails?.credits.items || []).filter(
-                (item) => item.id !== undefined
+                (item) => item.id !== undefined,
               ) as PlanItem[]
             }
             planId={selectedPlan?.id || null}

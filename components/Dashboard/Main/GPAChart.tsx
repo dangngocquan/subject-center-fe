@@ -40,7 +40,7 @@ const GPAChart: React.FC<GPAChartProps> = ({ currentCPA }) => {
         Current GPA
       </h3>
       <div className="flex-1 flex items-center justify-center relative">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer height="100%" width="100%">
           <PieChart>
             {thresholdData.map((_, index) => (
               <Pie

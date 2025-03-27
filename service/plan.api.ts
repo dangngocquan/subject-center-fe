@@ -10,7 +10,7 @@ import {
 } from "@/types/plan";
 
 export const apiUpsertPlan = async (
-  plan: Plan
+  plan: Plan,
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -50,7 +50,7 @@ export const apiUpsertPlan = async (
 };
 
 export const createNewPlan = async (
-  plan: Plan
+  plan: Plan,
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -90,7 +90,7 @@ export const createNewPlan = async (
 };
 
 export const deletePlan = async (
-  planId: number
+  planId: number,
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -117,7 +117,7 @@ export const deletePlan = async (
 
 export const updatePlanItem = async (
   planId: number,
-  item: PlanItem
+  item: PlanItem,
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -157,7 +157,7 @@ export const updatePlanItem = async (
 
 export const updateGradePlanItemByJson = async (
   planId: number,
-  file: File
+  file: File,
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -200,7 +200,7 @@ export const updateGradePlanItemByJson = async (
 
 export const deletePlanItem = async (
   planId: number,
-  itemId: number
+  itemId: number,
 ): Promise<{
   isBadRequest: boolean;
   message: string;
@@ -228,7 +228,7 @@ export const deletePlanItem = async (
 };
 
 export const createPlanByImportJSON = async (
-  file: File
+  file: File,
 ): Promise<{
   isBadRequest: boolean;
   message: string;

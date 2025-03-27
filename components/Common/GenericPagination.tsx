@@ -46,7 +46,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
   };
 
   const handleJumpToPageOnEnter = (
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (e.key === "Enter") {
       handleJumpToPage();

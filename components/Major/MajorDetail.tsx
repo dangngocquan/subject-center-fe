@@ -12,10 +12,13 @@ import {
   FaUndo,
 } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
+
 import { GenericButton } from "../Common/GenericButton";
 import LoadingModal from "../LoadingModal";
+
 import PlanModal from "./PlanModal";
 import ResultModal from "./ResultModal";
+
 import { useMajorDetail } from "@/hooks/useMajorDetail";
 import { createNewPlan } from "@/service/plan.api";
 import { MajorItem } from "@/types/major";
@@ -54,7 +57,7 @@ const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
 const flattenTree = (
   nodes: MajorItemWithChildren[],
   expanded: Set<string>,
-  seen = new Set<string>()
+  seen = new Set<string>(),
 ): MajorItemWithChildren[] => {
   let result: MajorItemWithChildren[] = [];
   nodes.forEach((node) => {
@@ -71,7 +74,7 @@ const flattenTree = (
 
 const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
-  selected: Set<string>
+  selected: Set<string>,
 ): { totalCredits: number; totalCount: number } => {
   let totalCredits = 0;
   let totalCount = 0;
@@ -93,7 +96,7 @@ const calculateTotalCreditsAndCount = (
 
 const findRequiredSubjects = (
   nodes: MajorItemWithChildren[],
-  data: MajorItem[]
+  data: MajorItem[],
 ): Set<string> => {
   const requiredSubjects = new Set<string>();
 
@@ -116,7 +119,7 @@ const findRequiredSubjects = (
 
     const totalDirectLeafCredits = directLeaves.reduce(
       (sum, leaf) => sum + (leaf.credit ?? 0),
-      0
+      0,
     );
 
     if (effectiveMinCredits !== null) {
@@ -129,7 +132,7 @@ const findRequiredSubjects = (
       if (subGroups.length > 0 && directLeaves.length > 0) {
         const sumSubGroupMinCredits = subGroups.reduce(
           (sum, group) => sum + (group.minCredits ?? 0),
-          0
+          0,
         );
         const remainingCredits = effectiveMinCredits - sumSubGroupMinCredits;
         if (remainingCredits === totalDirectLeafCredits) {
@@ -195,7 +198,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       .filter((item) => !item.isLeaf)
       .map((item) => item.genCode);
     const allExpanded = expandableNodes.every((genCode) =>
-      expanded.has(genCode)
+      expanded.has(genCode),
     );
 
     if (allExpanded) {
@@ -239,7 +242,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   const flatData = useMemo(() => flattenTree(tree, expanded), [tree, expanded]);
   const expandableNodes = useMemo(
     () => data.filter((item) => !item.isLeaf).map((item) => item.genCode),
-    [data]
+    [data],
   );
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 
@@ -390,29 +393,29 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
 
       {/* Tooltips */}
       <Tooltip
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
         id="expand-tooltip"
         place="bottom"
-        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
       <Tooltip
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
         id="mode-tooltip"
         place="bottom"
-        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
       <Tooltip
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
         id="reset-tooltip"
         place="bottom"
-        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
       <Tooltip
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
         id="select-all-tooltip"
         place="bottom"
-        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
       <Tooltip
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
         id="create-plan-tooltip"
         place="bottom"
-        className="bg-[#2A3A54] text-white p-2 rounded z-50"
       />
 
       {/* Table */}

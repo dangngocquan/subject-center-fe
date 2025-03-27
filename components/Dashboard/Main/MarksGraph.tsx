@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
 import { Mark } from "@/types/plan";
 
 interface MarksGraphProps {
@@ -39,7 +40,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
     : (cpa?.withoutImprovements.marks ?? []);
 
   const graduationMarks = marks.filter(
-    (mark) => mark.type === "GRADUATION_MARK" || mark.type === "NODE"
+    (mark) => mark.type === "GRADUATION_MARK" || mark.type === "NODE",
   );
   const minMark = marks.find((mark) => mark.type === "MIN");
   const maxMark = marks.find((mark) => mark.type === "MAX");
@@ -94,7 +95,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
           Include Improvements
         </label>
       </div>
-      <ResponsiveContainer width="100%" height={200}>
+      <ResponsiveContainer height={200} width="100%">
         <ComposedChart
           data={splitMarks}
           margin={{ top: 20, bottom: 20, right: 10, left: 10 }}
@@ -214,7 +215,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
                 mark.details.cases?.flatMap((caseItem) =>
                   caseItem.grades
                     ?.map((grade) => grade.gradeLatin)
-                    .filter(Boolean)
+                    .filter(Boolean),
                 ) || [];
               const gradeOrder = [
                 "A+",
@@ -232,7 +233,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
               const lowestGrade =
                 allGrades.sort(
                   (a, b) =>
-                    gradeOrder.indexOf(a ?? "") - gradeOrder.indexOf(b ?? "")
+                    gradeOrder.indexOf(a ?? "") - gradeOrder.indexOf(b ?? ""),
                 )[allGrades.length - 1] || "D";
               const currentIndex = gradeOrder.indexOf(lowestGrade);
               const nextGrade =

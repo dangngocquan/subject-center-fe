@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { Credits, Plan } from "../types/plan";
+import { Credits } from "../types/plan";
 
 import BaseRequest from "@/service/base-request.service";
 import { API_ROUTES } from "@/service/api-route.service";

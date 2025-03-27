@@ -1,5 +1,6 @@
-import GenericModal from "@/components/Common/GenericModal";
 import React from "react";
+
+import GenericModal from "@/components/Common/GenericModal";
 
 interface AddPlanMethodModalProps {
   isOpen: boolean;

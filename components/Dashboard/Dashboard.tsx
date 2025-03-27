@@ -2,14 +2,16 @@ import { useInView } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 import LoadingModal from "../LoadingModal";
+
 import PlanHeader from "./Header/Header";
 import Sidebar from "./Sidebar/Sidebar";
 import NotificationModal from "./Sidebar/SidebarNotificationModal";
 import ConfirmDeleteModal from "./Sidebar/SidebarConfirmDeleteModal";
-import { usePlans } from "@/hooks/usePlans";
-import { Plan, PlanDetails } from "@/types/plan";
-import { apiUpsertPlan, deletePlan } from "@/service/plan.api";
 import Main from "./Main/Main";
+
+import { usePlans } from "@/hooks/usePlans";
+import { Plan, PlanDetails, Credits } from "@/types/plan";
+import { apiUpsertPlan, deletePlan } from "@/service/plan.api";
 
 const Dashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -37,8 +39,58 @@ const Dashboard: React.FC = () => {
 
   const { plans, loading, error } = usePlans(searchQuery);
 
+  // Tính toán summary cho mỗi plan
+  const calculateSummary = (plan: Plan): Credits => {
+    const items = plan.items || [];
+    const totalSubjects = items.length;
+    const totalCredits = items.reduce(
+      (sum: number, item: any) => sum + (item.credits || 0),
+      0,
+    );
+    const totalGrade = items.reduce(
+      (sum: number, item: any) => sum + (item.grade || 0) * (item.credits || 0),
+      0,
+    );
+    const currentCPA = totalCredits > 0 ? totalGrade / totalCredits : 0;
+
+    return {
+      items: [],
+      totalCredits,
+      totalSubjects,
+      totalSubjectsCompleted: items.filter((item: any) => item.completed)
+        .length,
+      totalCreditsCompleted: items
+        .filter((item: any) => item.completed)
+        .reduce((sum: number, item: any) => sum + (item.credits || 0), 0),
+      totalSubjectsIncomplete: items.filter((item: any) => !item.completed)
+        .length,
+      totalCreditsIncomplete: items
+        .filter((item: any) => !item.completed)
+        .reduce((sum: number, item: any) => sum + (item.credits || 0), 0),
+      totalSubjectsCanImprovement: items.filter((item: any) => item.canImprove)
+        .length,
+      totalCreditsCanImprovement: items
+        .filter((item: any) => item.canImprove)
+        .reduce((sum: number, item: any) => sum + (item.credits || 0), 0),
+      currentCPA,
+      grades: {},
+      totalGradeCompleted: items
+        .filter((item: any) => item.completed)
+        .reduce((sum: number, item: any) => sum + (item.grade || 0), 0),
+      totalGradeCanImprovement: items
+        .filter((item: any) => item.canImprove)
+        .reduce((sum: number, item: any) => sum + (item.grade || 0), 0),
+    };
+  };
+
   useEffect(() => {
-    if (plans) setLocalPlans(plans);
+    if (plans) {
+      const updatedPlans = plans.map((plan) => ({
+        ...plan,
+        summary: calculateSummary(plan),
+      }));
+      setLocalPlans(updatedPlans);
+    }
   }, [plans]);
 
   // Ngăn cuộn trên body khi sidebar mở
@@ -108,7 +160,7 @@ const Dashboard: React.FC = () => {
         const response = await deletePlan(Number(deleteModal.planId));
         if (!response.isBadRequest) {
           setLocalPlans((prevPlans) =>
-            prevPlans.filter((plan) => plan.id !== deleteModal.planId)
+            prevPlans.filter((plan) => plan.id !== deleteModal.planId),
           );
           if (selectedPlan?.id === deleteModal.planId) {
             setSelectedPlan(null);
@@ -139,8 +191,8 @@ const Dashboard: React.FC = () => {
 
       setLocalPlans((prevPlans) =>
         prevPlans.map((plan) =>
-          plan.id === planId ? { ...plan, name: newName } : plan
-        )
+          plan.id === planId ? { ...plan, name: newName } : plan,
+        ),
       );
       if (selectedPlan?.id === planId) {
         setSelectedPlan((prev) => (prev ? { ...prev, name: newName } : null));
@@ -166,12 +218,12 @@ const Dashboard: React.FC = () => {
         });
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
-          )
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
+          ),
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null
+            prev ? { ...prev, name: planToUpdate.name } : null,
           );
         }
       }
@@ -185,12 +237,12 @@ const Dashboard: React.FC = () => {
       if (planToUpdate) {
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
-          )
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
+          ),
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null
+            prev ? { ...prev, name: planToUpdate.name } : null,
           );
         }
       }
@@ -244,28 +296,26 @@ const Dashboard: React.FC = () => {
         />
       )}
       <div className="flex flex-col md:flex-row mt-6 gap-6">
-        {/* Ẩn sidebar khi chưa chọn plan */}
-        {selectedPlan && (
-          <div
-            className={`w-full md:w-64 md:flex-shrink-0 transition-transform duration-300 ease-in-out ${
-              isSidebarVisible
-                ? `${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} fixed top-0 left-0 w-4/5 max-w-xs h-[100dvh] z-50 md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block`
-                : "fixed top-0 left-0 -translate-x-full md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block"
-            }`}
-          >
-            <Sidebar
-              plans={localPlans}
-              searchQuery={searchQuery}
-              selectedPlanId={selectedPlan?.id}
-              setSearchQuery={setSearchQuery}
-              onDeletePlan={handleConfirmDelete}
-              onOpenDeleteModal={handleOpenDeleteModal}
-              onSelectPlan={handleSelectPlan}
-              onUpdatePlanName={handleUpdatePlanName}
-              onAddPlan={handleAddPlan}
-            />
-          </div>
-        )}
+        {/* Sidebar luôn hiển thị, nhưng ẩn trên mobile khi không mở */}
+        <div
+          className={`w-full md:w-64 md:flex-shrink-0 transition-transform duration-300 ease-in-out ${
+            isSidebarVisible
+              ? `${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} fixed top-0 left-0 w-4/5 max-w-xs h-[100dvh] z-50 md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block`
+              : "fixed top-0 left-0 -translate-x-full md:static md:h-[calc(100vh-100px)] md:translate-x-0 md:block"
+          }`}
+        >
+          <Sidebar
+            plans={localPlans}
+            searchQuery={searchQuery}
+            selectedPlanId={selectedPlan?.id}
+            setSearchQuery={setSearchQuery}
+            onAddPlan={handleAddPlan}
+            onDeletePlan={handleConfirmDelete}
+            onOpenDeleteModal={handleOpenDeleteModal}
+            onSelectPlan={handleSelectPlan}
+            onUpdatePlanName={handleUpdatePlanName}
+          />
+        </div>
         <div
           ref={mainRef}
           className={`flex-1 transition-opacity duration-300 ${isSidebarOpen ? "pointer-events-none opacity-50 md:pointer-events-auto md:opacity-100" : "opacity-100"}`}
@@ -284,10 +334,10 @@ const Dashboard: React.FC = () => {
                   : null
               }
               setPlanDetails={setPlanDetails}
+              onAddPlan={handleAddPlan}
+              onOpenDeleteModal={handleOpenDeleteModal}
               onSelectPlan={handleSelectPlan}
               onUpdatePlanName={handleUpdatePlanName}
-              onOpenDeleteModal={handleOpenDeleteModal}
-              onAddPlan={handleAddPlan}
             />
           )}
         </div>

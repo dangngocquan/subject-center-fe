@@ -1,6 +1,7 @@
-import GenericModal from "@/components/Common/GenericModal";
 import React, { useState } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa";
+
+import GenericModal from "@/components/Common/GenericModal";
 import { createNewPlan } from "@/service/plan.api";
 import { Plan } from "@/types/plan";
 
@@ -158,10 +159,10 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
           </h2>
           <input
             className="w-full bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg px-4 py-3 mb-6 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300 placeholder-red-400 shadow-inner text-sm sm:text-base"
+            disabled={isLoading}
             placeholder="Plan Name *"
             value={planName}
             onChange={(e) => setPlanName(e.target.value)}
-            disabled={isLoading}
           />
           <div className="max-h-80 overflow-y-auto mb-6 rounded-lg shadow-lg border border-gray-700">
             <table className="w-full text-sm sm:text-base">
@@ -176,7 +177,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                     Prerequisites
                   </th>
                   <th className="p-3 sm:p-4 text-left font-semibold">Grade</th>
-                  <th className="p-3 sm:p-4"></th>
+                  <th className="p-3 sm:p-4" />
                 </tr>
               </thead>
               <tbody>
@@ -188,35 +189,35 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                     <td className="p-3 sm:p-4">
                       <input
                         className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-red-400"
+                        disabled={isLoading}
                         placeholder="Name *"
                         value={subject.name}
                         onChange={(e) =>
                           updateSubject(index, "name", e.target.value)
                         }
-                        disabled={isLoading}
                       />
                     </td>
                     <td className="p-3 sm:p-4">
                       <input
                         className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-red-400"
+                        disabled={isLoading}
                         placeholder="Code *"
                         value={subject.code}
                         onChange={(e) =>
                           updateSubject(index, "code", e.target.value)
                         }
-                        disabled={isLoading}
                       />
                     </td>
                     <td className="p-3 sm:p-4">
                       <input
-                        type="text"
                         className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-red-400"
+                        disabled={isLoading}
                         placeholder="Credit *"
+                        type="text"
                         value={subject.credit === 0 ? "" : subject.credit}
                         onChange={(e) =>
                           updateSubject(index, "credit", e.target.value)
                         }
-                        disabled={isLoading}
                       />
                     </td>
                     <td className="p-3 sm:p-4">
@@ -228,6 +229,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                           >
                             <input
                               className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-gray-500"
+                              disabled={isLoading}
                               value={prereq}
                               onChange={(e) => {
                                 const updatedSubjects = [...subjects];
@@ -236,14 +238,13 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                                 ] = e.target.value;
                                 setSubjects(updatedSubjects);
                               }}
-                              disabled={isLoading}
                             />
                             <button
                               className="text-gray-400 hover:text-red-500 transition-colors duration-200 opacity-0 group-hover:opacity-100"
+                              disabled={isLoading}
                               onClick={() =>
                                 removePrerequisite(index, prereqIndex)
                               }
-                              disabled={isLoading}
                             >
                               <FaTrash size={12} />
                             </button>
@@ -252,6 +253,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                         <div className="flex items-center gap-2">
                           <input
                             className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 placeholder-gray-500 text-sm sm:text-base"
+                            disabled={isLoading}
                             placeholder="Add prerequisite"
                             onKeyDown={(e) => {
                               if (e.key === "Enter") {
@@ -259,18 +261,17 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                                 e.currentTarget.value = "";
                               }
                             }}
-                            disabled={isLoading}
                           />
                           <button
                             className="text-cyan-400 hover:text-cyan-600 transition-colors duration-200"
+                            disabled={isLoading}
                             onClick={() => {
                               const input = document.querySelector(
-                                `tr:nth-child(${index + 1}) input[placeholder="Add prerequisite"]`
+                                `tr:nth-child(${index + 1}) input[placeholder="Add prerequisite"]`,
                               ) as HTMLInputElement;
                               addPrerequisite(index, input.value);
                               input.value = "";
                             }}
-                            disabled={isLoading}
                           >
                             <FaPlus size={12} />
                           </button>
@@ -280,19 +281,19 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                     <td className="p-3 sm:p-4">
                       <input
                         className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-gray-500"
+                        disabled={isLoading}
                         placeholder="Grade"
                         value={subject.gradeLatin || ""}
                         onChange={(e) =>
                           updateSubject(index, "gradeLatin", e.target.value)
                         }
-                        disabled={isLoading}
                       />
                     </td>
                     <td className="p-3 sm:p-4">
                       <button
                         className="text-gray-400 hover:text-red-500 transition-colors duration-200"
-                        onClick={() => removeSubject(index)}
                         disabled={isLoading}
+                        onClick={() => removeSubject(index)}
                       >
                         <FaTrash size={14} />
                       </button>
@@ -305,15 +306,15 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               className="w-full bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg px-4 py-3 flex items-center justify-center gap-2 hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md text-sm sm:text-base"
-              onClick={addSubject}
               disabled={isLoading}
+              onClick={addSubject}
             >
               <FaPlus /> Add Subject
             </button>
             <button
               className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 text-sm sm:text-base disabled:opacity-50"
-              onClick={handleSubmit}
               disabled={isLoading}
+              onClick={handleSubmit}
             >
               {isLoading ? "Submitting..." : "Submit"}
             </button>

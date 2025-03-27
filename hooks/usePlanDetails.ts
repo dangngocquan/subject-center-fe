@@ -8,7 +8,7 @@ import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
 
 export const usePlanDetails = (
   planId: string | null | undefined,
-  refreshTrigger: number = 0 // Thêm tham số trigger
+  refreshTrigger: number = 0, // Thêm tham số trigger
 ) => {
   const [planDetails, setPlanDetails] = useState<PlanDetails | null>(null);
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ export const usePlanDetails = (
           headers: {
             token: `${localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN)}`,
           },
-        }
+        },
       );
       setPlanDetails(response.data);
     } catch (err) {
