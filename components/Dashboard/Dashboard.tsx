@@ -4,14 +4,14 @@ import React, { useEffect, useRef, useState } from "react";
 import LoadingModal from "../LoadingModal";
 
 import PlanHeader from "./Header/Header";
-import Sidebar from "./Sidebar/Sidebar";
-import NotificationModal from "./Sidebar/SidebarNotificationModal";
-import ConfirmDeleteModal from "./Sidebar/SidebarConfirmDeleteModal";
 import Main from "./Main/Main";
+import Sidebar from "./Sidebar/Sidebar";
+import ConfirmDeleteModal from "./Sidebar/SidebarConfirmDeleteModal";
+import NotificationModal from "./Sidebar/SidebarNotificationModal";
 
 import { usePlans } from "@/hooks/usePlans";
-import { Plan, PlanDetails, Credits } from "@/types/plan";
 import { apiUpsertPlan, deletePlan } from "@/service/plan.api";
+import { Plan, PlanDetails } from "@/types/plan";
 
 const Dashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -36,8 +36,9 @@ const Dashboard: React.FC = () => {
     isOpen: false,
     planId: null,
   });
+  const [lastRefetch, setLastRefetch] = useState<number | null>(null); // Theo dõi thời gian refetch cuối cùng
 
-  const { plans, loading, error } = usePlans(searchQuery);
+  const { plans, loading, error, refetch } = usePlans(searchQuery);
 
   useEffect(() => {
     if (plans) {
@@ -47,6 +48,19 @@ const Dashboard: React.FC = () => {
       setLocalPlans(updatedPlans);
     }
   }, [plans]);
+
+  // Gọi refetch khi chuyển sang trạng thái Overview (selectedPlan là null)
+  useEffect(() => {
+    // Chỉ gọi refetch nếu selectedPlan là null và chưa gọi refetch trong 1 giây gần nhất
+    if (selectedPlan === null) {
+      const now = Date.now();
+      if (!lastRefetch || now - lastRefetch > 1000) {
+        // Kiểm tra thời gian giữa các lần refetch
+        refetch();
+        setLastRefetch(now);
+      }
+    }
+  }, [selectedPlan, refetch, lastRefetch]);
 
   // Ngăn cuộn trên body khi sidebar mở
   useEffect(() => {

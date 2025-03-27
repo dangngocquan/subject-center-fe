@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { Credits } from "../types/plan";
 
@@ -13,7 +13,7 @@ export const usePlans = (searchQuery: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPlans = async (query: string = "") => {
+  const fetchPlans = useCallback(async (query: string = "") => {
     setLoading(true);
     setError(null);
     try {
@@ -38,17 +38,26 @@ export const usePlans = (searchQuery: string) => {
         ...plan,
         summary: plan.summary.data,
       }));
-      setPlans(array);
+      // Chỉ cập nhật plans nếu dữ liệu thực sự thay đổi
+      setPlans((prevPlans) => {
+        const isEqual = JSON.stringify(prevPlans) === JSON.stringify(array);
+        return isEqual ? prevPlans : array;
+      });
     } catch (err) {
       setError("Failed to fetch plans");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  const refetch = useCallback(
+    () => fetchPlans(searchQuery),
+    [fetchPlans, searchQuery]
+  );
 
   useEffect(() => {
     fetchPlans(searchQuery);
-  }, [searchQuery]);
+  }, [searchQuery, fetchPlans]);
 
-  return { plans, loading, error, refetch: () => fetchPlans(searchQuery) };
+  return { plans, loading, error, refetch };
 };
