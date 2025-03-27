@@ -148,7 +148,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = ({
   // Lọc plan theo searchTerm
   const filteredPlans = useMemo(() => {
     return plans.filter((plan) =>
-      plan?.name?.toLowerCase().includes(searchTerm.toLowerCase()),
+      plan?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [plans, searchTerm]);
 
@@ -206,6 +206,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = ({
                   <th className="p-3 sm:p-4">Subjects</th>
                   <th className="p-3 sm:p-4">Credits</th>
                   <th className="p-3 sm:p-4">GPA</th>
+                  <th className="p-3 sm:p-4">Progress</th>
                   <th className="p-3 sm:p-4 rounded-tr-lg">Actions</th>
                 </tr>
               </thead>
@@ -214,7 +215,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = ({
                   <tr>
                     <td
                       className="p-3 sm:p-4 text-center text-gray-500"
-                      colSpan={5}
+                      colSpan={6} // Cập nhật colSpan vì có thêm cột Progress
                     >
                       {searchTerm
                         ? "No plans match your search."
@@ -225,6 +226,23 @@ const PlansOverview: React.FC<PlansOverviewProps> = ({
                   currentPlans.map((plan, index) => {
                     const summary = plan.summary ?? defaultSummary;
                     const isLastRow = index === currentPlans.length - 1;
+
+                    // Tính toán progress
+                    const progress =
+                      summary.totalCredits > 0
+                        ? (summary.totalCreditsCompleted /
+                            summary.totalCredits) *
+                          100
+                        : 0;
+
+                    // Xác định màu sắc của thanh tiến độ dựa trên giá trị progress
+                    const progressColor =
+                      progress >= 80
+                        ? "bg-cyan-400"
+                        : progress >= 50
+                          ? "bg-yellow-400"
+                          : "bg-red-400";
+
                     return (
                       <tr
                         key={plan.id}
@@ -254,6 +272,19 @@ const PlansOverview: React.FC<PlansOverviewProps> = ({
                           >
                             {summary.currentCPA.toFixed(4)}
                           </span>
+                        </td>
+                        <td className="p-3 sm:p-4">
+                          <div className="flex items-center gap-2">
+                            <div className="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
+                              <div
+                                className={`h-full ${progressColor} rounded-full transition-all duration-300`}
+                                style={{ width: `${progress}%` }}
+                              />
+                            </div>
+                            <span className="text-gray-400 text-xs">
+                              {progress.toFixed(1)}%
+                            </span>
+                          </div>
                         </td>
                         <td
                           className={`p-3 sm:p-4 flex gap-2 ${

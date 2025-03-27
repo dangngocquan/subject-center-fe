@@ -1,3 +1,9 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Generate a structured commit message summarizing all file changes concisely. Use bullet points to list modified files and their key changes. Keep it clear and informative without excessive detail. Use emojis only when helpful."
+    }
+  ],
+  "github.copilot.chat.codeGeneration.instructions": []
 }

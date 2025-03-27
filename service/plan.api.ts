@@ -265,6 +265,5 @@ export const createPlanByImportJSON = async (
       result.isBadRequest = true;
       result.message = error.message;
     });
-  console.log(result);
   return result;
 };

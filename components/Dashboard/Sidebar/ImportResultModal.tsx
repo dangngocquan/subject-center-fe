@@ -29,7 +29,6 @@ const ImportPlanResultByJsonModal: React.FC<ImportResultModalProps> = ({
   result,
 }) => {
   if (!isOpen) return null;
-  console.log({ result });
 
   const updatedCount =
     result?.result?.filter(

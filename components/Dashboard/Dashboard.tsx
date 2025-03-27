@@ -39,55 +39,10 @@ const Dashboard: React.FC = () => {
 
   const { plans, loading, error } = usePlans(searchQuery);
 
-  // Tính toán summary cho mỗi plan
-  const calculateSummary = (plan: Plan): Credits => {
-    const items = plan.items || [];
-    const totalSubjects = items.length;
-    const totalCredits = items.reduce(
-      (sum: number, item: any) => sum + (item.credits || 0),
-      0,
-    );
-    const totalGrade = items.reduce(
-      (sum: number, item: any) => sum + (item.grade || 0) * (item.credits || 0),
-      0,
-    );
-    const currentCPA = totalCredits > 0 ? totalGrade / totalCredits : 0;
-
-    return {
-      items: [],
-      totalCredits,
-      totalSubjects,
-      totalSubjectsCompleted: items.filter((item: any) => item.completed)
-        .length,
-      totalCreditsCompleted: items
-        .filter((item: any) => item.completed)
-        .reduce((sum: number, item: any) => sum + (item.credits || 0), 0),
-      totalSubjectsIncomplete: items.filter((item: any) => !item.completed)
-        .length,
-      totalCreditsIncomplete: items
-        .filter((item: any) => !item.completed)
-        .reduce((sum: number, item: any) => sum + (item.credits || 0), 0),
-      totalSubjectsCanImprovement: items.filter((item: any) => item.canImprove)
-        .length,
-      totalCreditsCanImprovement: items
-        .filter((item: any) => item.canImprove)
-        .reduce((sum: number, item: any) => sum + (item.credits || 0), 0),
-      currentCPA,
-      grades: {},
-      totalGradeCompleted: items
-        .filter((item: any) => item.completed)
-        .reduce((sum: number, item: any) => sum + (item.grade || 0), 0),
-      totalGradeCanImprovement: items
-        .filter((item: any) => item.canImprove)
-        .reduce((sum: number, item: any) => sum + (item.grade || 0), 0),
-    };
-  };
-
   useEffect(() => {
     if (plans) {
       const updatedPlans = plans.map((plan) => ({
         ...plan,
-        summary: calculateSummary(plan),
       }));
       setLocalPlans(updatedPlans);
     }
@@ -160,7 +115,7 @@ const Dashboard: React.FC = () => {
         const response = await deletePlan(Number(deleteModal.planId));
         if (!response.isBadRequest) {
           setLocalPlans((prevPlans) =>
-            prevPlans.filter((plan) => plan.id !== deleteModal.planId),
+            prevPlans.filter((plan) => plan.id !== deleteModal.planId)
           );
           if (selectedPlan?.id === deleteModal.planId) {
             setSelectedPlan(null);
@@ -191,8 +146,8 @@ const Dashboard: React.FC = () => {
 
       setLocalPlans((prevPlans) =>
         prevPlans.map((plan) =>
-          plan.id === planId ? { ...plan, name: newName } : plan,
-        ),
+          plan.id === planId ? { ...plan, name: newName } : plan
+        )
       );
       if (selectedPlan?.id === planId) {
         setSelectedPlan((prev) => (prev ? { ...prev, name: newName } : null));
@@ -218,12 +173,12 @@ const Dashboard: React.FC = () => {
         });
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
-          ),
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
+          )
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null,
+            prev ? { ...prev, name: planToUpdate.name } : null
           );
         }
       }
@@ -237,12 +192,12 @@ const Dashboard: React.FC = () => {
       if (planToUpdate) {
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
-          ),
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
+          )
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null,
+            prev ? { ...prev, name: planToUpdate.name } : null
           );
         }
       }
