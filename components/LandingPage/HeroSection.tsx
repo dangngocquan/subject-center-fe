@@ -129,7 +129,7 @@ const HeroSection = () => {
             className:
               "border-cyan-400 text-cyan-400 hover:bg-cyan-400/20 hover:border-cyan-300 transition-all duration-300 px-6 sm:px-8 py-2 font-semibold",
           })}
-          href={siteConfig.links.majors}
+          href={siteConfig.routers.majors}
         >
           Check Majors
         </Link>

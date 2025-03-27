@@ -1,9 +1,11 @@
-import React from "react";
 import { motion } from "framer-motion";
-import { FaTimes } from "react-icons/fa";
+import React from "react";
+import Link from "next/link";
 
 import GenericModal from "../Common/GenericModal"; // Import GenericModal
-import { GenericButton } from "../Common/GenericButton"; // Import GenericButton
+
+import { siteConfig } from "@/config/site";
+// Import GenericButton
 
 interface ResultModalProps {
   isOpen: boolean;
@@ -32,48 +34,48 @@ const ResultModal: React.FC<ResultModalProps> = ({
 
   return (
     <GenericModal isOpen={isOpen} onClose={onClose}>
-      {/* Nút "X" để đóng */}
-      <GenericButton
-        className="absolute top-4 right-4 text-gray-400 hover:text-gray-200 transition-colors duration-200"
-        tooltipContent="Đóng"
-        tooltipId="close-tooltip"
-        onClick={onClose}
-      >
-        <FaTimes size={16} />
-      </GenericButton>
-
-      {/* Tiêu đề */}
-      <h3 className="text-xl font-semibold text-white mb-2">
-        Kết quả tạo Plan
+      {/* Title */}
+      <h3 className="text-2xl font-bold text-blue-400 mb-4 relative inline-block">
+        Plan Creation Results
+        <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-transparent rounded-full" />
       </h3>
-
-      {/* Thống kê */}
-      <div className="text-sm text-gray-300 mb-4">
-        Tên plan: <span className="text-white">{planName}</span> | Số môn thành
-        công: <span className="text-green-400">{succeededCount}</span> | Số môn
-        thất bại: <span className="text-red-400">{failedCount}</span>
+      {/* Statistics */}
+      <div className="mb-6 grid grid-cols-3 gap-4 text-sm justify-center justify-between">
+        <div className="flex flex-col items-center p-3 bg-green-900/30 rounded-lg">
+          <span className="text-gray-300">Successful Subjects</span>
+          <span className="text-green-400 font-semibold text-lg">
+            {succeededCount}
+          </span>
+        </div>
+        <div className="flex flex-col items-center p-3 bg-red-900/30 rounded-lg">
+          <span className="text-gray-300">Failed Subjects</span>
+          <span className="text-red-400 font-semibold text-lg">
+            {failedCount}
+          </span>
+        </div>
       </div>
-
-      {/* Nội dung */}
+      {/* Content */}
       {result.length === 0 ? (
-        <p className="text-gray-300 text-sm">Không có kết quả đến hiện tại.</p>
+        <p className="text-gray-300 text-sm">
+          No results available at the moment.
+        </p>
       ) : (
         <div className="text-sm max-h-60 overflow-y-auto overflow-x-auto scrollbar-thin scrollbar-thumb-[#4A90E2] scrollbar-track-[#2A3A54] scrollbar-thumb-rounded">
           <table className="min-w-full divide-y divide-gray-700">
-            {/* Tiêu đề bảng */}
+            {/* Table header */}
             <thead style={{ backgroundColor: "#2A3A54" }}>
               <tr>
                 <th
                   className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
                   style={{ width: "40%" }}
                 >
-                  Tên
+                  Name
                 </th>
                 <th
                   className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
                   style={{ width: "20%" }}
                 >
-                  Mã
+                  Code
                 </th>
                 <th
                   className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
@@ -83,7 +85,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
                 </th>
               </tr>
             </thead>
-            {/* Nội dung bảng */}
+            {/* Table content */}
             <tbody className="divide-y divide-gray-700">
               {result.map((item, index) => (
                 <tr
@@ -109,17 +111,20 @@ const ResultModal: React.FC<ResultModalProps> = ({
           </table>
         </div>
       )}
-
-      {/* Nút "Đóng" */}
+      {/* Close Button */}
       <div className="flex justify-end mt-4">
-        <motion.button
-          className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onClose}
+        <Link
+          passHref
+          href={`${siteConfig.routers.planDetails(String(planName))}`}
         >
-          Đóng
-        </motion.button>
+          <motion.button
+            className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Close
+          </motion.button>
+        </Link>
       </div>
     </GenericModal>
   );

@@ -64,7 +64,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
   const handleCreate = async () => {
     if (!planName.trim()) {
-      alert("Vui lòng nhập tên plan!");
+      alert("Please enter a plan name!");
       return;
     }
 
@@ -80,10 +80,10 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
       // Truyền planName và result qua callback
       const result = response.data.result || response.data.results || [];
-      onPlanCreated({ planName, result });
+      onPlanCreated({ planName: String(response?.data?.plan?.id), result });
       onClose();
     } catch (error) {
-      alert("Đã xảy ra lỗi khi tạo plan!");
+      alert("An error occurred while creating the plan!");
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +96,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
       {isLoading && <LoadingModal isOpen={isLoading} />}
       <GenericModal isOpen={isOpen} onClose={onClose}>
         <h3 className="text-xl font-semibold text-white mb-4">
-          Tạo Plan Học Tập
+          Create Study Plan
         </h3>
 
         <div className="mb-4">
@@ -104,12 +104,12 @@ const PlanModal: React.FC<PlanModalProps> = ({
             className="block text-sm font-medium text-gray-300 mb-1"
             htmlFor="planName"
           >
-            Tên Plan
+            Plan Name
           </label>
           <input
             className="w-full p-2 bg-[#2A3A54] text-white border border-[#3A4A64] rounded-md focus:outline-none focus:ring-1 focus:ring-[#4A90E2] transition-all duration-200 placeholder-gray-500 text-sm"
             id="planName"
-            placeholder="VD: Kế hoạch HK1 2025"
+            placeholder="e.g., Semester 1 Plan 2025"
             style={{ background: "rgba(42, 58, 84, 0.8)" }}
             type="text"
             value={planName}
@@ -120,7 +120,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
         {unmetRequirements.length > 0 && (
           <div className="mb-4">
             <p className="text-sm font-medium text-[#FF6B6B] mb-2">
-              Các nhóm chưa đáp ứng yêu cầu:
+              Groups not meeting requirements:
             </p>
             <div
               className="max-h-40 overflow-y-auto bg-[#2A3A54] p-3 rounded-md border border-[#3A4A64] scrollbar-thin scrollbar-thumb-[#4A90E2] scrollbar-track-[#2A3A54] scrollbar-thumb-rounded"
@@ -139,13 +139,13 @@ const PlanModal: React.FC<PlanModalProps> = ({
                       <span className="text-gray-400 text-xs">
                         {group.minCredits && (
                           <span>
-                            {totalCredits}/{group.minCredits} tín chỉ
+                            {totalCredits}/{group.minCredits} credits
                           </span>
                         )}
                         {group.minChildren && (
                           <span>
                             {group.minCredits && " | "}
-                            {totalCount}/{group.minChildren} môn
+                            {totalCount}/{group.minChildren} subjects
                           </span>
                         )}
                       </span>
@@ -160,20 +160,20 @@ const PlanModal: React.FC<PlanModalProps> = ({
         <div className="flex justify-end space-x-2">
           <GenericButton
             className="px-4 py-2 bg-[#3A4A64] text-gray-200 rounded-md hover:bg-[#4A5A74] transition-all duration-200 text-sm font-medium"
-            tooltipContent="Tiếp tục chọn thêm"
+            tooltipContent="Continue selecting"
             tooltipId="continue-tooltip"
             onClick={onClose}
           >
-            Tiếp tục chọn thêm
+            Continue selecting
           </GenericButton>
           <GenericButton
             className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
             disabled={isLoading}
-            tooltipContent="Tạo Plan"
+            tooltipContent="Create Plan"
             tooltipId="create-tooltip"
             onClick={handleCreate}
           >
-            Tạo Plan
+            Create Plan
           </GenericButton>
         </div>
       </GenericModal>

@@ -23,7 +23,6 @@ import {
   Logo,
   LogoutIcon,
   ProfileIcon,
-  SettingsIcon,
 } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
@@ -395,7 +394,7 @@ export const Navbar = () => {
               {authToken && (
                 <div className="absolute z-60">
                   <div className="hidden sm:block">
-                    <motion.div
+                    {/* <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
                       custom={0}
@@ -407,8 +406,8 @@ export const Navbar = () => {
                           <ProfileIcon className="w-6 h-6" />
                         </GenericButton>
                       </Tooltip>
-                    </motion.div>
-                    <motion.div
+                    </motion.div> */}
+                    {/* <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
                       custom={1}
@@ -420,7 +419,7 @@ export const Navbar = () => {
                           <SettingsIcon className="w-6 h-6" />
                         </GenericButton>
                       </Tooltip>
-                    </motion.div>
+                    </motion.div> */}
                     <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
@@ -440,7 +439,7 @@ export const Navbar = () => {
                   </div>
 
                   <div className="sm:hidden">
-                    <motion.div
+                    {/* <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
                       custom={0}
@@ -452,8 +451,8 @@ export const Navbar = () => {
                           <ProfileIcon className="w-6 h-6" />
                         </GenericButton>
                       </Tooltip>
-                    </motion.div>
-                    <motion.div
+                    </motion.div> */}
+                    {/* <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
                       custom={1}
@@ -465,11 +464,11 @@ export const Navbar = () => {
                           <SettingsIcon className="w-6 h-6" />
                         </GenericButton>
                       </Tooltip>
-                    </motion.div>
+                    </motion.div> */}
                     <motion.div
                       animate={isExpanded ? "visible" : "exit"}
                       className="absolute"
-                      custom={2}
+                      custom={0}
                       initial="hidden"
                       variants={mobileButtonVariants}
                     >

@@ -17,7 +17,6 @@ interface MainProps {
   planDetails: PlanDetails | null;
   plans: Plan[];
   setPlanDetails: (details: PlanDetails | null) => void;
-  onSelectPlan: (planId: string | null) => void;
   onUpdatePlanName: (planId: string, newName: string) => void;
   onOpenDeleteModal: (planId: string) => void;
   onAddPlan: (plan: Plan) => void;
@@ -28,7 +27,6 @@ const Main: React.FC<MainProps> = ({
   planDetails,
   plans,
   setPlanDetails,
-  onSelectPlan,
   onUpdatePlanName,
   onOpenDeleteModal,
   onAddPlan,
@@ -70,7 +68,6 @@ const Main: React.FC<MainProps> = ({
         plans={plans.filter((plan) => plan.id !== undefined)}
         onAddPlan={onAddPlan}
         onOpenDeleteModal={onOpenDeleteModal}
-        onSelectPlan={onSelectPlan}
         onUpdatePlanName={onUpdatePlanName}
       />
     );

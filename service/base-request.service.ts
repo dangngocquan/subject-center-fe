@@ -8,9 +8,11 @@ const BASE_URL = apiConfig.baseUrl;
 
 export default class BaseRequest {
   baseUrl: string;
+  headers: { [key: string]: string };
   constructor() {
     this.baseUrl = BASE_URL;
     this.setAuth();
+    this.headers = { "Content-Type": "application/json" };
   }
 
   setAuth() {
@@ -41,25 +43,7 @@ export default class BaseRequest {
   }
 
   setHeader(name: string, value: string) {
-    axios.interceptors.request.use(
-      (config) => {
-        config.headers[`${name}`] = value;
-
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      },
-    );
-
-    axios.interceptors.response.use(
-      (response) => {
-        return response;
-      },
-      (error) => {
-        return Promise.reject(error);
-      },
-    );
+    this.headers[name] = value;
   }
 
   checkPath(path: string) {
@@ -74,6 +58,7 @@ export default class BaseRequest {
     try {
       return await axios.get(this.checkPath(path), {
         params: params,
+        headers: this.headers,
       });
     } catch (error) {
       return error;
@@ -81,28 +66,37 @@ export default class BaseRequest {
   }
   async post(path = "", data = {}): Promise<any> {
     try {
-      return await axios.post(this.checkPath(path), data);
+      return await axios.post(this.checkPath(path), data, {
+        headers: this.headers,
+      });
     } catch (error) {
       return this._errorHandler(error);
     }
   }
   async put(path = "", data = {}): Promise<any> {
     try {
-      return await axios.put(this.checkPath(path), data);
+      return await axios.put(this.checkPath(path), data, {
+        headers: this.headers,
+      });
     } catch (error) {
       return this._errorHandler(error);
     }
   }
   async delete(path = "", params = {}): Promise<any> {
     try {
-      return await axios.delete(this.checkPath(path), params);
+      return await axios.delete(this.checkPath(path), {
+        params,
+        headers: this.headers,
+      });
     } catch (error) {
       return this._errorHandler(error);
     }
   }
   async patch(path = "", data = {}): Promise<any> {
     try {
-      return await axios.patch(this.checkPath(path), data);
+      return await axios.patch(this.checkPath(path), data, {
+        headers: this.headers,
+      });
     } catch (error) {
       return this._errorHandler(error);
     }

@@ -29,7 +29,6 @@ export const apiUpsertPlan = async (
     status: 200,
   };
   const req = new BaseRequest();
-  req.setAuth();
   await req
     .patch(API_ROUTES.PATCH_PLAN(Number(plan.id)), {
       name: plan.name,
@@ -69,7 +68,6 @@ export const createNewPlan = async (
     status: 200,
   };
   const req = new BaseRequest();
-  req.setAuth();
   await req
     .post(API_ROUTES.POST_PLAN, {
       name: plan.name,
@@ -106,7 +104,6 @@ export const deletePlan = async (
     status: 200,
   };
   const req = new BaseRequest();
-  req.setAuth();
   await req.delete(API_ROUTES.DELETE_PLAN(planId)).then((res) => {
     result.status = res.status;
     result.isBadRequest = res.status > 300;
@@ -136,7 +133,6 @@ export const updatePlanItem = async (
     data: undefined,
   };
   const req = new BaseRequest();
-  req.setAuth();
   await req
     .patch(API_ROUTES.PATCH_PLAN_ITEM(planId), {
       id: item.id,
@@ -180,7 +176,6 @@ export const updateGradePlanItemByJson = async (
   formData.append("file", file);
 
   const req = new BaseRequest();
-  req.setAuth();
   req.setHeader("Content-Type", "multipart/form-data");
   await req
     .patch(API_ROUTES.PATCH_PLAN_ITEM_GRADE_JSON(planId), formData)
@@ -217,7 +212,6 @@ export const deletePlanItem = async (
   };
 
   const req = new BaseRequest();
-  req.setAuth();
   await req.delete(API_ROUTES.DELETE_PLAN_ITEM(planId, itemId)).then((res) => {
     result.status = res.status;
     result.isBadRequest = res.status > 300;
@@ -251,7 +245,6 @@ export const createPlanByImportJSON = async (
   formData.append("file", file);
 
   const req = new BaseRequest();
-  req.setAuth();
   req.setHeader("Content-Type", "multipart/form-data");
   await req
     .post(API_ROUTES.POST_PLAN_BY_JSON, formData)

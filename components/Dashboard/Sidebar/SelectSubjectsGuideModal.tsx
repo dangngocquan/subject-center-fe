@@ -1,6 +1,8 @@
 import React from "react";
+import Link from "next/link";
 
 import GenericModal from "@/components/Common/GenericModal";
+import { siteConfig } from "@/config/site";
 
 interface SelectSubjectsGuideModalProps {
   isOpen: boolean;
@@ -35,12 +37,13 @@ const SelectSubjectsGuideModal: React.FC<SelectSubjectsGuideModalProps> = ({
           </li>
         </ol>
         <div className="flex flex-col sm:flex-row gap-4 mt-6">
-          <button
+          <Link
             className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 text-sm sm:text-base"
+            href={`${siteConfig.routers.majors}`}
             onClick={onNavigate}
           >
             Go to Majors
-          </button>
+          </Link>
           <button
             className="w-full bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg px-4 py-3 hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md text-sm sm:text-base"
             onClick={onClose}

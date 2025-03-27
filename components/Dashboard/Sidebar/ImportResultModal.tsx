@@ -1,6 +1,8 @@
 import React from "react";
+import Link from "next/link";
 
 import GenericModal from "@/components/Common/GenericModal";
+import { siteConfig } from "@/config/site";
 
 interface ImportResult {
   plan: {
@@ -19,13 +21,11 @@ interface ImportResult {
 
 interface ImportResultModalProps {
   isOpen: boolean;
-  onClose: () => void;
   result: ImportResult | null;
 }
 
 const ImportPlanResultByJsonModal: React.FC<ImportResultModalProps> = ({
   isOpen,
-  onClose,
   result,
 }) => {
   if (!isOpen) return null;
@@ -40,7 +40,7 @@ const ImportPlanResultByJsonModal: React.FC<ImportResultModalProps> = ({
     result?.result?.filter((item) => item.status === "FAILED").length ?? 0;
 
   return (
-    <GenericModal isOpen={isOpen} onClose={onClose}>
+    <GenericModal isOpen={isOpen} onClose={() => {}}>
       <div className="text-white font-sans p-4 sm:p-6">
         {/* Tiêu đề được thiết kế lại */}
         <h3 className="text-2xl font-bold text-blue-400 mb-4 relative inline-block">
@@ -130,12 +130,12 @@ const ImportPlanResultByJsonModal: React.FC<ImportResultModalProps> = ({
           <p className="text-gray-300 text-sm">No results to display.</p>
         )}
         <div className="flex justify-end mt-4">
-          <button
+          <Link
             className="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-all duration-200 text-sm font-medium"
-            onClick={onClose}
+            href={siteConfig.routers.planDetails(String(result?.plan?.id))}
           >
             Close
-          </button>
+          </Link>
         </div>
       </div>
     </GenericModal>

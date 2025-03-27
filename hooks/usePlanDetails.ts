@@ -19,7 +19,6 @@ export const usePlanDetails = (
     setError(null);
     try {
       const req = await new BaseRequest();
-      req.setAuth();
       const response: { data: PlanDetails } = await req.get(
         API_ROUTES.GET_PLAN_DETAILS(Number(id)),
         {

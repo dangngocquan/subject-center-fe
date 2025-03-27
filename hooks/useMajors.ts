@@ -14,7 +14,6 @@ export const useMajors = (searchQuery: string) => {
     setError(null);
     try {
       const req = await new BaseRequest();
-      req.setAuth();
       const response: { data: { data: Major[] } } = await req.get(
         API_ROUTES.GET_MAJORS,
         {

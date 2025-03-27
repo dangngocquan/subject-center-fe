@@ -18,7 +18,6 @@ export const usePlans = (searchQuery: string) => {
     setError(null);
     try {
       const req = await new BaseRequest();
-      req.setAuth();
       const response: {
         data: {
           id: string;
@@ -52,7 +51,7 @@ export const usePlans = (searchQuery: string) => {
 
   const refetch = useCallback(
     () => fetchPlans(searchQuery),
-    [fetchPlans, searchQuery]
+    [fetchPlans, searchQuery],
   );
 
   useEffect(() => {

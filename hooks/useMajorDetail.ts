@@ -14,7 +14,6 @@ export const useMajorDetail = (id: number) => {
     setError(null);
     try {
       const req = await new BaseRequest();
-      req.setAuth();
       const response: { data: Major } = await req.get(
         API_ROUTES.GET_MAJOR_DETAIL(id),
         {},

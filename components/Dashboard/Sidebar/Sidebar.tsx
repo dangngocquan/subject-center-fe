@@ -1,11 +1,13 @@
+"use client";
+
+import { useMemo, useState, useCallback } from "react";
 import {
   MagnifyingGlassIcon,
   PencilIcon,
   TrashIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { debounce } from "lodash"; // Assuming lodash for debouncing; install if needed
 
 import AddPlanMethodModal from "./AddPlanMethodModal";
 import EditPlanModal from "./SidebarEditPlanModal";
@@ -17,17 +19,18 @@ import ImportPlanResultByJsonModal from "./ImportResultModal";
 
 import { Plan } from "@/types/plan";
 import { createPlanByImportJSON } from "@/service/plan.api";
+import { siteConfig } from "@/config/site";
 
 interface SidebarProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   plans: Plan[];
   selectedPlanId: string | null | undefined;
-  onSelectPlan: (planId: string | null) => void;
   onDeletePlan: (planId: string) => void;
   onUpdatePlanName: (planId: string, newName: string) => void;
   onOpenDeleteModal: (planId: string) => void;
   onAddPlan: (plan: Plan) => void;
+  onNavigate?: (path: string) => void; // New prop for centralized navigation
 }
 
 const ShowMoreToggle: React.FC<{
@@ -55,7 +58,9 @@ const ShowMoreToggle: React.FC<{
           {showAll ? "Show Less" : `Show More (${totalPlans - 10} more)`}
         </span>
         <ChevronDownIcon
-          className={`w-4 h-4 text-cyan-400 group-hover:text-cyan-300 transition-transform duration-300 ${showAll ? "rotate-180" : ""}`}
+          className={`w-4 h-4 text-cyan-400 group-hover:text-cyan-300 transition-transform duration-300 ${
+            showAll ? "rotate-180" : ""
+          }`}
         />
       </div>
     </div>
@@ -67,38 +72,50 @@ const Sidebar: React.FC<SidebarProps> = ({
   setSearchQuery,
   plans,
   selectedPlanId,
-  onSelectPlan,
   onUpdatePlanName,
   onOpenDeleteModal,
   onAddPlan,
+  onNavigate,
 }) => {
   const [showAll, setShowAll] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
-  const [isAddMethodModalOpen, setIsAddMethodModalOpen] = useState(false);
-  const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
-  const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
-  const [importResult, setImportResult] = useState<any>(null);
-  const router = useRouter();
+  const [modalState, setModalState] = useState({
+    edit: { isOpen: false, plan: null as Plan | null },
+    addMethod: false,
+    custom: false,
+    guide: false,
+    import: false,
+    result: { isOpen: false, data: null as any },
+  });
   const MAX_INITIAL_PLANS = 10;
 
+  // Debounced search handler
+  const debouncedSetSearchQuery = useCallback(
+    debounce((value: string) => setSearchQuery(value), 300),
+    [setSearchQuery],
+  );
+
+  // Memoized filtered plans
+  const filteredPlans = useMemo(
+    () =>
+      plans.filter((plan) =>
+        (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    [plans, searchQuery],
+  );
+
   const handleEditClick = (plan: Plan) => {
-    setEditingPlan(plan);
-    setIsEditModalOpen(true);
+    setModalState((prev) => ({ ...prev, edit: { isOpen: true, plan } }));
   };
 
-  const handleCloseModal = () => {
-    setIsEditModalOpen(false);
-    setEditingPlan(null);
+  const handleCloseEditModal = () => {
+    setModalState((prev) => ({ ...prev, edit: { isOpen: false, plan: null } }));
   };
 
   const handleSubmitEdit = (newName: string) => {
-    if (editingPlan) {
-      onUpdatePlanName(editingPlan.id ?? "", newName);
+    if (modalState.edit.plan) {
+      onUpdatePlanName(modalState.edit.plan.id ?? "", newName);
     }
-    handleCloseModal();
+    handleCloseEditModal();
   };
 
   const handleDeleteClick = (planId: string) => {
@@ -106,17 +123,17 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const handleAddPlan = () => {
-    setIsAddMethodModalOpen(true);
+    setModalState((prev) => ({ ...prev, addMethod: true }));
   };
 
   const handleMethodSelect = (method: string) => {
-    setIsAddMethodModalOpen(false);
+    setModalState((prev) => ({ ...prev, addMethod: false }));
     if (method === "custom") {
-      setIsCustomModalOpen(true);
+      setModalState((prev) => ({ ...prev, custom: true }));
     } else if (method === "select-subjects") {
-      setIsGuideModalOpen(true);
+      setModalState((prev) => ({ ...prev, guide: true }));
     } else if (method === "import-json") {
-      setIsImportModalOpen(true);
+      setModalState((prev) => ({ ...prev, import: true }));
     }
   };
 
@@ -132,38 +149,49 @@ const Sidebar: React.FC<SidebarProps> = ({
           },
           result: response.data.result || [],
         };
-        setImportResult(resultData);
-        setIsImportModalOpen(false);
-        setIsResultModalOpen(true);
-
+        setModalState((prev) => ({
+          ...prev,
+          import: false,
+          result: { isOpen: true, data: resultData },
+        }));
+        console.log("Imported plan:", resultData.plan);
         onAddPlan({
           id: response.data.plan.id?.toString(),
           name: response.data.plan.name,
           items: response.data.plan.items,
         });
       } else {
-        setImportResult({
-          plan: { name: "Unknown" },
-          result: [{ status: "FAILED", message: response.message }],
-        });
-        setIsImportModalOpen(false);
-        setIsResultModalOpen(true);
+        setModalState((prev) => ({
+          ...prev,
+          import: false,
+          result: {
+            isOpen: true,
+            data: {
+              plan: { name: "Unknown" },
+              result: [{ status: "FAILED", message: response.message }],
+            },
+          },
+        }));
       }
     } catch (error) {
-      setImportResult({
-        plan: { name: "Unknown" },
-        result: [
-          { status: "FAILED", message: "An error occurred while importing." },
-        ],
-      });
-      setIsImportModalOpen(false);
-      setIsResultModalOpen(true);
+      setModalState((prev) => ({
+        ...prev,
+        import: false,
+        result: {
+          isOpen: true,
+          data: {
+            plan: { name: "Unknown" },
+            result: [
+              {
+                status: "FAILED",
+                message: "An error occurred while importing.",
+              },
+            ],
+          },
+        },
+      }));
     }
   };
-
-  const filteredPlans = plans.filter((plan) =>
-    (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
-  );
 
   return (
     <div className="w-full h-full md:w-64 bg-gray-900/80 shadow-lg rounded-2xl md:rounded-2xl flex flex-col">
@@ -175,17 +203,17 @@ const Sidebar: React.FC<SidebarProps> = ({
             placeholder="Search Plans..."
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => debouncedSetSearchQuery(e.target.value)}
           />
         </div>
-        <button
+        {/* <button
           aria-label="Add a new plan"
           className="w-full bg-cyan-500 text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-cyan-600 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
           type="button"
           onClick={handleAddPlan}
         >
           Add Plan
-        </button>
+        </button> */}
       </div>
       <div className="flex-1 overflow-y-auto flex flex-col">
         <ul className="space-y-2 px-4 py-4 flex-1">
@@ -193,11 +221,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             .slice(0, showAll ? undefined : MAX_INITIAL_PLANS)
             .map((plan) => (
               <li key={plan.id} className="flex items-center gap-2">
-                <PlanCard
-                  isSelected={selectedPlanId === plan.id}
-                  plan={plan}
-                  onClick={() => onSelectPlan(plan.id ?? null)}
-                />
+                <PlanCard isSelected={selectedPlanId === plan.id} plan={plan} />
                 <button
                   aria-label="Edit plan name"
                   className="p-1 text-gray-400 hover:text-cyan-400 transition-colors"
@@ -224,38 +248,43 @@ const Sidebar: React.FC<SidebarProps> = ({
         )}
       </div>
       <EditPlanModal
-        initialName={editingPlan?.name ?? ""}
-        isOpen={isEditModalOpen}
-        onClose={handleCloseModal}
+        initialName={modalState.edit.plan?.name ?? ""}
+        isOpen={modalState.edit.isOpen}
+        onClose={handleCloseEditModal}
         onSubmit={handleSubmitEdit}
       />
       <AddPlanMethodModal
-        isOpen={isAddMethodModalOpen}
-        onClose={() => setIsAddMethodModalOpen(false)}
+        isOpen={modalState.addMethod}
+        onClose={() => setModalState((prev) => ({ ...prev, addMethod: false }))}
         onMethodSelect={handleMethodSelect}
       />
       <CustomPlanModal
-        isOpen={isCustomModalOpen}
-        onClose={() => setIsCustomModalOpen(false)}
+        isOpen={modalState.custom}
+        onClose={() => setModalState((prev) => ({ ...prev, custom: false }))}
         onSubmit={onAddPlan}
       />
       <SelectSubjectsGuideModal
-        isOpen={isGuideModalOpen}
-        onClose={() => setIsGuideModalOpen(false)}
+        isOpen={modalState.guide}
+        onClose={() => setModalState((prev) => ({ ...prev, guide: false }))}
         onNavigate={() => {
-          setIsGuideModalOpen(false);
-          router.push("/major");
+          setModalState((prev) => ({ ...prev, guide: false }));
+          onNavigate?.(`${siteConfig.routers.majors}`); // Delegate navigation to parent
         }}
       />
       <ImportPlanByJsonModal
-        isOpen={isImportModalOpen}
-        onClose={() => setIsImportModalOpen(false)}
+        isOpen={modalState.import}
+        onClose={() => setModalState((prev) => ({ ...prev, import: false }))}
         onSubmit={handleImportJsonSubmit}
       />
       <ImportPlanResultByJsonModal
-        isOpen={isResultModalOpen}
-        result={importResult}
-        onClose={() => setIsResultModalOpen(false)}
+        isOpen={modalState.result.isOpen}
+        result={modalState.result.data}
+        // onClose={() =>
+        //   setModalState((prev) => ({
+        //     ...prev,
+        //     result: { isOpen: false, data: null },
+        //   }))
+        // }
       />
     </div>
   );

@@ -4,12 +4,12 @@ import React from "react";
 
 import Dashboard from "@/components/Dashboard/Dashboard";
 
-const DashboardPage: React.FC = () => {
+const PlansPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-white">
-      <Dashboard />
+      <Dashboard initialPlanId={null} />
     </div>
   );
 };
 
-export default DashboardPage;
+export default PlansPage;

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { FaPlus, FaTrash } from "react-icons/fa";
+import Link from "next/link";
 
 import GenericModal from "@/components/Common/GenericModal";
 import { createNewPlan } from "@/service/plan.api";
-import { Plan } from "@/types/plan";
+import { Plan, PlanResultUpsert } from "@/types/plan";
+import { siteConfig } from "@/config/site";
 
 interface Subject {
   name: string;
@@ -37,10 +39,12 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
     isOpen: boolean;
     message: string;
     isSuccess: boolean;
+    data?: PlanResultUpsert;
   }>({
     isOpen: false,
     message: "",
     isSuccess: false,
+    data: undefined,
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -127,6 +131,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
           isOpen: true,
           message: response.message || "Plan created successfully!",
           isSuccess: true,
+          data: response.data,
         });
         onSubmit({ ...planData, id: response.data?.plan?.id }); // Truyền plan với id từ API
         setPlanName("");
@@ -322,7 +327,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
         </div>
       </GenericModal>
 
-      <GenericModal
+      {/* <GenericModal
         isOpen={errorModal.isOpen}
         onClose={() => setErrorModal({ isOpen: false, message: "" })}
       >
@@ -338,7 +343,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
             OK
           </button>
         </div>
-      </GenericModal>
+      </GenericModal> */}
 
       <GenericModal
         isOpen={resultModal.isOpen}
@@ -346,19 +351,19 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
           setResultModal({ isOpen: false, message: "", isSuccess: false })
         }
       >
-        <div className="text-white p-4 sm:p-6">
+        <div className="text-white p-4 sm:p-6 flex flex-col items-center justify-center">
           <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-600">
             {resultModal.isSuccess ? "Success" : "Error"}
           </h2>
-          <p className="mb-6 text-sm sm:text-base">{resultModal.message}</p>
-          <button
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg text-sm sm:text-base"
-            onClick={() =>
-              setResultModal({ isOpen: false, message: "", isSuccess: false })
-            }
+          <p className="mb-6 text-sm sm:text-base text-center">
+            {resultModal.message}
+          </p>
+          <Link
+            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg text-sm sm:text-base text-center"
+            href={`${siteConfig.routers.planDetails(String(resultModal.data?.plan?.id))}`}
           >
             OK
-          </button>
+          </Link>
         </div>
       </GenericModal>
     </>

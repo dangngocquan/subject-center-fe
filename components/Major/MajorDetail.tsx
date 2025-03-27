@@ -278,7 +278,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   };
 
   if (loading) return <LoadingModal isOpen={loading} />;
-  if (error) return <p className="text-red-500">Đã xảy ra lỗi: {error}</p>;
+  if (error) return <p className="text-red-500">An error occurred: {error}</p>;
 
   return (
     <div className="min-h-screen p-4 sm:p-6 bg-[#0A1A2F]">
@@ -293,7 +293,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <h2 className="text-xl sm:text-2xl font-bold tracking-wide bg-gradient-to-r from-[#4A90E2] to-white bg-clip-text text-transparent">
-            {major?.name || "Danh Sách Ngành Học"}
+            {major?.name || "Major List"}
           </h2>
           {isEditMode && (
             <motion.span
@@ -303,7 +303,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
               initial={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              Tổng tín chỉ:{" "}
+              Total Credits:{" "}
               <span className="text-[#4A90E2] font-semibold">
                 {totalCredits}
               </span>
@@ -317,7 +317,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         >
           <div className="flex flex-wrap gap-2 mt-2">
             <GenericButton
-              tooltipContent={allExpanded ? "Đóng tất cả" : "Mở tất cả"}
+              tooltipContent={allExpanded ? "Collapse All" : "Expand All"}
               tooltipId="expand-tooltip"
               onClick={toggleAllExpand}
             >
@@ -328,7 +328,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
               )}
             </GenericButton>
             <GenericButton
-              tooltipContent={isEditMode ? "Chỉ xem" : "Chỉnh sửa"}
+              tooltipContent={isEditMode ? "View Only" : "Edit"}
               tooltipId="mode-tooltip"
               onClick={toggleMode}
             >
@@ -337,14 +337,14 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
             {isEditMode && (
               <>
                 <GenericButton
-                  tooltipContent="Đặt lại lựa chọn"
+                  tooltipContent="Reset Selection"
                   tooltipId="reset-tooltip"
                   onClick={resetSelected}
                 >
                   <FaUndo size={20} />
                 </GenericButton>
                 <GenericButton
-                  tooltipContent="Chọn tất cả môn bắt buộc"
+                  tooltipContent="Select All Required"
                   tooltipId="select-all-tooltip"
                   onClick={selectAllRequired}
                 >
@@ -354,8 +354,8 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                   disabled={totalCredits === 0}
                   tooltipContent={
                     totalCredits > 0
-                      ? "Tạo plan sử dụng các môn học đã chọn"
-                      : "Cần chọn tối thiểu 1 môn để tạo plan"
+                      ? "Create Plan with Selected Subjects"
+                      : "Select at least 1 subject to create a plan"
                   }
                   tooltipId="create-plan-tooltip"
                   onClick={totalCredits > 0 ? openPlanModal : undefined}
@@ -424,25 +424,25 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
           <thead className="bg-[#2A3A54]">
             <tr>
               <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[60px]">
-                Chọn
+                Select
               </th>
               <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[80px]">
-                STT
+                No.
               </th>
               <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider min-w-[200px]">
-                Tên học phần
+                Subject Name
               </th>
               <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[120px]">
-                Mã HP
+                Subject Code
               </th>
               <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[100px]">
-                Tín chỉ
+                Credits
               </th>
               <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[150px]">
-                Tiên quyết
+                Prerequisites
               </th>
               <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider min-w-[200px]">
-                Yêu cầu
+                Requirements
               </th>
             </tr>
           </thead>
@@ -543,16 +543,16 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
                       <span>
                         {node.minCredits && (
                           <span>
-                            Tối thiểu: {node.minCredits} tín chỉ
-                            {isEditMode && ` (Đã chọn: ${selectedCredits})`}
+                            Minimum: {node.minCredits} credits
+                            {isEditMode && ` (Selected: ${selectedCredits})`}
                           </span>
                         )}
                         {node.minChildren && (
                           <span>
-                            {node.minCredits ? " / " : ""}Tối thiểu:{" "}
-                            {node.minChildren} môn
+                            {node.minCredits ? " / " : ""}Minimum:{" "}
+                            {node.minChildren} subjects
                             {isEditMode &&
-                              ` (Đã chọn: ${selectedChildrenCount})`}
+                              ` (Selected: ${selectedChildrenCount})`}
                           </span>
                         )}
                       </span>

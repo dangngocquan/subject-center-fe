@@ -7,6 +7,7 @@ import GenericInputSearch from "../Common/GenericInputSearch";
 import GenericPagination from "../Common/GenericPagination";
 
 import { Major } from "@/types/major";
+import { siteConfig } from "@/config/site";
 
 interface MajorsListProps {
   majors: Major[];
@@ -33,7 +34,7 @@ const MajorsList: React.FC<MajorsListProps> = ({
         List of Majors
       </h1>
       {/* Thanh tìm kiếm và phân trang */}
-      <div className="flex flex-col sm:flex-row items-center justify-between max-w-4xl mx-auto mb-12 gap-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between max-w-xl mx-auto mb-12 gap-4">
         <GenericInputSearch
           placeholder="Search for a major..."
           searchTerm={searchTerm}
@@ -48,7 +49,6 @@ const MajorsList: React.FC<MajorsListProps> = ({
           totalItems={majors.length}
         />
       </div>
-
       {/* List of majors */}
       {currentMajors.length > 0 &&
         currentMajors.map((major: Major, index: number) => (
@@ -63,7 +63,9 @@ const MajorsList: React.FC<MajorsListProps> = ({
               boxShadow: "0 8px 24px rgba(0, 255, 255, 0.3)",
             }}
           >
-            <Link href={`/major/${major.id}`}>
+            <Link
+              href={`${siteConfig.routers.majorDetails(String(major?.id))}`}
+            >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between h-full gap-4">
                 <div className="flex items-center mb-2 sm:mb-0 flex-grow">
                   <FaBook
