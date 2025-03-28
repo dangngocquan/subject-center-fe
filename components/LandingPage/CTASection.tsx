@@ -3,14 +3,12 @@
 import { button as buttonStyles } from "@heroui/theme";
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { useGoogleLogin } from "@react-oauth/google";
 
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
 import GenericModal from "@/components/Common/GenericModal";
 import { GenericButton } from "@/components/Common/GenericButton";
-import { API_ROUTES } from "@/service/api-route.service";
-import BaseRequest from "@/service/base-request.service";
 import LoadingModal from "@/components/LoadingModal";
+import { useAuthGoogle } from "@/service/auth.service";
 
 const CTASection = () => {
   const fadeInVariants = {
@@ -44,31 +42,13 @@ const CTASection = () => {
   }, []);
 
   // Google login handler
-  const authGoogle = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      setIsLoading(true);
-      try {
-        const response = await new BaseRequest().post(API_ROUTES.AUTH_GOOGLE, {
-          token: tokenResponse.access_token,
-        });
-        const token = response?.data?.token;
-        localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, token); // Save token to localStorage
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulated delay
-        setIsLoading(false);
-        setIsLoginModalOpen(false);
-
-        // Dispatch custom event to notify successful login
-        window.dispatchEvent(new Event("authChange"));
-      } catch (error) {
-        console.error("Login error:", error);
-        setIsLoading(false);
-      }
-    },
-    onError: (error) => {
-      console.error("Google login error:", error);
+  const authGoogle = useAuthGoogle(
+    () => {
       setIsLoading(false);
+      setIsLoginModalOpen(false);
     },
-  });
+    () => setIsLoading(false)
+  );
 
   return (
     <motion.section

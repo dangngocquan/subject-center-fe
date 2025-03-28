@@ -13,11 +13,12 @@ import NextLink from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Tooltip } from "@nextui-org/react";
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import { useGoogleLogin } from "@react-oauth/google";
+import { useRouter } from "next/navigation";
 
 import GenericModal from "./Common/GenericModal";
 import { GenericButton } from "./Common/GenericButton";
 
+import { useAuthGoogle } from "@/service/auth.service";
 import {
   ArrowPointingInIcon,
   Logo,
@@ -26,9 +27,6 @@ import {
 } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
-import { API_ROUTES } from "@/service/api-route.service";
-import BaseRequest from "@/service/base-request.service";
-import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -39,29 +37,13 @@ export const Navbar = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const authGoogle = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      setIsLoading(true);
-      try {
-        const response = await new BaseRequest().post(API_ROUTES.AUTH_GOOGLE, {
-          token: tokenResponse.access_token,
-        });
-        const token = response?.data?.token;
-        localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, token);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setIsLoading(false);
-        setIsLoginModalOpen(false);
-        window.dispatchEvent(new Event("authChange"));
-      } catch (error) {
-        console.error("Sign in error:", error);
-        setIsLoading(false);
-      }
-    },
-    onError: (error) => {
-      console.error("Google sign in error:", error);
+  const authGoogle = useAuthGoogle(
+    () => {
       setIsLoading(false);
+      setIsLoginModalOpen(false);
     },
-  });
+    () => setIsLoading(false)
+  );
 
   const updateAuthToken = () => {
     const token = localStorage.getItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN);

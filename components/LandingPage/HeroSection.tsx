@@ -4,13 +4,11 @@ import { Link } from "@heroui/link";
 import { button as buttonStyles } from "@heroui/theme";
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react"; // Added useEffect
-import { useGoogleLogin } from "@react-oauth/google";
 
+import { useAuthGoogle } from "@/service/auth.service";
 import { siteConfig } from "@/config/site";
 import GenericModal from "@/components/Common/GenericModal";
 import { GenericButton } from "@/components/Common/GenericButton";
-import { API_ROUTES } from "@/service/api-route.service";
-import BaseRequest from "@/service/base-request.service";
 import LoadingModal from "@/components/LoadingModal";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
 
@@ -45,31 +43,13 @@ const HeroSection = () => {
     };
   }, []);
 
-  const authGoogle = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      setIsLoading(true);
-      try {
-        const response = await new BaseRequest().post(API_ROUTES.AUTH_GOOGLE, {
-          token: tokenResponse.access_token,
-        });
-        const token = response?.data?.token;
-        localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_TOKEN, token); // Save token to localStorage
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulated delay
-        setIsLoading(false);
-        setIsSignUpModalOpen(false);
-
-        // Dispatch custom event to notify successful sign-up
-        window.dispatchEvent(new Event("authChange"));
-      } catch (error) {
-        console.error("Sign up error:", error);
-        setIsLoading(false);
-      }
-    },
-    onError: (error) => {
-      console.error("Google sign up error:", error);
+  const authGoogle = useAuthGoogle(
+    () => {
       setIsLoading(false);
+      setIsSignUpModalOpen(false);
     },
-  });
+    () => setIsLoading(false)
+  );
 
   return (
     <motion.section
