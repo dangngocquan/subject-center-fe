@@ -154,7 +154,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           import: false,
           result: { isOpen: true, data: resultData },
         }));
-        console.log("Imported plan:", resultData.plan);
         onAddPlan({
           id: response.data.plan.id?.toString(),
           name: response.data.plan.name,

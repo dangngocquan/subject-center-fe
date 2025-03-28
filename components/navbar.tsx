@@ -28,8 +28,10 @@ import { siteConfig } from "@/config/site";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
 import { API_ROUTES } from "@/service/api-route.service";
 import BaseRequest from "@/service/base-request.service";
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
+  const router = useRouter();
   const [authToken, setAuthToken] = useState<string | undefined>(undefined);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -99,6 +101,7 @@ export const Navbar = () => {
     setAuthToken(undefined);
     setIsExpanded(false);
     window.dispatchEvent(new Event("authChange"));
+    router.push(`${siteConfig.routers.home}`);
   };
 
   const handlePlansClick = (e: React.MouseEvent) => {
@@ -294,7 +297,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium",
+                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
                     )}
                     href={item.href}
                     onClick={
@@ -340,7 +343,7 @@ export const Navbar = () => {
                       <NextLink
                         className={clsx(
                           linkStyles({ color: "foreground" }),
-                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block",
+                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block"
                         )}
                         href={item.href}
                         onClick={

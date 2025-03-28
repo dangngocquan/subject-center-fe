@@ -18,6 +18,7 @@ export const siteConfig = {
     },
   ],
   routers: {
+    home: "/",
     majors: "/majors",
     majorDetails: (id: string) => `/majors/${id}`,
     plans: "/plans",

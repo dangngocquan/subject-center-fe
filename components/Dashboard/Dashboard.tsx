@@ -51,7 +51,6 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
   // Initialize selectedPlan based on initialPlanId from route
   useEffect(() => {
     if (plans && initialPlanId) {
-      console.log(1);
       const plan = plans.find((p) => p.id === initialPlanId) || null;
       setSelectedPlan(plan);
     }
@@ -59,7 +58,6 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
 
   useEffect(() => {
     if (plans) {
-      console.log(2);
       const updatedPlans = plans.map((plan) => ({ ...plan }));
       setLocalPlans(updatedPlans);
     }
