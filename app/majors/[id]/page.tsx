@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useParams } from "next/navigation";
+
 import MajorDetail from "@/components/Major/MajorDetails";
 
 const MajorDetailPage = () => {

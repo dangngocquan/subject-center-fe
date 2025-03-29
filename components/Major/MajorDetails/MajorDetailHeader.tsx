@@ -1,6 +1,5 @@
 "use client";
 
-import GenericButton from "@/components/Common/GenericButton";
 import { motion } from "framer-motion";
 import React from "react";
 import {
@@ -12,6 +11,8 @@ import {
   FaPlus,
   FaUndo,
 } from "react-icons/fa";
+
+import GenericButton from "@/components/Common/GenericButton";
 
 interface MajorDetailHeaderProps {
   majorName: string;
@@ -90,24 +91,25 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
             {isEditMode ? <FaEye size={20} /> : <FaEdit size={20} />}
           </GenericButton>
           <GenericButton
+            disabled={!isEditMode}
             tooltipContent={isEditMode ? "Reset Selection" : viewModeTooltip}
             tooltipId="reset-tooltip"
             onClick={isEditMode ? onResetSelected : undefined}
-            disabled={!isEditMode}
           >
             <FaUndo size={20} />
           </GenericButton>
           <GenericButton
+            disabled={!isEditMode}
             tooltipContent={
               isEditMode ? "Select All Required" : viewModeTooltip
             }
             tooltipId="select-all-tooltip"
             onClick={isEditMode ? onSelectAllRequired : undefined}
-            disabled={!isEditMode}
           >
             <FaCheckSquare size={20} />
           </GenericButton>
           <GenericButton
+            disabled={!isEditMode || totalCredits === 0}
             tooltipContent={
               isEditMode
                 ? totalCredits > 0
@@ -119,7 +121,6 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
             onClick={
               isEditMode && totalCredits > 0 ? onOpenPlanModal : undefined
             }
-            disabled={!isEditMode || totalCredits === 0}
           >
             <FaPlus size={20} />
           </GenericButton>

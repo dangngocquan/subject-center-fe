@@ -2,17 +2,20 @@
 
 import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
-import { useMajorDetail } from "@/hooks/useMajorDetail";
-import { createNewPlan } from "@/service/plan.api";
-import { Major, MajorItem, MajorItemWithChildren } from "@/types/major";
+
+import PlanModal from "../PlanModal";
+import ResultModal from "../ResultModal";
+
 import MajorDetailHeader from "./MajorDetailHeader";
 import MajorDetailTable from "./MajorDetailTable";
 import MajorDetailTooltips from "./MajorDetailTooltips";
 import { buildTree, findRequiredSubjects, flattenTree } from "./majorUtils";
-import LoadingModal from "@/components/LoadingModal";
-import PlanModal from "../PlanModal";
-import ResultModal from "../ResultModal";
 import CurriculumGraph from "./MajorGraph/CurriculumGraph";
+
+import { useMajorDetail } from "@/hooks/useMajorDetail";
+import { createNewPlan } from "@/service/plan.api";
+import { MajorItem, MajorItemWithChildren } from "@/types/major";
+import LoadingModal from "@/components/LoadingModal";
 
 interface MajorDetailProps {
   id: string;
@@ -66,10 +69,10 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       .filter((item) => !item.isLeaf)
       .map((item) => item.genCode);
     const allExpanded = expandableNodes.every((genCode) =>
-      expanded.has(genCode)
+      expanded.has(genCode),
     );
     setExpanded(
-      allExpanded ? new Set() : new Set(data.map((item) => item.genCode))
+      allExpanded ? new Set() : new Set(data.map((item) => item.genCode)),
     );
   };
 
@@ -118,13 +121,13 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       data
         .filter((item) => selected.has(item.genCode) && item.credit)
         .reduce((sum, item) => sum + (item.credit || 0), 0),
-    [data, selected]
+    [data, selected],
   );
 
   const flatData = useMemo(() => flattenTree(tree, expanded), [tree, expanded]);
   const expandableNodes = useMemo(
     () => data.filter((item) => !item.isLeaf).map((item) => item.genCode),
-    [data]
+    [data],
   );
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 
@@ -134,15 +137,15 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   return (
     <div className="min-h-screen p-4 sm:p-6 bg-[#0A1A2F]">
       <MajorDetailHeader
+        allExpanded={allExpanded}
+        isEditMode={isEditMode}
         majorName={String(major?.name)}
         totalCredits={totalCredits}
-        isEditMode={isEditMode}
-        allExpanded={allExpanded}
-        onToggleAllExpand={toggleAllExpand}
-        onToggleMode={toggleMode}
+        onOpenPlanModal={openPlanModal}
         onResetSelected={resetSelected}
         onSelectAllRequired={selectAllRequired}
-        onOpenPlanModal={openPlanModal}
+        onToggleAllExpand={toggleAllExpand}
+        onToggleMode={toggleMode}
       />
 
       <AnimatePresence>
@@ -169,12 +172,12 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
 
       <MajorDetailTooltips />
       <MajorDetailTable
+        expanded={expanded}
         flatData={flatData}
         isEditMode={isEditMode}
-        expanded={expanded}
         selected={selected}
-        onToggleExpand={toggleExpand}
         onHandleSelection={handleSelection}
+        onToggleExpand={toggleExpand}
       />
       <div>
         <CurriculumGraph major={major} />

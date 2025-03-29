@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+
 import MajorDetailRow from "./MajorDetailRow";
+
 import { MajorItemWithChildren } from "@/types/major";
 
 interface MajorDetailTableProps {
@@ -53,13 +55,13 @@ const MajorDetailTable: React.FC<MajorDetailTableProps> = ({
           {flatData.map((node) => (
             <MajorDetailRow
               key={node.genCode}
-              node={node}
-              isSelected={selected.has(node.genCode)}
-              isEditMode={isEditMode}
               expanded={expanded}
+              isEditMode={isEditMode}
+              isSelected={selected.has(node.genCode)}
+              node={node}
               selected={selected}
-              onToggleExpand={onToggleExpand}
               onHandleSelection={onHandleSelection}
+              onToggleExpand={onToggleExpand}
             />
           ))}
         </tbody>

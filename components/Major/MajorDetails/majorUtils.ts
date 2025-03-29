@@ -30,7 +30,7 @@ export const buildTree = (items: MajorItem[]): MajorItemWithChildren[] => {
 export const flattenTree = (
   nodes: MajorItemWithChildren[],
   expanded: Set<string>,
-  seen = new Set<string>()
+  seen = new Set<string>(),
 ): MajorItemWithChildren[] => {
   let result: MajorItemWithChildren[] = [];
   nodes.forEach((node) => {
@@ -47,7 +47,7 @@ export const flattenTree = (
 
 export const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
-  selected: Set<string>
+  selected: Set<string>,
 ): { totalCredits: number; totalCount: number } => {
   let totalCredits = 0;
   let totalCount = 0;
@@ -69,7 +69,7 @@ export const calculateTotalCreditsAndCount = (
 
 export const findRequiredSubjects = (
   nodes: MajorItemWithChildren[],
-  data: MajorItem[]
+  data: MajorItem[],
 ): Set<string> => {
   const requiredSubjects = new Set<string>();
 
@@ -92,7 +92,7 @@ export const findRequiredSubjects = (
 
     const totalDirectLeafCredits = directLeaves.reduce(
       (sum, leaf) => sum + (leaf.credit ?? 0),
-      0
+      0,
     );
 
     if (effectiveMinCredits !== null) {
@@ -105,7 +105,7 @@ export const findRequiredSubjects = (
       if (subGroups.length > 0 && directLeaves.length > 0) {
         const sumSubGroupMinCredits = subGroups.reduce(
           (sum, group) => sum + (group.minCredits ?? 0),
-          0
+          0,
         );
         const remainingCredits = effectiveMinCredits - sumSubGroupMinCredits;
         if (remainingCredits === totalDirectLeafCredits) {

@@ -48,7 +48,7 @@ const HeroSection = () => {
       setIsLoading(false);
       setIsSignUpModalOpen(false);
     },
-    () => setIsLoading(false)
+    () => setIsLoading(false),
   );
 
   return (

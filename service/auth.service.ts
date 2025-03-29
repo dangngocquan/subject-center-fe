@@ -7,7 +7,7 @@ import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
 
 export const useAuthGoogle = (
   onSuccessCallback?: () => void,
-  onErrorCallback?: () => void
+  onErrorCallback?: () => void,
 ) => {
   return useGoogleLogin({
     onSuccess: async (tokenResponse) => {

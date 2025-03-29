@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ReactFlow, {
   Background,
-  Controls,
   // MiniMap,
   Node,
   Edge,
   BackgroundVariant,
 } from "react-flow-renderer";
+
 import styles from "./index.module.css";
-import { Major, MajorItem } from "@/types/major";
 import { calculateTiers, Tier } from "./utils";
+
+import { Major } from "@/types/major";
 
 interface CurriculumGraphProps {
   major?: Major | null;
@@ -60,7 +61,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLDivElement>,
-    code: string
+    code: string,
   ) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault(); // Ngăn cuộn trang khi nhấn Space
@@ -72,6 +73,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
     (tier, tierIndex) =>
       tier.elements
         .map((element: Tier["elements"][number], elemIndex: number) => {
+          if (element?.type !== "subject") return null;
           if (element.type !== "subject") return null;
           const subject = element.subject;
           const nodeId = `${subject.code || subject.genCode}-${tier.level}`;
@@ -82,11 +84,11 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
             data: {
               label: (
                 <div
-                  onClick={() => handleNodeClick(subject.code!)}
-                  onKeyDown={(e) => handleKeyDown(e, subject.code!)}
                   className={styles.subjectCard}
                   role="button" // Thêm role để tuân thủ a11y
                   tabIndex={0} // Cho phép focus bằng bàn phím
+                  onClick={() => handleNodeClick(subject.code!)}
+                  onKeyDown={(e) => handleKeyDown(e, subject.code!)}
                 >
                   <p>
                     <strong>{subject.code || subject.genCode}</strong>
@@ -101,13 +103,14 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
             },
           };
         })
-        .filter(Boolean) as Node[]
+        .filter(Boolean) as Node[],
   );
 
   const edges: Edge[] = tiers.flatMap((tier) =>
     tier.elements
-      .filter((e: Tier) => e.type === "subject" && e.subject.prerequisites)
+      .filter((e) => e.type === "subject" && e.subject.prerequisites)
       .flatMap((element: Tier["elements"][number]) => {
+        if (element.type !== "subject") return null;
         const subject = element.subject;
         const targetId = `${subject.code || subject.genCode}-${tier.level}`;
         if (selectedSubject && !visibleSubjects.has(subject.code!)) return [];
@@ -118,8 +121,8 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
                 (e) =>
                   e.type === "subject" &&
                   (e.subject.code === prereqCode ||
-                    e.subject.genCode === prereqCode)
-              )
+                    e.subject.genCode === prereqCode),
+              ),
             );
             const sourceId = `${prereqCode}-${prereqTier?.level || 0}`;
             if (selectedSubject && !visibleSubjects.has(prereqCode))
@@ -144,6 +147,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
           .filter(Boolean) as Edge[];
       })
       .flat()
+      .filter((edge): edge is Edge => edge !== null),
   );
 
   if (!major) {
@@ -159,16 +163,16 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
       <h2>{major.name}</h2>
       <div className={styles.tabletContainer}>
         <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          style={{ width: "100%", height: "100%" }}
-          nodesDraggable={false}
-          zoomOnScroll={false}
-          panOnDrag={true}
-          minZoom={0.2}
-          maxZoom={5}
           defaultZoom={1}
+          edges={edges}
+          maxZoom={5}
+          minZoom={0.2}
+          nodes={nodes}
+          nodesDraggable={false}
+          panOnDrag={true}
           preventScrolling={false}
+          style={{ width: "100%", height: "100%" }}
+          zoomOnScroll={false}
         >
           <Background
             color="#00b7ff"

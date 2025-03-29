@@ -42,7 +42,7 @@ export const Navbar = () => {
       setIsLoading(false);
       setIsLoginModalOpen(false);
     },
-    () => setIsLoading(false)
+    () => setIsLoading(false),
   );
 
   const updateAuthToken = () => {
@@ -279,7 +279,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
+                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium",
                     )}
                     href={item.href}
                     onClick={
@@ -325,7 +325,7 @@ export const Navbar = () => {
                       <NextLink
                         className={clsx(
                           linkStyles({ color: "foreground" }),
-                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block"
+                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block",
                         )}
                         href={item.href}
                         onClick={

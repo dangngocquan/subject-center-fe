@@ -1,9 +1,11 @@
 "use client";
 
-import { MajorItemWithChildren } from "@/types/major";
 import { motion } from "framer-motion";
 import React from "react";
+
 import { calculateTotalCreditsAndCount } from "./majorUtils";
+
+import { MajorItemWithChildren } from "@/types/major";
 
 interface MajorDetailRowProps {
   node: MajorItemWithChildren;
