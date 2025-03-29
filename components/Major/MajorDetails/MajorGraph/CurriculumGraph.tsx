@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactFlow, {
   Background,
-  // MiniMap,
   Node,
   Edge,
   BackgroundVariant,
@@ -64,58 +63,68 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
     code: string,
   ) => {
     if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault(); // Ngăn cuộn trang khi nhấn Space
+      event.preventDefault();
       setSelectedSubject(selectedSubject === code ? null : code);
     }
   };
 
-  const nodes: Node[] = tiers.flatMap(
-    (tier, tierIndex) =>
-      tier.elements
-        .map((element: Tier["elements"][number], elemIndex: number) => {
-          if (element?.type !== "subject") return null;
-          if (element.type !== "subject") return null;
-          const subject = element.subject;
-          const nodeId = `${subject.code || subject.genCode}-${tier.level}`;
-          if (selectedSubject && !visibleSubjects.has(subject.code!))
-            return null;
-          return {
-            id: nodeId,
-            data: {
-              label: (
-                <div
-                  className={styles.subjectCard}
-                  role="button" // Thêm role để tuân thủ a11y
-                  tabIndex={0} // Cho phép focus bằng bàn phím
-                  onClick={() => handleNodeClick(subject.code!)}
-                  onKeyDown={(e) => handleKeyDown(e, subject.code!)}
-                >
-                  <p>
-                    <strong>{subject.code || subject.genCode}</strong>
-                  </p>
-                </div>
-              ),
-            },
-            position: { x: elemIndex * 120, y: tierIndex * 150 },
-            style: {
-              width: 100,
-              padding: 0,
-            },
-          };
-        })
-        .filter(Boolean) as Node[],
+  // Tính toán chiều rộng tối đa của mỗi tier
+  const tierWidths = tiers.map(
+    (tier) => tier.elements.filter((e) => e.type === "subject").length * 150, // 150px mỗi node + khoảng cách
   );
+  const maxWidth = Math.max(...tierWidths, 300); // Đảm bảo chiều rộng tối thiểu
 
-  const edges: Edge[] = tiers.flatMap((tier) =>
-    tier.elements
+  // Tạo nodes với vị trí thông minh
+  const nodes: Node[] = tiers.flatMap((tier, tierIndex) => {
+    const subjectsInTier = tier.elements.filter((e) => e.type === "subject");
+    const tierWidth = subjectsInTier.length * 150;
+    const offsetX = (maxWidth - tierWidth) / 2; // Căn giữa tier
+
+    return subjectsInTier
+      .map((element, elemIndex) => {
+        const subject = element.subject;
+        const nodeId = `${subject.code || subject.genCode}-${tier.level}`;
+        if (selectedSubject && !visibleSubjects.has(subject.code!)) return null;
+        return {
+          id: nodeId,
+          data: {
+            label: (
+              <div
+                className={styles.subjectCard}
+                role="button"
+                tabIndex={0}
+                onClick={() => handleNodeClick(subject.code!)}
+                onKeyDown={(e) => handleKeyDown(e, subject.code!)}
+              >
+                <p>
+                  <strong>{subject.code || subject.genCode}</strong>
+                </p>
+              </div>
+            ),
+          },
+          position: {
+            x: offsetX + elemIndex * 150, // Khoảng cách lớn hơn giữa node
+            y: tierIndex * 200, // Tăng khoảng cách giữa tier
+          },
+          style: {
+            width: 100,
+            padding: 0,
+          },
+        };
+      })
+      .filter(Boolean) as Node[];
+  });
+
+  // Tạo edges với đường cong tránh node
+  const edges: Edge[] = tiers.flatMap((tier) => {
+    return tier.elements
       .filter((e) => e.type === "subject" && e.subject.prerequisites)
       .flatMap((element: Tier["elements"][number]) => {
-        if (element.type !== "subject") return null;
         const subject = element.subject;
         const targetId = `${subject.code || subject.genCode}-${tier.level}`;
         if (selectedSubject && !visibleSubjects.has(subject.code!)) return [];
         return (subject.prerequisites || [])
-          .map((prereqCode: string, index: number) => {
+          .map((prereqCode, index) => {
             const prereqTier = tiers.find((t) =>
               t.elements.some(
                 (e) =>
@@ -127,11 +136,22 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
             const sourceId = `${prereqCode}-${prereqTier?.level || 0}`;
             if (selectedSubject && !visibleSubjects.has(prereqCode))
               return null;
+
+            // Tìm vị trí của source và target node
+            const sourceNode = nodes.find((n) => n.id === sourceId);
+            const targetNode = nodes.find((n) => n.id === targetId);
+            if (!sourceNode || !targetNode) return null;
+
+            // Tính điểm điều khiển để đường cong tránh node
+            const controlX =
+              (sourceNode.position.x + targetNode.position.x) / 2;
+            const controlY = sourceNode.position.y - 50; // Điểm điều khiển nằm trên source
+
             return {
               id: `${sourceId}-${targetId}-${index}`,
               source: sourceId,
               target: targetId,
-              type: "smoothstep",
+              type: "bezier",
               animated: true,
               style: {
                 stroke: "#00b7ff",
@@ -142,13 +162,15 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
                 type: "arrowclosed",
                 color: "#00b7ff",
               },
+              pathOptions: {
+                curvature: 0.5, // Độ cong của đường
+              },
             };
           })
           .filter(Boolean) as Edge[];
       })
-      .flat()
-      .filter((edge): edge is Edge => edge !== null),
-  );
+      .flat();
+  });
 
   if (!major) {
     return (
@@ -180,7 +202,6 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
             variant={BackgroundVariant.Dots}
           />
           {/* <Controls showZoom={true} showInteractive={false} /> */}
-          {/* <MiniMap nodeColor={(node) => "#00b7ff"} nodeStrokeWidth={3} /> */}
         </ReactFlow>
       </div>
     </div>
