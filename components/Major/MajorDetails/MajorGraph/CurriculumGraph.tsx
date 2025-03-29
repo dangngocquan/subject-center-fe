@@ -121,9 +121,9 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
       .filter((e) => e.type === "subject" && e.subject.prerequisites)
       .flatMap((element: Tier["elements"][number]) => {
         const subject = element.subject;
-        const targetId = `${subject.code || subject.genCode}-${tier.level}`;
-        if (selectedSubject && !visibleSubjects.has(subject.code!)) return [];
-        return (subject.prerequisites || [])
+        const targetId = `${subject?.code || subject?.genCode}-${tier.level}`;
+        if (selectedSubject && !visibleSubjects.has(subject?.code!)) return [];
+        return (subject?.prerequisites || [])
           .map((prereqCode, index) => {
             const prereqTier = tiers.find((t) =>
               t.elements.some(

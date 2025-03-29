@@ -3,9 +3,9 @@ import { MajorItem } from "@/types/major";
 export interface Tier {
   level: number;
   elements: Array<
-    | { type: "subject"; subject: MajorItem }
-    | { type: "spacer"; id: string }
-    | { type: "groupSpacer"; id: string }
+    | { type: "subject"; subject: MajorItem; id?: string }
+    | { type: "spacer"; id: string; subject?: MajorItem }
+    | { type: "groupSpacer"; id: string; subject?: MajorItem }
   >;
 }
 
@@ -84,7 +84,7 @@ export const calculateTiers = (items: MajorItem[]): Tier[] => {
 
   const assignLevels = (
     item: MajorItem,
-    visited: Set<string> = new Set(),
+    visited: Set<string> = new Set()
   ): number => {
     if (!item.code || !item.isLeaf)
       return levelAssignments.get(item.code!) || 0;
@@ -99,7 +99,7 @@ export const calculateTiers = (items: MajorItem[]): Tier[] => {
           const prereqLevel = assignLevels(prereq, visited);
           maxPrerequisiteLevel = Math.max(
             maxPrerequisiteLevel,
-            prereqLevel + 1,
+            prereqLevel + 1
           );
         }
       });
@@ -135,7 +135,7 @@ export const calculateTiers = (items: MajorItem[]): Tier[] => {
 
     groups.forEach((group) => {
       const subjectsInTier = group.subjects.filter(
-        (subject) => (levelAssignments.get(subject.code!) || 0) === tier.level,
+        (subject) => (levelAssignments.get(subject.code!) || 0) === tier.level
       );
       if (subjectsInTier.length > 0) {
         subjectsInTier.sort((a, b) => {
@@ -166,12 +166,12 @@ export const calculateTiers = (items: MajorItem[]): Tier[] => {
 
   const maxSubjectsInTier = Math.max(
     ...sortedTiers.map(
-      (tier) => tier.elements.filter((e) => e.type === "subject").length,
-    ),
+      (tier) => tier.elements.filter((e) => e.type === "subject").length
+    )
   );
   sortedTiers.forEach((tier) => {
     const numSubjects = tier.elements.filter(
-      (e) => e.type === "subject",
+      (e) => e.type === "subject"
     ).length;
     const paddingCount = Math.max(0, (maxSubjectsInTier - numSubjects) / 2);
 
