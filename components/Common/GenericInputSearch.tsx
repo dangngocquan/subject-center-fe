@@ -34,7 +34,7 @@ const GenericInputSearch: React.FC<GenericInputSearchProps> = ({
       </div>
       <input
         ref={inputRef}
-        className="w-full py-4 pl-14 pr-12 rounded-full bg-gray-900/80 backdrop-blur-md text-cyan-400/50 placeholder-cyan-400/50 border border-cyan-500/30 focus:outline-none focus:ring-4 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 hover:border-cyan-400 placeholder:transition-all placeholder:duration-300 focus:placeholder:opacity-0"
+        className="w-full py-4 pl-14 pr-12 rounded-md bg-gray-900/80 backdrop-blur-md text-cyan-400/50 placeholder-cyan-400/50 border border-cyan-500/30 focus:outline-none focus:ring-4 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 hover:border-cyan-400 placeholder:transition-all placeholder:duration-300 focus:placeholder:opacity-0"
         placeholder={placeholder}
         type="text"
         value={searchTerm}

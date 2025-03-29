@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useMemo, useState } from "react";
 import { useMajorDetail } from "@/hooks/useMajorDetail";
 import { createNewPlan } from "@/service/plan.api";
-import { MajorItem, MajorItemWithChildren } from "@/types/major";
+import { Major, MajorItem, MajorItemWithChildren } from "@/types/major";
 import MajorDetailHeader from "./MajorDetailHeader";
 import MajorDetailTable from "./MajorDetailTable";
 import MajorDetailTooltips from "./MajorDetailTooltips";
@@ -12,6 +12,7 @@ import { buildTree, findRequiredSubjects, flattenTree } from "./majorUtils";
 import LoadingModal from "@/components/LoadingModal";
 import PlanModal from "../PlanModal";
 import ResultModal from "../ResultModal";
+import CurriculumGraph from "./MajorGraph";
 
 interface MajorDetailProps {
   id: string;
@@ -175,6 +176,9 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         onToggleExpand={toggleExpand}
         onHandleSelection={handleSelection}
       />
+      <div>
+        <CurriculumGraph major={major} />
+      </div>
     </div>
   );
 };

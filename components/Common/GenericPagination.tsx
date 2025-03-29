@@ -84,7 +84,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
           {visiblePages.map((page) => (
             <motion.button
               key={page}
-              className={`w-3 h-3 rounded-full border border-cyan-500/30 shadow-lg shadow-cyan-500/20 ${
+              className={`w-3 h-3 rounded-md border border-cyan-500/30 shadow-lg shadow-cyan-500/20 ${
                 currentPage === page
                   ? "bg-cyan-400"
                   : "bg-gray-900/80 backdrop-blur-md hover:bg-cyan-400/20"
@@ -114,7 +114,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
       <div className="flex items-center justify-between w-full max-w-[300px]">
         <div className="relative">
           <input
-            className="w-16 sm:w-16 py-1 pl-2 pr-8 rounded-full bg-gray-900/80 backdrop-blur-md text-cyan-400/50 border border-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 hover:border-cyan-400 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-16 sm:w-16 py-1 pl-2 pr-8 rounded-md bg-gray-900/80 backdrop-blur-md text-cyan-400/50 border border-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 hover:border-cyan-400 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             max={totalPages}
             min={1}
             placeholder="Page"
@@ -134,7 +134,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
           </motion.button>
         </div>
 
-        <span className="ml-2 text-cyan-400/70 text-sm bg-gray-900/80 backdrop-blur-md px-3 py-1 rounded-full shadow-lg shadow-cyan-500/20">
+        <span className="ml-2 text-cyan-400/70 text-sm bg-gray-900/80 backdrop-blur-md px-3 py-1 rounded-md shadow-lg shadow-cyan-500/20">
           {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, totalItems)}/
           {totalItems} • Page {currentPage}/{totalPages}
         </span>
