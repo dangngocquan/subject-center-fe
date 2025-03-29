@@ -12,7 +12,7 @@ import { buildTree, findRequiredSubjects, flattenTree } from "./majorUtils";
 import LoadingModal from "@/components/LoadingModal";
 import PlanModal from "../PlanModal";
 import ResultModal from "../ResultModal";
-import CurriculumGraph from "./MajorGraph";
+import CurriculumGraph from "./MajorGraph/CurriculumGraph";
 
 interface MajorDetailProps {
   id: string;
