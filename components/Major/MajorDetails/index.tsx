@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence } from "framer-motion";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 import PlanModal from "../PlanModal";
 import ResultModal from "../ResultModal";
@@ -39,6 +39,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
     }[]
   >([]);
   const [planName, setPlanName] = useState<string>("");
+  const [viewMode, setViewMode] = useState<"list" | "graph">("list");
 
   useEffect(() => {
     if (major) {
@@ -69,10 +70,10 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       .filter((item) => !item.isLeaf)
       .map((item) => item.genCode);
     const allExpanded = expandableNodes.every((genCode) =>
-      expanded.has(genCode),
+      expanded.has(genCode)
     );
     setExpanded(
-      allExpanded ? new Set() : new Set(data.map((item) => item.genCode)),
+      allExpanded ? new Set() : new Set(data.map((item) => item.genCode))
     );
   };
 
@@ -92,6 +93,8 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   const selectAllRequired = () => setSelected(findRequiredSubjects(tree, data));
   const openPlanModal = () => setIsPlanModalOpen(true);
   const closePlanModal = () => setIsPlanModalOpen(false);
+  const toggleViewMode = () =>
+    setViewMode((prev) => (prev === "list" ? "graph" : "list"));
 
   const handlePlanCreated = ({
     planName,
@@ -121,18 +124,18 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       data
         .filter((item) => selected.has(item.genCode) && item.credit)
         .reduce((sum, item) => sum + (item.credit || 0), 0),
-    [data, selected],
+    [data, selected]
   );
 
   const flatData = useMemo(() => flattenTree(tree, expanded), [tree, expanded]);
   const expandableNodes = useMemo(
     () => data.filter((item) => !item.isLeaf).map((item) => item.genCode),
-    [data],
+    [data]
   );
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 
   if (loading) return <LoadingModal isOpen={loading} />;
-  if (error) return <p className="text-red-500">An error occurred: {error}</p>;
+  if (error) return <p className="text-red-500">Đã xảy ra lỗi: {error}</p>;
 
   return (
     <div className="min-h-screen p-4 sm:p-6 bg-[#0A1A2F]">
@@ -146,6 +149,8 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         onSelectAllRequired={selectAllRequired}
         onToggleAllExpand={toggleAllExpand}
         onToggleMode={toggleMode}
+        viewMode={viewMode}
+        onToggleViewMode={toggleViewMode}
       />
 
       <AnimatePresence>
@@ -171,17 +176,27 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       </AnimatePresence>
 
       <MajorDetailTooltips />
-      <MajorDetailTable
-        expanded={expanded}
-        flatData={flatData}
-        isEditMode={isEditMode}
-        selected={selected}
-        onHandleSelection={handleSelection}
-        onToggleExpand={toggleExpand}
-      />
-      <div>
-        <CurriculumGraph major={major} />
-      </div>
+      {viewMode === "list" ? (
+        <MajorDetailTable
+          expanded={expanded}
+          flatData={flatData}
+          isEditMode={isEditMode}
+          selected={selected}
+          onHandleSelection={handleSelection}
+          onToggleExpand={toggleExpand}
+        />
+      ) : (
+        <CurriculumGraph
+          major={major}
+          selected={selected}
+          onHandleSelection={(genCode, isChecked) => {
+            // Sử dụng genCode thay vì code
+            const mockItem = { genCode } as MajorItemWithChildren;
+            handleSelection(mockItem, isChecked);
+          }}
+          isEditMode={isEditMode}
+        />
+      )}
     </div>
   );
 };

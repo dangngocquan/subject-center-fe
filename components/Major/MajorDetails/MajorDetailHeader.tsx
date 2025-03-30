@@ -10,6 +10,8 @@ import {
   FaEye,
   FaPlus,
   FaUndo,
+  FaList,
+  FaProjectDiagram,
 } from "react-icons/fa";
 
 import GenericButton from "@/components/Common/GenericButton";
@@ -19,11 +21,13 @@ interface MajorDetailHeaderProps {
   totalCredits: number;
   isEditMode: boolean;
   allExpanded: boolean;
+  viewMode: "list" | "graph";
   onToggleAllExpand: () => void;
   onToggleMode: () => void;
   onResetSelected: () => void;
   onSelectAllRequired: () => void;
   onOpenPlanModal: () => void;
+  onToggleViewMode: () => void;
 }
 
 const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
@@ -31,13 +35,15 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
   totalCredits,
   isEditMode,
   allExpanded,
+  viewMode,
   onToggleAllExpand,
   onToggleMode,
   onResetSelected,
   onSelectAllRequired,
   onOpenPlanModal,
+  onToggleViewMode,
 }) => {
-  const viewModeTooltip = "Only active in Edit Mode";
+  const viewModeTooltip = "Chỉ hoạt động trong chế độ chỉnh sửa";
 
   return (
     <motion.div
@@ -50,7 +56,7 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <h2 className="text-xl sm:text-2xl font-bold tracking-wide bg-gradient-to-r from-[#4A90E2] to-white bg-clip-text text-transparent">
-          {majorName || "Major List"}
+          {majorName || "Danh sách chuyên ngành"}
         </h2>
 
         <motion.span
@@ -60,7 +66,7 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          Selected Credits:{" "}
+          Tổng tín chỉ đã chọn:{" "}
           <span className="text-[#4A90E2] font-semibold">{totalCredits}</span>
         </motion.span>
       </motion.div>
@@ -71,7 +77,7 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
       >
         <div className="flex flex-wrap gap-2 mt-2">
           <GenericButton
-            tooltipContent={allExpanded ? "Collapse All" : "Expand All"}
+            tooltipContent={allExpanded ? "Thu gọn tất cả" : "Mở rộng tất cả"}
             tooltipId="expand-tooltip"
             onClick={onToggleAllExpand}
           >
@@ -83,7 +89,9 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
           </GenericButton>
           <GenericButton
             tooltipContent={
-              isEditMode ? "Switch to View Mode" : "Switch to Edit Mode"
+              isEditMode
+                ? "Chuyển sang chế độ xem"
+                : "Chuyển sang chế độ chỉnh sửa"
             }
             tooltipId="mode-tooltip"
             onClick={onToggleMode}
@@ -92,7 +100,7 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
           </GenericButton>
           <GenericButton
             disabled={!isEditMode}
-            tooltipContent={isEditMode ? "Reset Selection" : viewModeTooltip}
+            tooltipContent={isEditMode ? "Xóa lựa chọn" : viewModeTooltip}
             tooltipId="reset-tooltip"
             onClick={isEditMode ? onResetSelected : undefined}
           >
@@ -101,7 +109,7 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
           <GenericButton
             disabled={!isEditMode}
             tooltipContent={
-              isEditMode ? "Select All Required" : viewModeTooltip
+              isEditMode ? "Chọn tất cả bắt buộc" : viewModeTooltip
             }
             tooltipId="select-all-tooltip"
             onClick={isEditMode ? onSelectAllRequired : undefined}
@@ -113,8 +121,8 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
             tooltipContent={
               isEditMode
                 ? totalCredits > 0
-                  ? "Create Plan with Selected Subjects"
-                  : "Select at least 1 subject to create a plan"
+                  ? "Tạo kế hoạch với các môn đã chọn"
+                  : "Chọn ít nhất 1 môn để tạo kế hoạch"
                 : viewModeTooltip
             }
             tooltipId="create-plan-tooltip"
@@ -123,6 +131,21 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
             }
           >
             <FaPlus size={20} />
+          </GenericButton>
+          <GenericButton
+            tooltipContent={
+              viewMode === "list"
+                ? "Chuyển sang xem đồ thị"
+                : "Chuyển sang xem danh sách"
+            }
+            tooltipId="view-mode-tooltip"
+            onClick={onToggleViewMode}
+          >
+            {viewMode === "list" ? (
+              <FaProjectDiagram size={20} />
+            ) : (
+              <FaList size={20} />
+            )}
           </GenericButton>
         </div>
       </motion.div>
