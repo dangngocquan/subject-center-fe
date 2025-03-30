@@ -5,10 +5,7 @@ import ReactFlow, {
   Edge,
   BackgroundVariant,
 } from "react-flow-renderer";
-
-import styles from "./index.module.css";
 import { calculateTiers, Tier } from "./utils";
-
 import { Major } from "@/types/major";
 
 interface CurriculumGraphProps {
@@ -18,6 +15,48 @@ interface CurriculumGraphProps {
 const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
   const [tiers, setTiers] = useState<Tier[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+
+  // Define styles as JavaScript objects
+  const graphContainerStyle = {
+    padding: "20px",
+    fontFamily: "Arial, sans-serif",
+    position: "relative" as const,
+    width: "100%",
+  };
+
+  const tabletContainerStyle = {
+    position: "relative" as const,
+    width: "100%",
+    height: "600px",
+    margin: "0 auto",
+    border: "2px solid #00b7ff",
+    borderRadius: "15px",
+    background: "linear-gradient(145deg, #0a1a2f, #1a2a4f)",
+    boxShadow:
+      "0 0 20px rgba(0, 183, 255, 0.5), inset 0 0 10px rgba(0, 183, 255, 0.3)",
+    padding: "10px",
+    overflow: "hidden" as const,
+  };
+
+  const subjectCardStyle = {
+    backgroundColor: "#f9f9f9",
+    border: "1px solid #00b7ff",
+    borderRadius: "5px",
+    padding: "10px",
+    width: "100px",
+    boxShadow: "0 0 10px rgba(0, 183, 255, 0.3)",
+    textAlign: "center" as const,
+    background: "linear-gradient(145deg, #ffffff, #e0e0e0)",
+  };
+
+  const subjectCardPStyle = {
+    margin: "0",
+    fontSize: "0.9em",
+  };
+
+  const subjectCardStrongStyle = {
+    color: "#00b7ff",
+  };
 
   useEffect(() => {
     if (major && major.items) {
@@ -60,7 +99,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLDivElement>,
-    code: string,
+    code: string
   ) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -68,17 +107,15 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
     }
   };
 
-  // Tính toán chiều rộng tối đa của mỗi tier
   const tierWidths = tiers.map(
-    (tier) => tier.elements.filter((e) => e.type === "subject").length * 150, // 150px mỗi node + khoảng cách
+    (tier) => tier.elements.filter((e) => e.type === "subject").length * 150
   );
-  const maxWidth = Math.max(...tierWidths, 300); // Đảm bảo chiều rộng tối thiểu
+  const maxWidth = Math.max(...tierWidths, 300);
 
-  // Tạo nodes với vị trí thông minh
   const nodes: Node[] = tiers.flatMap((tier, tierIndex) => {
     const subjectsInTier = tier.elements.filter((e) => e.type === "subject");
     const tierWidth = subjectsInTier.length * 150;
-    const offsetX = (maxWidth - tierWidth) / 2; // Căn giữa tier
+    const offsetX = (maxWidth - tierWidth) / 2;
 
     return subjectsInTier
       .map((element, elemIndex) => {
@@ -90,21 +127,23 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
           data: {
             label: (
               <div
-                className={styles.subjectCard}
+                style={subjectCardStyle}
                 role="button"
                 tabIndex={0}
                 onClick={() => handleNodeClick(subject.code!)}
                 onKeyDown={(e) => handleKeyDown(e, subject.code!)}
               >
-                <p>
-                  <strong>{subject.code || subject.genCode}</strong>
+                <p style={subjectCardPStyle}>
+                  <strong style={subjectCardStrongStyle}>
+                    {subject.code || subject.genCode}
+                  </strong>
                 </p>
               </div>
             ),
           },
           position: {
-            x: offsetX + elemIndex * 150, // Khoảng cách lớn hơn giữa node
-            y: tierIndex * 200, // Tăng khoảng cách giữa tier
+            x: offsetX + elemIndex * 150,
+            y: tierIndex * 200,
           },
           style: {
             width: 100,
@@ -115,7 +154,6 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
       .filter(Boolean) as Node[];
   });
 
-  // Tạo edges với đường cong tránh node
   const edges: Edge[] = tiers.flatMap((tier) => {
     return tier.elements
       .filter((e) => e.type === "subject" && e.subject.prerequisites)
@@ -130,22 +168,20 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
                 (e) =>
                   e.type === "subject" &&
                   (e.subject.code === prereqCode ||
-                    e.subject.genCode === prereqCode),
-              ),
+                    e.subject.genCode === prereqCode)
+              )
             );
             const sourceId = `${prereqCode}-${prereqTier?.level || 0}`;
             if (selectedSubject && !visibleSubjects.has(prereqCode))
               return null;
 
-            // Tìm vị trí của source và target node
             const sourceNode = nodes.find((n) => n.id === sourceId);
             const targetNode = nodes.find((n) => n.id === targetId);
             if (!sourceNode || !targetNode) return null;
 
-            // Tính điểm điều khiển để đường cong tránh node
             const controlX =
               (sourceNode.position.x + targetNode.position.x) / 2;
-            const controlY = sourceNode.position.y - 50; // Điểm điều khiển nằm trên source
+            const controlY = sourceNode.position.y - 50;
 
             return {
               id: `${sourceId}-${targetId}-${index}`,
@@ -163,7 +199,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
                 color: "#00b7ff",
               },
               pathOptions: {
-                curvature: 0.5, // Độ cong của đường
+                curvature: 0.5,
               },
             };
           })
@@ -174,16 +210,15 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
 
   if (!major) {
     return (
-      <div className={styles.graphContainer}>
+      <div style={graphContainerStyle}>
         <p>Loading curriculum data...</p>
       </div>
     );
   }
 
   return (
-    <div className={styles.graphContainer}>
-      <h2>{major.name}</h2>
-      <div className={styles.tabletContainer}>
+    <div style={graphContainerStyle}>
+      <div style={tabletContainerStyle}>
         <ReactFlow
           defaultZoom={1}
           edges={edges}
@@ -201,7 +236,6 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({ major }) => {
             gap={50}
             variant={BackgroundVariant.Dots}
           />
-          {/* <Controls showZoom={true} showInteractive={false} /> */}
         </ReactFlow>
       </div>
     </div>
