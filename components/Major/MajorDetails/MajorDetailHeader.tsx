@@ -45,6 +45,15 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
 }) => {
   const viewModeTooltip = "Chỉ hoạt động trong chế độ chỉnh sửa";
 
+  // Determine the toggle action based on totalCredits
+  const handleToggleSelection = () => {
+    if (totalCredits > 0) {
+      onResetSelected();
+    } else {
+      onSelectAllRequired();
+    }
+  };
+
   return (
     <motion.div
       className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#1A2A44] p-4 rounded-lg shadow-lg mb-4"
@@ -98,23 +107,24 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
           >
             {isEditMode ? <FaEye size={20} /> : <FaEdit size={20} />}
           </GenericButton>
-          <GenericButton
-            disabled={!isEditMode}
-            tooltipContent={isEditMode ? "Xóa lựa chọn" : viewModeTooltip}
-            tooltipId="reset-tooltip"
-            onClick={isEditMode ? onResetSelected : undefined}
-          >
-            <FaUndo size={20} />
-          </GenericButton>
+          {/* Combined Toggle Button */}
           <GenericButton
             disabled={!isEditMode}
             tooltipContent={
-              isEditMode ? "Chọn tất cả bắt buộc" : viewModeTooltip
+              isEditMode
+                ? totalCredits > 0
+                  ? "Xóa lựa chọn"
+                  : "Chọn tất cả bắt buộc"
+                : viewModeTooltip
             }
-            tooltipId="select-all-tooltip"
-            onClick={isEditMode ? onSelectAllRequired : undefined}
+            tooltipId="toggle-selection-tooltip"
+            onClick={isEditMode ? handleToggleSelection : undefined}
           >
-            <FaCheckSquare size={20} />
+            {totalCredits > 0 ? (
+              <FaUndo size={20} />
+            ) : (
+              <FaCheckSquare size={20} />
+            )}
           </GenericButton>
           <GenericButton
             disabled={!isEditMode || totalCredits === 0}

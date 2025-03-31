@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import ReactFlow, {
   Background,
   Node,
@@ -7,7 +7,6 @@ import ReactFlow, {
 } from "react-flow-renderer";
 
 import { calculateTiers, Tier } from "./utils";
-
 import { Major } from "@/types/major";
 
 interface CurriculumGraphProps {
@@ -25,6 +24,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
 }) => {
   const [tiers, setTiers] = useState<Tier[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const graphContainerStyle = {
     padding: "20px",
@@ -50,10 +50,10 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
 
   const baseSubjectCardStyle = {
     backgroundColor: "#fff",
-    borderRadius: "8px",
+    borderRadius: "2px",
     padding: "12px",
     width: "200px",
-    boxShadow: "0 2px 8px rgba(0, 183, 255, 0.2)",
+    boxShadow: "0 2px 8px rgba(34, 255, 0, 0.2)",
     textAlign: "center" as const,
     transition: "all 0.2s ease",
     wordBreak: "break-word" as const,
@@ -82,14 +82,28 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     }
   }, [major]);
 
+  const toggleFullscreen = useCallback(() => {
+    const container = document.getElementById("curriculum-graph-container");
+    if (!container) return;
+
+    if (!isFullscreen) {
+      container
+        .requestFullscreen()
+        .then(() => setIsFullscreen(true))
+        .catch((err) => console.error("Failed to enter fullscreen:", err));
+    } else {
+      document
+        .exitFullscreen()
+        .then(() => setIsFullscreen(false))
+        .catch((err) => console.error("Failed to exit fullscreen:", err));
+    }
+  }, [isFullscreen]);
+
   const getVisibleSubjects = (selectedCode: string | null): Set<string> => {
     const visibleSubjects = new Set<string>();
     if (!selectedCode || !major) {
-      // If no selectedCode, display all subjects
       major?.items.forEach((item) => {
-        if (item.genCode) {
-          visibleSubjects.add(item.genCode);
-        }
+        if (item.genCode) visibleSubjects.add(item.genCode);
       });
       return visibleSubjects;
     }
@@ -99,24 +113,17 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     );
     if (!selected) return visibleSubjects;
 
-    // Add the selected node
-    if (selected.genCode) {
-      visibleSubjects.add(selected.genCode);
-    }
+    if (selected.genCode) visibleSubjects.add(selected.genCode);
 
-    // Add prerequisites of the selected node
     if (selected.prerequisites) {
       selected.prerequisites.forEach((prereqCode) => {
         const prereqItem = major.items.find(
           (item) => item.code === prereqCode || item.genCode === prereqCode
         );
-        if (prereqItem?.genCode) {
-          visibleSubjects.add(prereqItem.genCode);
-        }
+        if (prereqItem?.genCode) visibleSubjects.add(prereqItem.genCode);
       });
     }
 
-    // Add subjects whose prerequisites include the selected node
     major.items.forEach((item) => {
       if (
         item.prerequisites?.some(
@@ -163,15 +170,12 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
         const nodeId = `${subject.genCode}-${tier.level}`;
         const genCode = subject.genCode;
 
-        // Hide node if not in visibleSubjects when there is a selectedSubject
-        if (selectedSubject && !visibleSubjects.has(genCode)) {
-          return null;
-        }
+        if (selectedSubject && !visibleSubjects.has(genCode)) return null;
 
         const subjectCardStyle = {
           ...baseSubjectCardStyle,
           background: selected?.has(genCode)
-            ? "rgba(144, 238, 144, 0.3)"
+            ? "rgba(144, 238, 144, 0.6)"
             : "#fff",
         };
 
@@ -190,6 +194,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
                 <div style={{ display: "flex", alignItems: "flex-start" }}>
                   {isEditMode && (
                     <input
+                      className="form-check-input"
                       checked={selected?.has(genCode) || false}
                       style={{ marginRight: "8px", marginTop: "4px" }}
                       type="checkbox"
@@ -248,10 +253,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
             x: offsetX + elemIndex * 220,
             y: tierIndex * 200,
           },
-          style: {
-            width: 200,
-            padding: 0,
-          },
+          style: { width: 200, padding: 0 },
         };
       })
       .filter(Boolean) as Node[];
@@ -269,9 +271,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
             const prereqItem = major?.items.find(
               (item) => item.code === prereqCode || item.genCode === prereqCode
             );
-            if (!prereqItem) {
-              return null;
-            }
+            if (!prereqItem) return null;
 
             const prereqGenCode = prereqItem.genCode;
             const prereqTier = tiers.find((t) =>
@@ -285,9 +285,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
             const sourceNode = nodes.find((n) => n.id === sourceId);
             const targetNode = nodes.find((n) => n.id === targetId);
 
-            if (!sourceNode || !targetNode) {
-              return null;
-            }
+            if (!sourceNode || !targetNode) return null;
 
             if (
               selectedSubject &&
@@ -307,18 +305,10 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
               target: targetId,
               type: "bezier",
               animated: true,
-              style: {
-                stroke: "#00b7ff",
-                strokeWidth: 2,
-              },
+              style: { stroke: "#00b7ff", strokeWidth: 2 },
               arrowHeadType: "arrowclosed",
-              markerEnd: {
-                type: "arrowclosed",
-                color: "#00b7ff",
-              },
-              pathOptions: {
-                curvature: 0.5,
-              },
+              markerEnd: { type: "arrowclosed", color: "#00b7ff" },
+              pathOptions: { curvature: 0.5 },
             };
           })
           .filter(Boolean) as Edge[];
@@ -336,18 +326,18 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
 
   return (
     <div style={graphContainerStyle}>
-      <div style={tabletContainerStyle}>
+      <div id="curriculum-graph-container" style={tabletContainerStyle}>
         <ReactFlow
-          defaultZoom={1}
+          defaultZoom={0.4}
           edges={edges}
           maxZoom={5}
           minZoom={0.2}
           nodes={nodes}
           nodesDraggable={false}
           panOnDrag={true}
-          preventScrolling={false}
+          preventScrolling={true}
           style={{ width: "100%", height: "100%" }}
-          zoomOnScroll={false}
+          zoomOnScroll={true}
         >
           <Background
             color="#00b7ff"
@@ -355,6 +345,24 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
             variant={BackgroundVariant.Dots}
           />
         </ReactFlow>
+        <button
+          onClick={toggleFullscreen}
+          style={{
+            position: "absolute",
+            top: "15px",
+            right: "15px",
+            padding: "8px 16px",
+            background: "#007bff",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            zIndex: 10,
+            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+          }}
+        >
+          {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+        </button>
       </div>
     </div>
   );

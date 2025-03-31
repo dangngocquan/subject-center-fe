@@ -18,17 +18,17 @@ const MajorDetailTooltips: React.FC = () => {
       />
       <Tooltip
         className="bg-[#2A3A54] text-white p-2 rounded z-50"
-        id="reset-tooltip"
-        place="bottom"
-      />
-      <Tooltip
-        className="bg-[#2A3A54] text-white p-2 rounded z-50"
-        id="select-all-tooltip"
+        id="toggle-selection-tooltip"
         place="bottom"
       />
       <Tooltip
         className="bg-[#2A3A54] text-white p-2 rounded z-50"
         id="create-plan-tooltip"
+        place="bottom"
+      />
+      <Tooltip
+        className="bg-[#2A3A54] text-white p-2 rounded z-50"
+        id="view-mode-tooltip"
         place="bottom"
       />
     </>
