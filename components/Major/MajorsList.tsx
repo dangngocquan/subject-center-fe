@@ -25,7 +25,7 @@ const MajorsList: React.FC<MajorsListProps> = ({
 
   const currentMajors = majors.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    currentPage * itemsPerPage,
   );
 
   return (

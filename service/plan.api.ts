@@ -141,6 +141,7 @@ export const updatePlanItem = async (
       credit: Number(item.credit),
       prerequisites: item.prerequisites,
       gradeLatin: item.gradeLatin ?? null,
+      planId: planId,
     })
     .then((res) => {
       result.status = res.status;

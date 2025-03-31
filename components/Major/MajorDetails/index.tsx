@@ -70,10 +70,10 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       .filter((item) => !item.isLeaf)
       .map((item) => item.genCode);
     const allExpanded = expandableNodes.every((genCode) =>
-      expanded.has(genCode)
+      expanded.has(genCode),
     );
     setExpanded(
-      allExpanded ? new Set() : new Set(data.map((item) => item.genCode))
+      allExpanded ? new Set() : new Set(data.map((item) => item.genCode)),
     );
   };
 
@@ -124,13 +124,13 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
       data
         .filter((item) => selected.has(item.genCode) && item.credit)
         .reduce((sum, item) => sum + (item.credit || 0), 0),
-    [data, selected]
+    [data, selected],
   );
 
   const flatData = useMemo(() => flattenTree(tree, expanded), [tree, expanded]);
   const expandableNodes = useMemo(
     () => data.filter((item) => !item.isLeaf).map((item) => item.genCode),
-    [data]
+    [data],
   );
   const allExpanded = expandableNodes.every((genCode) => expanded.has(genCode));
 
@@ -144,12 +144,12 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         isEditMode={isEditMode}
         majorName={String(major?.name)}
         totalCredits={totalCredits}
+        viewMode={viewMode}
         onOpenPlanModal={openPlanModal}
         onResetSelected={resetSelected}
         onSelectAllRequired={selectAllRequired}
         onToggleAllExpand={toggleAllExpand}
         onToggleMode={toggleMode}
-        viewMode={viewMode}
         onToggleViewMode={toggleViewMode}
       />
 
@@ -187,6 +187,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
         />
       ) : (
         <CurriculumGraph
+          isEditMode={isEditMode}
           major={major}
           selected={selected}
           onHandleSelection={(genCode, isChecked) => {
@@ -194,7 +195,6 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
             const mockItem = { genCode } as MajorItemWithChildren;
             handleSelection(mockItem, isChecked);
           }}
-          isEditMode={isEditMode}
         />
       )}
       <LoadingModal isOpen={loading} />

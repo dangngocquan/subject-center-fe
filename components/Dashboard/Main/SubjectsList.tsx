@@ -13,19 +13,20 @@ import {
 import { motion } from "framer-motion";
 import { Tooltip } from "react-tooltip";
 
-import EditSubjectModal from "./EditSubjectModal";
 import ConfirmDeleteModal from "./modals/ConfirmDeleteModal";
 import ImportJsonModal from "./modals/ImportJsonModal";
 import ImportResultModal from "./modals/ImportResultModal";
+import CreateNewPlanItemModal from "./modals/CreateNewPlanItemModal";
+import EditSubjectModal from "./modals/EditSubjectModal";
 
 import LoadingModal from "@/components/LoadingModal";
 import ResultModal from "@/components/Dashboard/Main/ResultModal";
+import { PlanItem } from "@/types/plan";
 import {
+  deletePlanItem,
   updateGradePlanItemByJson,
   updatePlanItem,
-  deletePlanItem,
 } from "@/service/plan.api";
-import { PlanItem } from "@/types/plan";
 
 interface SubjectsListProps {
   items: PlanItem[];
@@ -55,6 +56,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
   onDataChange,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // New state for create modal
   const [isLoading, setIsLoading] = useState(false);
   const [resultModal, setResultModal] = useState<{
     isOpen: boolean;
@@ -317,6 +319,43 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
     }
   };
 
+  const handleCreateSubmit = async (newSubject: PlanItem) => {
+    setIsLoading(true);
+    try {
+      const result = await updatePlanItem(Number(planId), {
+        name: newSubject.name ?? "",
+        code: newSubject.code ?? "",
+        credit: newSubject.credit ?? 0,
+        prerequisites: newSubject.prerequisites ?? [],
+        gradeLatin: newSubject.gradeLatin ?? null,
+      });
+      if (!result.isBadRequest) {
+        setSubjects([...subjects, newSubject]);
+        setResultModal({
+          isOpen: true,
+          message: "Subject created successfully!",
+          isError: false,
+        });
+        onDataChange?.();
+      } else {
+        setResultModal({
+          isOpen: true,
+          message: `Failed to update subject: ${result.message}`,
+          isError: true,
+        });
+      }
+    } catch (error) {
+      setResultModal({
+        isOpen: true,
+        message: "An error occurred while updating the subject.",
+        isError: true,
+      });
+    } finally {
+      setIsLoading(false);
+      setIsModalOpen(false);
+    }
+  };
+
   return (
     <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 shadow-lg shadow-cyan-500/20">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
@@ -344,7 +383,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
               <ArrowsUpDownIcon className="w-5 h-5" />
             </motion.button>
             {isSortDropdownOpen && (
-              <div className="absolute mt-10 right-0 w-48 bg-gray-800 rounded-lg shadow-lg z-10">
+              <div className="absolute mt-12 w-48 bg-gray-800 rounded-lg shadow-lg z-10">
                 <button
                   className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 flex items-center"
                   onClick={() => handleSort("name")}
@@ -415,7 +454,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
               className="p-2 bg-[#4A90E2] text-white rounded-full hover:bg-[#357ABD] transition-all duration-300"
               data-tooltip-content="Add New Subject"
               data-tooltip-id="add-tooltip"
-              onClick={() => {}}
+              onClick={() => setIsCreateModalOpen(true)} // Updated to open create modal
             >
               <PlusIcon className="w-5 h-5" />
             </motion.button>
@@ -429,12 +468,13 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
 
       {filteredAndSortedSubjects.length > 0 ? (
         <div className="overflow-x-auto">
-          <table className="w-full text-left min-w-[600px]">
+          <table className="w-full text-left min-w-[700px]">
             <thead>
               <tr className="text-gray-400 border-b border-gray-800">
                 <th className="py-2 px-4">Subject Name</th>
                 <th className="py-2 px-4">Code</th>
                 <th className="py-2 px-4">Credits</th>
+                <th className="py-2 px-4">Prerequisites</th>
                 <th className="py-2 px-4">Grade (4.0)</th>
                 <th className="py-2 px-4">Letter Grade</th>
                 <th className="py-2 px-4">Actions</th>
@@ -455,12 +495,20 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
                   <td className="py-3 px-4 text-gray-300">
                     {subject.credit ?? "-"}
                   </td>
+                  <td className="py-3 px-4 text-gray-300">
+                    {subject.prerequisites &&
+                    subject.prerequisites.length > 0 ? (
+                      <div className="flex flex-col gap-1">
+                        {subject.prerequisites.map((prereq, idx) => (
+                          <span key={idx}>{prereq}</span>
+                        ))}
+                      </div>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
                   <td
-                    className={`py-3 px-4 ${
-                      subject.grade4 != null && subject.grade4 < 2.0
-                        ? "text-red-400"
-                        : "text-gray-300"
-                    }`}
+                    className={`py-3 px-4 ${subject.grade4 != null && subject.grade4 < 2.0 ? "text-red-400" : "text-gray-300"}`}
                   >
                     {subject.grade4 ?? "-"}
                   </td>
@@ -502,6 +550,13 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onSubmit={handleModalSubmit}
+        />
+      )}
+      {isCreateModalOpen && (
+        <CreateNewPlanItemModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onSubmit={handleCreateSubmit}
         />
       )}
       <LoadingModal isOpen={isLoading} />
