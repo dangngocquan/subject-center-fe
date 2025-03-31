@@ -21,11 +21,11 @@ const MajorsList: React.FC<MajorsListProps> = ({
   setSearchTerm,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const itemsPerPage = 10;
 
   const currentMajors = majors.slice(
     (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   return (
@@ -52,27 +52,27 @@ const MajorsList: React.FC<MajorsListProps> = ({
       {/* List of majors */}
       {currentMajors.length > 0 &&
         currentMajors.map((major: Major, index: number) => (
-          <motion.div
+          <Link
             key={major.id}
-            animate={{ opacity: 1, y: 0 }}
-            className="rounded-lg bg-gray-900/80 backdrop-blur-md border border-cyan-500/30 p-6 hover:bg-gray-800/90 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30"
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            whileHover={{
-              scale: 1.02,
-              boxShadow: "0 8px 24px rgba(0, 255, 255, 0.3)",
-            }}
+            href={`${siteConfig.routers.majorDetails(String(major?.id))}`}
           >
-            <Link
-              href={`${siteConfig.routers.majorDetails(String(major?.id))}`}
+            <motion.div
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-lg bg-gray-900/80 backdrop-blur-md border border-cyan-500/30 px-6 py-2 hover:bg-gray-800/90 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30"
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.2, delay: index * 0.1 }}
+              whileHover={{
+                // scale: 1.02,
+                boxShadow: "0 8px 24px rgba(0, 255, 255, 0.3)",
+              }}
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between h-full gap-4">
                 <div className="flex items-center mb-2 sm:mb-0 flex-grow">
                   <FaBook
                     className="text-cyan-400 mr-4 flex-shrink-0"
-                    size={24}
+                    size={20}
                   />
-                  <h2 className="text-xl font-semibold text-white bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+                  <h2 className="text-s font-semibold text-white bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
                     {major.name}
                   </h2>
                 </div>
@@ -80,7 +80,7 @@ const MajorsList: React.FC<MajorsListProps> = ({
                   <motion.button
                     className="py-2 px-6 bg-gray-900/80 backdrop-blur-md text-cyan-400 font-medium rounded-md border border-cyan-500/30 hover:bg-cyan-400 hover:text-gray-900 transition-all duration-300 shadow-lg shadow-cyan-500/20"
                     whileHover={{
-                      scale: 1.05,
+                      // scale: 1.05,
                       boxShadow: "0 0 12px rgba(0, 255, 255, 0.4)",
                     }}
                     whileTap={{ scale: 0.95 }}
@@ -89,8 +89,8 @@ const MajorsList: React.FC<MajorsListProps> = ({
                   </motion.button>
                 </div>
               </div>
-            </Link>
-          </motion.div>
+            </motion.div>
+          </Link>
         ))}
       {currentMajors.length === 0 && (
         <div className="rounded-lg bg-gray-900/80 backdrop-blur-md border border-cyan-500/30 p-6 shadow-lg shadow-cyan-500/20 flex items-center justify-center h-[96px]">

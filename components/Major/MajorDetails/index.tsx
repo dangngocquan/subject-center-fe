@@ -197,6 +197,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
           isEditMode={isEditMode}
         />
       )}
+      <LoadingModal isOpen={loading} />
     </div>
   );
 };

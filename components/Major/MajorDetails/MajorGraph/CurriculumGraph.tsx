@@ -336,7 +336,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
           nodesDraggable={false}
           panOnDrag={true}
           preventScrolling={true}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", cursor: "move" }}
           zoomOnScroll={true}
         >
           <Background
@@ -349,15 +349,15 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
           onClick={toggleFullscreen}
           style={{
             position: "absolute",
-            top: "15px",
-            right: "15px",
+            bottom: "9px",
+            right: "9px",
             padding: "8px 16px",
             background: "#007bff",
             color: "#fff",
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
-            zIndex: 10,
+            zIndex: 1000,
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
           }}
         >
