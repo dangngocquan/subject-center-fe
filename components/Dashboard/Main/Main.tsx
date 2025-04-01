@@ -11,6 +11,7 @@ import SubjectsList from "./SubjectsList";
 
 import { Plan, PlanDetails, PlanItem } from "@/types/plan";
 import { usePlanDetails } from "@/hooks/usePlanDetails";
+import PlanGraph from "./PlanGraph/PlanGraph";
 
 interface MainProps {
   selectedPlan: { id: string; name: string } | null;
@@ -102,6 +103,16 @@ const Main: React.FC<MainProps> = ({
         >
           CPA Marks
         </button>
+        <button
+          className={`flex-1 py-2 px-3 rounded text-sm ${
+            activeTab === "graph"
+              ? "bg-cyan-500 text-white"
+              : "bg-gray-700 text-gray-300"
+          }`}
+          onClick={() => setActiveTab("graph")}
+        >
+          Plan Graph
+        </button>
       </div>
 
       {activeTab === "overview" && (
@@ -139,7 +150,7 @@ const Main: React.FC<MainProps> = ({
           <SubjectsList
             items={
               (planDetails?.credits.items || []).filter(
-                (item) => item.id !== undefined,
+                (item) => item.id !== undefined
               ) as PlanItem[]
             }
             planId={selectedPlan?.id || null}
@@ -149,6 +160,17 @@ const Main: React.FC<MainProps> = ({
       )}
 
       {activeTab === "marks" && <MarksGraph cpa={planDetails?.cpa} />}
+      {activeTab === "graph" && (
+        <PlanGraph
+          items={
+            (planDetails?.credits.items || []).filter(
+              (item) => item.id !== undefined
+            ) as PlanItem[]
+          }
+          planId={selectedPlan?.id || null} // Thêm planId
+          onDataChange={reloadData} // Thêm onDataChange
+        />
+      )}
     </motion.div>
   );
 };
