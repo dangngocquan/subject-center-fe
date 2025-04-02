@@ -16,6 +16,10 @@ export const siteConfig = {
       label: "Plans",
       href: "/plans",
     },
+    {
+      label: "Calculator",
+      href: "/last-term",
+    },
   ],
   routers: {
     home: "/",
