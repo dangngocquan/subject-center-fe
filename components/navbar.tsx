@@ -248,7 +248,7 @@ export const Navbar = () => {
       >
         <HeroUINavbar
           className="bg-gray-900/80 backdrop-blur-md shadow-lg shadow-cyan-500/20 z-50 w-full"
-          maxWidth="2xl"
+          maxWidth="xl"
           position="sticky"
         >
           <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -279,7 +279,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium",
+                      "ml-5 text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium",
                     )}
                     href={item.href}
                     onClick={

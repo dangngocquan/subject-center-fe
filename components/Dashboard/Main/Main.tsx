@@ -8,10 +8,10 @@ import MarksGraph from "./MarksGraph";
 import PlansOverview from "./PlansOverview";
 import StatsSection from "./StatsSection";
 import SubjectsList from "./SubjectsList";
+import PlanGraph from "./PlanGraph/PlanGraph";
 
 import { Plan, PlanDetails, PlanItem } from "@/types/plan";
 import { usePlanDetails } from "@/hooks/usePlanDetails";
-import PlanGraph from "./PlanGraph/PlanGraph";
 
 interface MainProps {
   selectedPlan: { id: string; name: string } | null;
@@ -150,7 +150,7 @@ const Main: React.FC<MainProps> = ({
           <SubjectsList
             items={
               (planDetails?.credits.items || []).filter(
-                (item) => item.id !== undefined
+                (item) => item.id !== undefined,
               ) as PlanItem[]
             }
             planId={selectedPlan?.id || null}
@@ -164,7 +164,7 @@ const Main: React.FC<MainProps> = ({
         <PlanGraph
           items={
             (planDetails?.credits.items || []).filter(
-              (item) => item.id !== undefined
+              (item) => item.id !== undefined,
             ) as PlanItem[]
           }
           planId={selectedPlan?.id || null} // Thêm planId

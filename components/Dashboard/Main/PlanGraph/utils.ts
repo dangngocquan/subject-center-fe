@@ -22,7 +22,7 @@ export const calculateTiers = (items: PlanItem[]): Tier[] => {
 
   const assignLevels = (
     item: PlanItem,
-    visited: Set<string> = new Set()
+    visited: Set<string> = new Set(),
   ): number => {
     if (!item.code || visited.has(item.code)) {
       return levelAssignments.get(String(item?.code)) || 0;
@@ -37,7 +37,7 @@ export const calculateTiers = (items: PlanItem[]): Tier[] => {
           const prereqLevel = assignLevels(prereq, visited);
           maxPrerequisiteLevel = Math.max(
             maxPrerequisiteLevel,
-            prereqLevel + 1
+            prereqLevel + 1,
           );
         }
       });

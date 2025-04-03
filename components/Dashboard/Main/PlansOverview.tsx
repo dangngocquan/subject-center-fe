@@ -166,7 +166,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
     return (
       <motion.div
         animate="visible"
-        className="flex-1 p-4 sm:p-8 w-full"
+        className="flex-1  w-full"
         custom="left"
         initial="hidden"
         variants={slideInVariants}

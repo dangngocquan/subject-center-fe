@@ -206,7 +206,7 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
 
   return (
     <div
-      className={`bg-black text-white min-h-screen flex flex-col max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative ${
+      className={`bg-black text-white min-h-screen flex flex-col max-w-8xl mx-auto  relative ${
         isSidebarOpen ? "overflow-hidden" : ""
       }`}
     >

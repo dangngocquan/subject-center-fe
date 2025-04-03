@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+
 import InputTable from "./InputTable";
 import OutputTable from "./OutputTable";
 
@@ -46,7 +47,7 @@ const CaculatorLastTerm: React.FC = () => {
     const newErrors: string[] = [];
     const totalCoefficient = inputs.reduce(
       (sum, input) => sum + Number(input.coefficient || 0),
-      0
+      0,
     );
 
     inputs.forEach((input, index) => {
@@ -58,14 +59,14 @@ const CaculatorLastTerm: React.FC = () => {
       }
       if (isNaN(coefficient) || coefficient <= 0 || coefficient >= 1) {
         newErrors.push(
-          `Coefficient in row ${index + 1} must be between 0 and 1.`
+          `Coefficient in row ${index + 1} must be between 0 and 1.`,
         );
       }
     });
 
     if (totalCoefficient >= 1) {
       newErrors.push(
-        `Total coefficients must be less than 1 (current: ${totalCoefficient.toFixed(2)}).`
+        `Total coefficients must be less than 1 (current: ${totalCoefficient.toFixed(2)}).`,
       );
     }
 
@@ -85,7 +86,7 @@ const CaculatorLastTerm: React.FC = () => {
 
     const totalCoefficient = inputs.reduce(
       (sum, input) => sum + Number(input.coefficient),
-      0
+      0,
     );
     const finalCoefficient = 1 - totalCoefficient;
     if (finalCoefficient <= 0) {
@@ -100,7 +101,7 @@ const CaculatorLastTerm: React.FC = () => {
     const currentScore = inputs.reduce(
       (sum, input) =>
         sum + Number(input.score || 0) * Number(input.coefficient),
-      0
+      0,
     );
 
     return VNU_CONVERSION_TABLE.scores.slice(0, -1).map((grade) => {
@@ -139,10 +140,10 @@ const CaculatorLastTerm: React.FC = () => {
         Final Exam Score Calculator
       </h1>
       <InputTable
-        inputs={inputs}
-        setInputs={setInputs}
         errors={errors}
+        inputs={inputs}
         setErrors={setErrors}
+        setInputs={setInputs}
       />
       <OutputTable results={results} />
     </div>

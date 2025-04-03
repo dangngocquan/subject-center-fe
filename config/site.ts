@@ -4,10 +4,10 @@ export const siteConfig = {
   name: "Center",
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
-    {
-      label: "Home",
-      href: "/",
-    },
+    // {
+    //   label: "Home",
+    //   href: "/",
+    // },
     {
       label: "Majors",
       href: `${"/majors"}`,
@@ -17,8 +17,12 @@ export const siteConfig = {
       href: "/plans",
     },
     {
-      label: "Calculator",
+      label: "Last Term Calculator",
       href: "/last-term",
+    },
+    {
+      label: "Timetable Validator",
+      href: "/timetable",
     },
   ],
   routers: {

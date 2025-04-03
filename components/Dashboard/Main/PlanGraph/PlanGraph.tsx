@@ -5,15 +5,16 @@ import ReactFlow, {
   Edge,
   BackgroundVariant,
 } from "react-flow-renderer";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Tooltip } from "react-tooltip";
 
-import { PlanItem } from "@/types/plan";
-import { calculateTiers, Tier } from "./utils";
-import { updatePlanItem, deletePlanItem } from "@/service/plan.api";
-import GenericButton from "@/components/Common/GenericButton";
 import EditSubjectModal from "../modals/EditSubjectModal";
 import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
+
+import { calculateTiers, Tier } from "./utils";
+
+import { PlanItem } from "@/types/plan";
+import { updatePlanItem, deletePlanItem } from "@/service/plan.api";
+import GenericButton from "@/components/Common/GenericButton";
 
 interface PlanGraphProps {
   items: PlanItem[];
@@ -186,7 +187,7 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLDivElement>,
-    code: string
+    code: string,
   ) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -229,7 +230,7 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
       });
       if (!result.isBadRequest) {
         const updatedItems = items.map((item) =>
-          item.id === updatedSubject.id ? { ...item, ...result.data } : item
+          item.id === updatedSubject.id ? { ...item, ...result.data } : item,
         );
         setTiers(calculateTiers(updatedItems));
         setResultMessage({
@@ -275,7 +276,7 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
       const response = await deletePlanItem(Number(planId), subjectToDelete.id);
       if (!response.isBadRequest) {
         const updatedItems = items.filter(
-          (item) => item.id !== subjectToDelete.id
+          (item) => item.id !== subjectToDelete.id,
         );
         setTiers(calculateTiers(updatedItems));
         setResultMessage({
@@ -375,10 +376,10 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
                   {subject.gradeLatin ? (
                     <GenericButton
                       //   disabled={true}
-                      onClick={() => handleEditClick(subject)}
+                      className="p-0 w-10 h-10 flex items-center justify-center text-xs"
                       tooltipContent={`Grade: ${subject.gradeLatin}`}
                       tooltipId={`grade-tooltip-${nodeId}`}
-                      className="p-0 w-10 h-10 flex items-center justify-center text-xs"
+                      onClick={() => handleEditClick(subject)}
                     >
                       <span style={{ fontSize: "0.75em", fontWeight: "bold" }}>
                         {subject.gradeLatin}
@@ -429,7 +430,7 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
 
             const prereqCodeVal = prereqItem.code;
             const prereqTier = tiers.find((t) =>
-              t.elements.some((e) => e.subject.code === prereqCodeVal)
+              t.elements.some((e) => e.subject.code === prereqCodeVal),
             );
             const sourceId = `${prereqCodeVal}-${prereqTier?.level || 0}`;
 
@@ -550,10 +551,10 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
         >
           {resultMessage.message}
           <button
+            style={{ marginLeft: "10px", color: "#fff" }}
             onClick={() =>
               setResultMessage({ ...resultMessage, isOpen: false })
             }
-            style={{ marginLeft: "10px", color: "#fff" }}
           >
             X
           </button>
