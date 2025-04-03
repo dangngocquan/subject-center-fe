@@ -29,7 +29,7 @@ const FeaturesPanel: React.FC<FeaturesPanelProps> = ({
         <div className="flex flex-col space-y-2 w-full md:flex-row md:space-y-0 md:space-x-2">
           <GenericButton
             className="text-sm w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
-            tooltipContent="Thêm khóa học mới"
+            tooltipContent="Add new course"
             tooltipId="add-courses-tooltip"
             onClick={onAddNewCourses}
           >
@@ -38,7 +38,7 @@ const FeaturesPanel: React.FC<FeaturesPanelProps> = ({
 
           <GenericButton
             className="text-sm w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
-            tooltipContent={allSelected ? "Bỏ chọn tất cả" : "Chọn tất cả"}
+            tooltipContent={allSelected ? "Deselect all" : "Select all"}
             tooltipId="toggle-selection-tooltip"
             onClick={onToggleSelection}
           >
@@ -53,7 +53,7 @@ const FeaturesPanel: React.FC<FeaturesPanelProps> = ({
             className="text-sm w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
             disabled={isCalculating || selectedCourses === 0}
             tooltipContent={
-              isCalculating ? "Đang tạo timetable" : "Tạo timetable"
+              isCalculating ? "Generating timetable" : "Generate timetable"
             }
             tooltipId="generate-tooltip"
             onClick={onGenerate}

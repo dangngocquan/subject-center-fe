@@ -7,7 +7,7 @@ import TimeTableInput from "./TimeTableInput/TimeTableInput";
 import { CourseItem, TimeTable } from "./types";
 import TimeTableResult from "./TimeTableResult/TimeTableResult";
 
-// Thêm trạng thái selected vào CourseItem
+// Add a selected state to CourseItem
 interface CourseItemWithStatus extends CourseItem {
   selected: boolean;
 }
@@ -18,7 +18,7 @@ const TimeTableManager: React.FC = () => {
   const [currentTimetableIndex, setCurrentTimetableIndex] = useState(0);
   const [isCalculating, setIsCalculating] = useState(false);
 
-  // Danh sách 20 màu đa dạng, phù hợp với theme
+  // List of 20 diverse colors suitable for the theme
   const colorPalette = [
     {
       bg: "bg-cyan-500/50",
@@ -122,7 +122,7 @@ const TimeTableManager: React.FC = () => {
     },
   ];
 
-  // Tạo ánh xạ màu dựa trên thứ tự index của selectedCourses
+  // Map colors based on the index order of selectedCourses
   const getColorMap = (selectedCourses: CourseItemWithStatus[]) => {
     const colorMap: { [courseCode: string]: (typeof colorPalette)[number] } =
       {};
@@ -135,16 +135,16 @@ const TimeTableManager: React.FC = () => {
     return colorMap;
   };
 
-  // Hàm chuyển đổi CourseItem sang định dạng tương thích với thuật toán
+  // Function to convert CourseItem to a format compatible with the algorithm
   interface SubjectForTimetable {
     courseCode: string;
     courseName: string;
     credits: number;
-    listTimes: number[][]; // Danh sách các tiết học (period) cho mỗi class
-    listEnableTimeLessons: boolean[]; // Trạng thái enable cho mỗi class
+    listTimes: number[][]; // List of periods for each class
+    listEnableTimeLessons: boolean[]; // Enable state for each class
   }
 
-  // Hàm nhóm CourseItem theo courseCode và tạo SubjectForTimetable
+  // Group CourseItem by courseCode and create SubjectForTimetable
   const prepareSubjects = (
     items: CourseItemWithStatus[],
   ): { subjects: SubjectForTimetable[]; maxLessonPerDay: number } => {
@@ -158,7 +158,7 @@ const TimeTableManager: React.FC = () => {
 
     const maxDays = 7;
 
-    // Tính maxLessonPerDay dựa trên period lớn nhất
+    // Calculate maxLessonPerDay based on the largest period
     let maxLessonPerDay = 10;
     items.forEach((course) => {
       const maxPeriod = Math.max(...course.period);
@@ -201,7 +201,7 @@ const TimeTableManager: React.FC = () => {
     return { subjects, maxLessonPerDay };
   };
 
-  // Thuật toán tạo timetable
+  // Algorithm to generate timetables
   const calculateTimetables = (
     subjects: SubjectForTimetable[],
     maxLessonPerDay: number,
@@ -268,7 +268,7 @@ const TimeTableManager: React.FC = () => {
     return result;
   };
 
-  // Hàm tạo timetable từ danh sách selected courses
+  // Function to create timetables from the list of selected courses
   const generateTimetables = () => {
     setIsCalculating(true);
     const selectedCourses = courses.filter((course) => course.selected);
@@ -298,7 +298,7 @@ const TimeTableManager: React.FC = () => {
     setIsCalculating(false);
   };
 
-  // Tạo ánh xạ màu cho các course
+  // Map colors for the courses
   const colorMap = getColorMap(courses.filter((course) => course.selected));
 
   return (
@@ -313,7 +313,7 @@ const TimeTableManager: React.FC = () => {
       </div>
       <div className="w-2/3">
         <TimeTableResult
-          colorMap={colorMap} // Truyền colorMap vào TimeTableResult
+          colorMap={colorMap} // Pass colorMap to TimeTableResult
           currentIndex={currentTimetableIndex}
           setCurrentIndex={setCurrentTimetableIndex}
           timetables={timetables}

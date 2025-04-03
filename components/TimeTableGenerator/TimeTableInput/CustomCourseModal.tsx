@@ -56,26 +56,26 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
     };
 
     if (!form.courseCode.trim()) {
-      newErrors.courseCode = "Mã học phần không được để trống.";
+      newErrors.courseCode = "Course code cannot be empty.";
       isValid = false;
     }
     if (!form.courseName.trim()) {
-      newErrors.courseName = "Tên học phần không được để trống.";
+      newErrors.courseName = "Course name cannot be empty.";
       isValid = false;
     }
     if (!form.classCode.trim()) {
-      newErrors.classCode = "Mã lớp học phần không được để trống.";
+      newErrors.classCode = "Class code cannot be empty.";
       isValid = false;
     }
     if (
       form.period.length === 0 ||
       form.period.some((p) => isNaN(p) || p < 1)
     ) {
-      newErrors.period = "Tiết học phải là số dương và không được để trống.";
+      newErrors.period = "Period must be a positive number and cannot be empty.";
       isValid = false;
     }
     if (!form.credits.trim() || isNaN(Number(form.credits))) {
-      newErrors.credits = "Số tín chỉ phải là một số hợp lệ.";
+      newErrors.credits = "Credits must be a valid number.";
       isValid = false;
     }
 
@@ -139,13 +139,13 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
     <GenericModal isOpen={isOpen} onClose={onClose}>
       <div className="text-center text-white font-sans p-4 sm:p-6">
         <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
-          Thêm Course Tùy Chỉnh
+          Add Custom Course
         </h3>
         <div className="space-y-4 text-left">
           <div>
             <input
               className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
-              placeholder="Mã học phần"
+              placeholder="Course Code"
               type="text"
               value={form.courseCode}
               onChange={(e) => setForm({ ...form, courseCode: e.target.value })}
@@ -157,7 +157,7 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
           <div>
             <input
               className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
-              placeholder="Tên học phần"
+              placeholder="Course Name"
               type="text"
               value={form.courseName}
               onChange={(e) => setForm({ ...form, courseName: e.target.value })}
@@ -169,7 +169,7 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
           <div>
             <input
               className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
-              placeholder="Mã lớp học phần"
+              placeholder="Class Code"
               type="text"
               value={form.classCode}
               onChange={(e) => setForm({ ...form, classCode: e.target.value })}
@@ -186,13 +186,13 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
                 setForm({ ...form, dayOfWeek: parseInt(e.target.value) })
               }
             >
-              <option value={0}>Thứ Hai</option>
-              <option value={1}>Thứ Ba</option>
-              <option value={2}>Thứ Tư</option>
-              <option value={3}>Thứ Năm</option>
-              <option value={4}>Thứ Sáu</option>
-              <option value={5}>Thứ Bảy</option>
-              <option value={6}>Chủ Nhật</option>
+              <option value={0}>Monday</option>
+              <option value={1}>Tuesday</option>
+              <option value={2}>Wednesday</option>
+              <option value={3}>Thursday</option>
+              <option value={4}>Friday</option>
+              <option value={5}>Saturday</option>
+              <option value={6}>Sunday</option>
             </select>
           </div>
           <div>
@@ -216,7 +216,7 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
                   ref={inputRef}
                   className="bg-transparent text-gray-300 border-none outline-none w-16"
                   min="1"
-                  placeholder="Tiết"
+                  placeholder="Period"
                   type="number"
                   value={newPeriod}
                   onChange={(e) => setNewPeriod(e.target.value)}
@@ -237,7 +237,7 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
           <div>
             <input
               className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
-              placeholder="Số tín chỉ"
+              placeholder="Credits"
               type="text"
               value={form.credits}
               onChange={(e) => setForm({ ...form, credits: e.target.value })}
@@ -248,8 +248,8 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
           </div>
         </div>
         <div className="flex justify-center space-x-4 mt-6">
-          <GenericButton onClick={onClose}>Hủy</GenericButton>
-          <GenericButton onClick={handleSubmit}>Xác nhận</GenericButton>
+          <GenericButton onClick={onClose}>Cancel</GenericButton>
+          <GenericButton onClick={handleSubmit}>Confirm</GenericButton>
         </div>
       </div>
     </GenericModal>

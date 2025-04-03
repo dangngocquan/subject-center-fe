@@ -96,11 +96,12 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
       {/* Sử dụng GenericInputSearch với class điều chỉnh */}
       <GenericInputSearch
         className="w-full mb-4 text-gray-300 placeholder-gray-300 border-gray-700"
-        placeholder="Tìm kiếm theo mã hoặc tên course..."
+        placeholder="Search by course code or name..."
         searchTerm={searchQuery}
         setSearchTerm={setSearchQuery}
       />
 
+      <h3 className="font-bold text-cyan-400 shrink-0 mb-2">Course List</h3>
       <CourseList
         courses={filteredCourses}
         setCourses={setCourses}

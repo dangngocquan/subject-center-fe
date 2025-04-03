@@ -49,9 +49,7 @@ const CourseList: React.FC<CourseListProps> = ({
 
   return (
     <>
-      <h3 className="font-bold text-cyan-400 shrink-0 mb-2">
-        Danh sách Course
-      </h3>
+      <h3 className="font-bold text-cyan-400 shrink-0 mb-2">Course List</h3>
       <div className="max-h-[60vh] overflow-y-auto pr-2">
         <table className="w-full text-white border-collapse">
           <thead>
@@ -114,7 +112,7 @@ const CourseList: React.FC<CourseListProps> = ({
                     {course.classCode}
                   </td>
                   <td className="p-2 border border-gray-700">
-                    Thứ {course.dayOfWeek + 1}, Tiết {course.period.join(", ")}
+                    Day {course.dayOfWeek + 1}, Period {course.period.join(", ")}
                   </td>
                   <td className="p-2 border border-gray-700 text-center">
                     <div className="flex justify-center space-x-2">
@@ -146,12 +144,12 @@ const CourseList: React.FC<CourseListProps> = ({
         <GenericModal isOpen={!!editCourse} onClose={() => setEditCourse(null)}>
           <div className="text-center text-white font-sans p-4 sm:p-6">
             <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
-              Chỉnh sửa Course
+              Edit Course
             </h3>
             <div className="space-y-4 text-left">
               <input
                 className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
-                placeholder="Mã học phần"
+                placeholder="Course Code"
                 type="text"
                 value={editCourse.courseCode}
                 onChange={(e) =>
@@ -160,7 +158,7 @@ const CourseList: React.FC<CourseListProps> = ({
               />
               <input
                 className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
-                placeholder="Tên học phần"
+                placeholder="Course Name"
                 type="text"
                 value={editCourse.courseName}
                 onChange={(e) =>
@@ -169,7 +167,7 @@ const CourseList: React.FC<CourseListProps> = ({
               />
               <input
                 className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
-                placeholder="Mã lớp học phần"
+                placeholder="Class Code"
                 type="text"
                 value={editCourse.classCode}
                 onChange={(e) =>
@@ -186,17 +184,17 @@ const CourseList: React.FC<CourseListProps> = ({
                   })
                 }
               >
-                <option value={0}>Thứ Hai</option>
-                <option value={1}>Thứ Ba</option>
-                <option value={2}>Thứ Tư</option>
-                <option value={3}>Thứ Năm</option>
-                <option value={4}>Thứ Sáu</option>
-                <option value={5}>Thứ Bảy</option>
-                <option value={6}>Chủ Nhật</option>
+                <option value={0}>Monday</option>
+                <option value={1}>Tuesday</option>
+                <option value={2}>Wednesday</option>
+                <option value={3}>Thursday</option>
+                <option value={4}>Friday</option>
+                <option value={5}>Saturday</option>
+                <option value={6}>Sunday</option>
               </select>
               <input
                 className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
-                placeholder="Tiết học (VD: 1,2,3)"
+                placeholder="Period (e.g., 1,2,3)"
                 type="text"
                 value={editCourse.period.join(",")}
                 onChange={(e) =>
@@ -211,7 +209,7 @@ const CourseList: React.FC<CourseListProps> = ({
               />
               <input
                 className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
-                placeholder="Số tín chỉ"
+                placeholder="Credits"
                 type="number"
                 value={editCourse.credits}
                 onChange={(e) =>
@@ -224,10 +222,10 @@ const CourseList: React.FC<CourseListProps> = ({
             </div>
             <div className="flex justify-center space-x-4 mt-6">
               <GenericButton onClick={() => setEditCourse(null)}>
-                Hủy
+                Cancel
               </GenericButton>
               <GenericButton onClick={() => handleUpdateSubmit(editCourse)}>
-                Xác nhận
+                Confirm
               </GenericButton>
             </div>
           </div>

@@ -18,13 +18,13 @@ const TimeTableGrid: React.FC<TimeTableGridProps> = ({
   colorMap,
 }) => {
   const daysOfWeek = [
-    "Thứ Hai",
-    "Thứ Ba",
-    "Thứ Tư",
-    "Thứ Năm",
-    "Thứ Sáu",
-    "Thứ Bảy",
-    "Chủ Nhật",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
   ];
 
   // Tính maxLessonPerDay từ timetable
@@ -60,7 +60,7 @@ const TimeTableGrid: React.FC<TimeTableGridProps> = ({
         <table className="w-full border border-gray-700">
           <thead>
             <tr className="bg-gray-800">
-              <th className="border border-gray-700 p-2 text-sm">Tiết</th>
+              <th className="border border-gray-700 p-2 text-sm">Period</th>
               {daysOfWeek.map((day, idx) => (
                 <th key={idx} className="border border-gray-700 p-2 text-sm">
                   {day}
@@ -72,7 +72,7 @@ const TimeTableGrid: React.FC<TimeTableGridProps> = ({
             {periods.map((period, periodIdx) => (
               <tr key={periodIdx} className="hover:bg-gray-800">
                 <td className="border border-gray-700 p-2 text-center text-sm">
-                  Tiết {period}
+                  Period {period}
                 </td>
                 {grid[periodIdx].map((course, dayIdx) => {
                   const color = course ? colorMap[course.courseCode] : null;
