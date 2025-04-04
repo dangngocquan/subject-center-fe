@@ -71,7 +71,8 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
       form.period.length === 0 ||
       form.period.some((p) => isNaN(p) || p < 1)
     ) {
-      newErrors.period = "Period must be a positive number and cannot be empty.";
+      newErrors.period =
+        "Period must be a positive number and cannot be empty.";
       isValid = false;
     }
     if (!form.credits.trim() || isNaN(Number(form.credits))) {

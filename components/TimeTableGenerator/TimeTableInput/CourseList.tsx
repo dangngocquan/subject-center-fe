@@ -23,7 +23,7 @@ const CourseList: React.FC<CourseListProps> = ({
   setCourses,
 }) => {
   const [editCourse, setEditCourse] = useState<CourseItemWithStatus | null>(
-    null,
+    null
   );
 
   const groupCoursesByCode = (items: CourseItemWithStatus[]) => {
@@ -41,7 +41,7 @@ const CourseList: React.FC<CourseListProps> = ({
 
   const handleUpdateSubmit = (updatedCourse: CourseItemWithStatus) => {
     const updatedCourses = courses.map((course) =>
-      course === editCourse ? { ...updatedCourse } : course,
+      course === editCourse ? { ...updatedCourse } : course
     );
     setCourses(updatedCourses);
     setEditCourse(null);
@@ -112,7 +112,8 @@ const CourseList: React.FC<CourseListProps> = ({
                     {course.classCode}
                   </td>
                   <td className="p-2 border border-gray-700">
-                    Day {course.dayOfWeek + 1}, Period {course.period.join(", ")}
+                    Day {course.dayOfWeek + 1}, Period{" "}
+                    {course.period.join(", ")}
                   </td>
                   <td className="p-2 border border-gray-700 text-center">
                     <div className="flex justify-center space-x-2">

@@ -46,20 +46,20 @@ export default function TimeTableResult({ timetables }: TimeTableResultProps) {
   return (
     <div className="w-1/2 p-4">
       <TimeTableResultHeader
-        timetables={filteredTimetables}
         currentTimetable={currentTimetable}
+        timetables={filteredTimetables}
         onFilterChange={setFilters}
       />
       <TimeTableResultMain
-        timetable={currentTimetable}
         index={currentIndex}
+        timetable={currentTimetable}
         total={filteredTimetables.length}
-        onPrev={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
         onNext={() =>
           setCurrentIndex((prev) =>
-            Math.min(filteredTimetables.length - 1, prev + 1)
+            Math.min(filteredTimetables.length - 1, prev + 1),
           )
         }
+        onPrev={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
       />
     </div>
   );
@@ -88,48 +88,48 @@ function TimeTableResultHeader({
       <p>Total credits: {totalCredits}</p>
       <div className="mt-2">
         <input
-          type="number"
+          className="border p-1 mr-2"
           placeholder="Minimum courses"
+          type="number"
           onChange={(e) =>
             onFilterChange((prev) => ({
               ...prev,
               minCourses: Number(e.target.value),
             }))
           }
-          className="border p-1 mr-2"
         />
         <input
-          type="number"
+          className="border p-1 mr-2"
           placeholder="Maximum courses"
+          type="number"
           onChange={(e) =>
             onFilterChange((prev) => ({
               ...prev,
               maxCourses: Number(e.target.value) || Infinity,
             }))
           }
-          className="border p-1 mr-2"
         />
         <input
-          type="number"
+          className="border p-1 mr-2"
           placeholder="Minimum credits"
+          type="number"
           onChange={(e) =>
             onFilterChange((prev) => ({
               ...prev,
               minCredits: Number(e.target.value),
             }))
           }
-          className="border p-1 mr-2"
         />
         <input
-          type="number"
+          className="border p-1"
           placeholder="Maximum credits"
+          type="number"
           onChange={(e) =>
             onFilterChange((prev) => ({
               ...prev,
               maxCredits: Number(e.target.value) || Infinity,
             }))
           }
-          className="border p-1"
         />
       </div>
       <button className="mt-2 bg-yellow-500 text-white p-2 rounded">
@@ -155,9 +155,7 @@ function TimeTableResultMain({
   onNext,
 }: TimeTableResultMainProps) {
   if (!timetable.length) {
-    return (
-      <p className="text-center">No timetables available to display.</p>
-    );
+    return <p className="text-center">No timetables available to display.</p>;
   }
 
   return (
@@ -183,9 +181,9 @@ function TimeTableResultMain({
       </table>
       <div className="mt-4 flex justify-between">
         <button
-          onClick={onPrev}
-          disabled={index === 0}
           className="bg-gray-500 text-white p-2 rounded"
+          disabled={index === 0}
+          onClick={onPrev}
         >
           Previous
         </button>
@@ -193,9 +191,9 @@ function TimeTableResultMain({
           {index + 1}/{total}
         </p>
         <button
-          onClick={onNext}
-          disabled={index === total - 1}
           className="bg-gray-500 text-white p-2 rounded"
+          disabled={index === total - 1}
+          onClick={onNext}
         >
           Next
         </button>

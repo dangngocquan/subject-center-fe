@@ -127,7 +127,7 @@ const TimeTableManager: React.FC = () => {
     const colorMap: { [courseCode: string]: (typeof colorPalette)[number] } =
       {};
     const uniqueCourses = Array.from(
-      new Set(selectedCourses.map((course) => course.courseCode)),
+      new Set(selectedCourses.map((course) => course.courseCode))
     );
     uniqueCourses.forEach((courseCode, index) => {
       colorMap[courseCode] = colorPalette[index % colorPalette.length];
@@ -146,7 +146,7 @@ const TimeTableManager: React.FC = () => {
 
   // Group CourseItem by courseCode and create SubjectForTimetable
   const prepareSubjects = (
-    items: CourseItemWithStatus[],
+    items: CourseItemWithStatus[]
   ): { subjects: SubjectForTimetable[]; maxLessonPerDay: number } => {
     const grouped: { [key: string]: CourseItemWithStatus[] } = {};
     items.forEach((item) => {
@@ -173,11 +173,11 @@ const TimeTableManager: React.FC = () => {
           const isValidDay =
             course.dayOfWeek >= 0 && course.dayOfWeek < maxDays;
           const isValidPeriod = course.period.every(
-            (p) => p >= 1 && p <= maxLessonPerDay,
+            (p) => p >= 1 && p <= maxLessonPerDay
           );
           if (!isValidDay || !isValidPeriod) {
             console.warn(
-              `Course ${course.courseCode} - ${course.classCode} has invalid dayOfWeek (${course.dayOfWeek}) or period (${course.period}) - maxLessonPerDay: ${maxLessonPerDay}`,
+              `Course ${course.courseCode} - ${course.classCode} has invalid dayOfWeek (${course.dayOfWeek}) or period (${course.period}) - maxLessonPerDay: ${maxLessonPerDay}`
             );
             return false;
           }
@@ -190,8 +190,8 @@ const TimeTableManager: React.FC = () => {
           credits: validCourseList[0]?.credits || 0,
           listTimes: validCourseList.map((course) =>
             course.period.map(
-              (period) => course.dayOfWeek * maxLessonPerDay + period - 1,
-            ),
+              (period) => course.dayOfWeek * maxLessonPerDay + period - 1
+            )
           ),
           listEnableTimeLessons: validCourseList.map(() => true),
         };
@@ -204,7 +204,7 @@ const TimeTableManager: React.FC = () => {
   // Algorithm to generate timetables
   const calculateTimetables = (
     subjects: SubjectForTimetable[],
-    maxLessonPerDay: number,
+    maxLessonPerDay: number
   ): number[][] => {
     const result: number[][] = [];
     const maxDays = 7;
@@ -216,7 +216,7 @@ const TimeTableManager: React.FC = () => {
       subjects: SubjectForTimetable[],
       status: number[],
       tempIndexTimeLessons: number[],
-      result: number[][],
+      result: number[][]
     ) => {
       if (indexSubject >= subjects.length) {
         result.push([...tempIndexTimeLessons]);
@@ -236,7 +236,7 @@ const TimeTableManager: React.FC = () => {
         for (const time of listTimes[indexTimeLesson]) {
           if (time >= status.length || time < 0) {
             console.error(
-              `Invalid time index: ${time} for subject ${subject.courseCode}`,
+              `Invalid time index: ${time} for subject ${subject.courseCode}`
             );
             valid = false;
             continue;
@@ -251,7 +251,7 @@ const TimeTableManager: React.FC = () => {
             subjects,
             status,
             tempIndexTimeLessons,
-            result,
+            result
           );
         }
         tempIndexTimeLessons[indexSubject] = -1;
@@ -283,7 +283,7 @@ const TimeTableManager: React.FC = () => {
         if (timeIndex >= 0) {
           const subject = subjects[subjectIndex];
           const courseList = selectedCourses.filter(
-            (c) => c.courseCode === subject.courseCode,
+            (c) => c.courseCode === subject.courseCode
           );
           const selectedCourse = courseList[timeIndex];
           timetableCourses.push(selectedCourse);

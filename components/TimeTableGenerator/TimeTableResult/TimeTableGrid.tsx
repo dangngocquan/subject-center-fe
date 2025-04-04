@@ -40,7 +40,7 @@ const TimeTableGrid: React.FC<TimeTableGridProps> = ({
   // Tạo lưới maxLessonPerDay x 7
   const grid: (TimeTable["courses"][number] | null)[][] = Array.from(
     { length: maxLessonPerDay },
-    () => Array(7).fill(null),
+    () => Array(7).fill(null)
   );
 
   // Điền các course vào lưới
