@@ -51,7 +51,7 @@ export default function RootLayout({
               <Link
                 isExternal
                 className="flex items-center gap-1 text-current"
-                href="https://github.com/dangngocquan"
+                href=""
                 title="Bris"
               >
                 <span className="text-default-600">Powered by</span>

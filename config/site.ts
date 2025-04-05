@@ -2,7 +2,7 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "Center",
-  description: "Make beautiful websites regardless of your design experience.",
+  description: "View your schedule, grades, and GPA in an intuitive, easy-to-manage interface",
   navItems: [
     // {
     //   label: "Home",

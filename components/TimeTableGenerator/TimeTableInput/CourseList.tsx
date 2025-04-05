@@ -49,7 +49,6 @@ const CourseList: React.FC<CourseListProps> = ({
 
   return (
     <>
-      <h3 className="font-bold text-cyan-400 shrink-0 mb-2">Course List</h3>
       <div className="max-h-[60vh] overflow-y-auto pr-2">
         <table className="w-full text-white border-collapse">
           <thead>

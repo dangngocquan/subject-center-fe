@@ -27,6 +27,7 @@ import {
 } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
+import LoadingModal from "./LoadingModal";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -42,7 +43,7 @@ export const Navbar = () => {
       setIsLoading(false);
       setIsLoginModalOpen(false);
     },
-    () => setIsLoading(false),
+    () => setIsLoading(false)
   );
 
   const updateAuthToken = () => {
@@ -279,7 +280,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "ml-5 text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium",
+                      "ml-5 text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
                     )}
                     href={item.href}
                     onClick={
@@ -325,7 +326,7 @@ export const Navbar = () => {
                       <NextLink
                         className={clsx(
                           linkStyles({ color: "foreground" }),
-                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block",
+                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block"
                         )}
                         href={item.href}
                         onClick={
@@ -495,10 +496,14 @@ export const Navbar = () => {
           <GenericButton
             className="bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-600 hover:to-cyan-800 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-cyan-500/50 hover:shadow-cyan-600/60 transition-all duration-300"
             disabled={isLoading}
-            onClick={() => authGoogle()}
+            onClick={() => {
+              setIsLoading((prev) => !prev);
+              authGoogle();
+            }}
           >
             {isLoading ? "Signing In..." : "Sign In with Google"}
           </GenericButton>
+          <LoadingModal isOpen={isLoading} />
         </motion.div>
       </GenericModal>
     </>
