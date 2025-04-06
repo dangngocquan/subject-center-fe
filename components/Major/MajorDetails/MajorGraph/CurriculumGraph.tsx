@@ -83,6 +83,20 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     }
   }, [major]);
 
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
   const toggleFullscreen = useCallback(() => {
     const container = document.getElementById("curriculum-graph-container");
     if (!container) return;
@@ -110,7 +124,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     }
 
     const selected = major.items.find(
-      (item) => item.code === selectedCode || item.genCode === selectedCode,
+      (item) => item.code === selectedCode || item.genCode === selectedCode
     );
     if (!selected) return visibleSubjects;
 
@@ -119,7 +133,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     if (selected.prerequisites) {
       selected.prerequisites.forEach((prereqCode) => {
         const prereqItem = major.items.find(
-          (item) => item.code === prereqCode || item.genCode === prereqCode,
+          (item) => item.code === prereqCode || item.genCode === prereqCode
         );
         if (prereqItem?.genCode) visibleSubjects.add(prereqItem.genCode);
       });
@@ -128,7 +142,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     major.items.forEach((item) => {
       if (
         item.prerequisites?.some(
-          (prereq) => prereq === selected.code || prereq === selected.genCode,
+          (prereq) => prereq === selected.code || prereq === selected.genCode
         ) &&
         item.genCode
       ) {
@@ -147,7 +161,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLDivElement>,
-    genCode: string,
+    genCode: string
   ) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -156,7 +170,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
   };
 
   const tierWidths = tiers.map(
-    (tier) => tier.elements.filter((e) => e.type === "subject").length * 220,
+    (tier) => tier.elements.filter((e) => e.type === "subject").length * 220
   );
   const maxWidth = Math.max(...tierWidths, 300);
 
@@ -270,7 +284,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
         return (subject?.prerequisites || [])
           .map((prereqCode, index) => {
             const prereqItem = major?.items.find(
-              (item) => item.code === prereqCode || item.genCode === prereqCode,
+              (item) => item.code === prereqCode || item.genCode === prereqCode
             );
             if (!prereqItem) return null;
 
@@ -278,8 +292,8 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
             const prereqTier = tiers.find((t) =>
               t.elements.some(
                 (e) =>
-                  e.type === "subject" && e.subject.genCode === prereqGenCode,
-              ),
+                  e.type === "subject" && e.subject.genCode === prereqGenCode
+              )
             );
             const sourceId = `${prereqGenCode}-${prereqTier?.level || 0}`;
 

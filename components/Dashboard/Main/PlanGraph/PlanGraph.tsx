@@ -143,6 +143,20 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
     }
   }, [items]);
 
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreen(false);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
   const toggleFullscreen = useCallback(() => {
     const container = document.getElementById("plan-graph-container");
     if (!container) return;
@@ -187,7 +201,7 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLDivElement>,
-    code: string,
+    code: string
   ) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -230,7 +244,7 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
       });
       if (!result.isBadRequest) {
         const updatedItems = items.map((item) =>
-          item.id === updatedSubject.id ? { ...item, ...result.data } : item,
+          item.id === updatedSubject.id ? { ...item, ...result.data } : item
         );
         setTiers(calculateTiers(updatedItems));
         setResultMessage({
@@ -276,7 +290,7 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
       const response = await deletePlanItem(Number(planId), subjectToDelete.id);
       if (!response.isBadRequest) {
         const updatedItems = items.filter(
-          (item) => item.id !== subjectToDelete.id,
+          (item) => item.id !== subjectToDelete.id
         );
         setTiers(calculateTiers(updatedItems));
         setResultMessage({
@@ -430,7 +444,7 @@ const PlanGraph: React.FC<PlanGraphProps> = ({
 
             const prereqCodeVal = prereqItem.code;
             const prereqTier = tiers.find((t) =>
-              t.elements.some((e) => e.subject.code === prereqCodeVal),
+              t.elements.some((e) => e.subject.code === prereqCodeVal)
             );
             const sourceId = `${prereqCodeVal}-${prereqTier?.level || 0}`;
 
