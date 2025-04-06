@@ -95,10 +95,10 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
           Include Improvements
         </label>
       </div>
-      <ResponsiveContainer height={200} width="100%">
+      <ResponsiveContainer height={230} width="100%">
         <ComposedChart
           data={splitMarks}
-          margin={{ top: 20, bottom: 20, right: 10, left: 10 }}
+          margin={{ top: 50, bottom: 20, right: 30, left: 30 }}
         >
           <CartesianGrid stroke="#4B5563" strokeDasharray="3 3" />
           <XAxis

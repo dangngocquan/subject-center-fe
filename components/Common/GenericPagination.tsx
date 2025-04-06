@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { FaArrowRight, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-import { GenericButton } from "./GenericButton";
+import GenericButton from "./GenericButton";
 
 interface GenericPaginationProps {
   currentPage: number;
@@ -46,7 +46,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
   };
 
   const handleJumpToPageOnEnter = (
-    e: React.KeyboardEvent<HTMLInputElement>,
+    e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (e.key === "Enter") {
       handleJumpToPage();

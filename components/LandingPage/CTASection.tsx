@@ -6,7 +6,7 @@ import { useRef, useState, useEffect } from "react";
 
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
 import GenericModal from "@/components/Common/GenericModal";
-import { GenericButton } from "@/components/Common/GenericButton";
+import GenericButton from "@/components/Common/GenericButton";
 import LoadingModal from "@/components/LoadingModal";
 import { useAuthGoogle } from "@/service/auth.service";
 
@@ -47,7 +47,7 @@ const CTASection = () => {
       setIsLoading(false);
       setIsLoginModalOpen(false);
     },
-    () => setIsLoading(false),
+    () => setIsLoading(false)
   );
 
   return (

@@ -2,7 +2,7 @@
 import React from "react";
 
 import GenericModal from "@/components/Common/GenericModal";
-import { GenericButton } from "@/components/Common/GenericButton";
+import GenericButton from "@/components/Common/GenericButton";
 
 interface AddCourseModalProps {
   isOpen: boolean;

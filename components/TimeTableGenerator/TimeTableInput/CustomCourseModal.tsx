@@ -7,7 +7,7 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 import { CourseItem } from "../types";
 
 import GenericModal from "@/components/Common/GenericModal";
-import { GenericButton } from "@/components/Common/GenericButton";
+import GenericButton from "@/components/Common/GenericButton";
 
 interface CourseItemWithStatus extends CourseItem {
   selected: boolean;

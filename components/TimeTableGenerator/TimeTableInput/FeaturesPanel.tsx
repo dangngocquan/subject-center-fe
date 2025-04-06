@@ -4,7 +4,7 @@ import React from "react";
 import { FaPlus, FaPlay, FaCheckSquare, FaUndo } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 
-import { GenericButton } from "@/components/Common/GenericButton";
+import GenericButton from "@/components/Common/GenericButton";
 
 interface FeaturesPanelProps {
   onAddNewCourses: () => void;

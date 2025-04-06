@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { CourseItem } from "../types";
 
 import GenericModal from "@/components/Common/GenericModal";
-import { GenericButton } from "@/components/Common/GenericButton";
+import GenericButton from "@/components/Common/GenericButton";
 
 interface ImportJsonModalProps {
   isOpen: boolean;

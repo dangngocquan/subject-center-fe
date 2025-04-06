@@ -9,7 +9,7 @@ import { TimeTable } from "../types";
 import TimeTableGrid from "./TimeTableGrid";
 
 import GenericPagination from "@/components/Common/GenericPagination";
-import { GenericButton } from "@/components/Common/GenericButton";
+import GenericButton from "@/components/Common/GenericButton";
 
 interface TimeTableResultProps {
   timetables: TimeTable[];
@@ -41,7 +41,7 @@ const TimeTableResult: React.FC<TimeTableResultProps> = ({
         })
         .catch((err) => {
           console.error(
-            `Error attempting to enable fullscreen: ${err.message}`,
+            `Error attempting to enable fullscreen: ${err.message}`
           );
         });
     } else {

@@ -8,7 +8,7 @@ import { useRef, useState, useEffect } from "react"; // Added useEffect
 import { useAuthGoogle } from "@/service/auth.service";
 import { siteConfig } from "@/config/site";
 import GenericModal from "@/components/Common/GenericModal";
-import { GenericButton } from "@/components/Common/GenericButton";
+import GenericButton from "@/components/Common/GenericButton";
 import LoadingModal from "@/components/LoadingModal";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
 
@@ -48,7 +48,7 @@ const HeroSection = () => {
       setIsLoading(false);
       setIsSignUpModalOpen(false);
     },
-    () => setIsLoading(false),
+    () => setIsLoading(false)
   );
 
   return (

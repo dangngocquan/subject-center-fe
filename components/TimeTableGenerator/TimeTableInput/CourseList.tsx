@@ -4,7 +4,7 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 
 import { CourseItem } from "../types";
 
-import { GenericButton } from "@/components/Common/GenericButton";
+import GenericButton from "@/components/Common/GenericButton";
 import GenericModal from "@/components/Common/GenericModal";
 
 interface CourseItemWithStatus extends CourseItem {

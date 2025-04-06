@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import LoadingModal from "../LoadingModal"; // Import LoadingModal
 import GenericModal from "../Common/GenericModal"; // Import GenericModal
-import { GenericButton } from "../Common/GenericButton";
+import GenericButton from "../Common/GenericButton";
 
 import { MajorItem, MajorItemWithChildren } from "@/types/major";
 import { Plan, PlanItem } from "@/types/plan";
@@ -74,7 +74,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
       const response = await onCreatePlan({
         name: planName,
         items: majorItems.filter((node) =>
-          selectedItems.includes(node.genCode),
+          selectedItems.includes(node.genCode)
         ) as PlanItem[],
       });
 
@@ -183,7 +183,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
 const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
-  selected: Set<string>,
+  selected: Set<string>
 ): { totalCredits: number; totalCount: number } => {
   let totalCredits = 0;
   let totalCount = 0;

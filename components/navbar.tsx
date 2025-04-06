@@ -16,7 +16,7 @@ import { Bars3Icon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 
 import GenericModal from "./Common/GenericModal";
-import { GenericButton } from "./Common/GenericButton";
+import GenericButton from "./Common/GenericButton";
 
 import { useAuthGoogle } from "@/service/auth.service";
 import {
