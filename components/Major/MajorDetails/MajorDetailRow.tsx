@@ -100,7 +100,14 @@ const MajorDetailRow: React.FC<MajorDetailRowProps> = ({
         {node.credit || "-"}
       </td>
       <td className="px-2 sm:px-6 py-4 w-[150px] align-top truncate">
-        {node.prerequisites?.join(", ") || "-"}
+        {(node.prerequisites ?? []).length > 0
+          ? (node.prerequisites ?? []).map((prereq, index) => (
+              <span key={index}>
+                {prereq}
+                {index < (node.prerequisites ?? []).length - 1 && <br />}
+              </span>
+            ))
+          : "-"}
       </td>
       <td className="px-2 sm:px-6 py-4 min-w-[200px] align-top">
         {!node.isLeaf && (node.minCredits || node.minChildren) && (
