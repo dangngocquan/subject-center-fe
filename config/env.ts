@@ -13,3 +13,13 @@ export type GoogleConfig = {
 export const googleConfig: GoogleConfig = {
   clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
 };
+
+export interface AESConfig {
+  key: string;
+  iv: string;
+}
+
+export const aesConfig: AESConfig = {
+  key: process.env.NEXT_PUBLIC_AES_KEY || "",
+  iv: process.env.NEXT_PUBLIC_AES_IV || "",
+};
