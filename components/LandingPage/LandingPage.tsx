@@ -24,7 +24,7 @@ const LandingPage = () => {
         <DashboardSection />
         <FeaturesSection />
         <HowItWorksSection />
-        <TestimonialsSection />
+        {/* <TestimonialsSection /> */}
         <CTASection />
       </div>
     </main>

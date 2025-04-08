@@ -31,5 +31,7 @@ export const siteConfig = {
     majorDetails: (id: string) => `/majors/${id}`,
     plans: "/plans",
     planDetails: (id: string) => `/plans/${id}`,
+    lastTerm: "/last-term",
+    timetable: "/timetable",
   },
 };
