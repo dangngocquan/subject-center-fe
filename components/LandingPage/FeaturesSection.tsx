@@ -15,10 +15,10 @@ const ImageFeatureCard: React.FC<{
 }> = ({ aspect, desc, image }) => {
   return (
     <div
-      className="flex flex-col items-center space-y-4 bg-gray-900/50 backdrop-blur-md border border-cyan-500/20 rounded-xl p-6 shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/20 transition-all duration-300"
-      style={{ width: "320px", height: "384px" }}
+      className="flex flex-col items-center space-y-4 bg-gray-900/50 backdrop-blur-md border border-cyan-500/20 rounded-xl p-4 sm:p-6 shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/20 transition-all duration-300 w-full max-w-[320px] mx-auto"
+      style={{ height: "auto", minHeight: "320px" }}
     >
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-48 sm:h-56">
         <Image
           alt={desc}
           className="rounded-lg opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -34,7 +34,7 @@ const ImageFeatureCard: React.FC<{
           src={image}
         />
       </div>
-      <p className="text-gray-300 font-light text-base sm:text-lg text-center leading-relaxed">
+      <p className="text-gray-300 font-light text-sm sm:text-base md:text-lg text-center leading-relaxed">
         {desc}
       </p>
     </div>
@@ -151,24 +151,51 @@ const FeaturesSection: React.FC = () => {
     },
   ];
 
-  const [startIndices, setStartIndices] = useState(features.map(() => 0)); // Chỉ số x
+  const [startIndices, setStartIndices] = useState(features.map(() => 0));
+  const touchStartX = useRef<number | null>(null);
 
   const handleNext = (featureIndex: number) => {
-    setStartIndices(
-      (prev) => prev.map((x, i) => (i === featureIndex ? x + 1 : x)) // x++
+    setStartIndices((prev) =>
+      prev.map((x, i) => (i === featureIndex ? x + 1 : x))
     );
   };
 
   const handlePrev = (featureIndex: number) => {
-    setStartIndices(
-      (prev) => prev.map((x, i) => (i === featureIndex ? x - 1 : x)) // x--
+    setStartIndices((prev) =>
+      prev.map((x, i) => (i === featureIndex ? x - 1 : x))
     );
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (
+    e: React.TouchEvent,
+    featureIndex: number,
+    k: number
+  ) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.touches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+
+    if (Math.abs(diff) > 50) {
+      // Swipe threshold
+      if (diff > 0)
+        handleNext(featureIndex); // Swipe left -> next
+      else handlePrev(featureIndex); // Swipe right -> prev
+      touchStartX.current = null; // Reset after handling
+    }
+  };
+
+  const handleTouchEnd = () => {
+    touchStartX.current = null;
   };
 
   return (
     <motion.section
       animate={isFeaturesInView ? "visible" : "hidden"}
-      className="py-16 md:py-24 bg-transparent relative px-4"
+      className="py-8 md:py-16 lg:py-24 bg-transparent relative px-4"
       custom={0}
       initial="hidden"
       ref={featuresRef}
@@ -177,22 +204,21 @@ const FeaturesSection: React.FC = () => {
       <div className="max-w-full sm:max-w-4xl md:max-w-6xl mx-auto relative z-10">
         <motion.h2
           animate={isFeaturesInView ? "visible" : "hidden"}
-          className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-12 md:mb-16 tracking-tight bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-center mb-8 md:mb-12 lg:mb-16 tracking-tight bg-gradient-to-r from-cyan-400 to-white bg-clip-text No text-transparent"
           custom={1}
           variants={fadeInVariants}
         >
           Key <span className="text-cyan-400">Features</span>
         </motion.h2>
 
-        <div className="space-y-16">
+        <div className="space-y-12 md:space-y-16">
           {features.map((feature, i) => {
-            const k = feature.items.length; // Tổng số card (k)
-            const x = startIndices[i]; // Chỉ số bắt đầu
-            const cardWidthWithSpace = 340; // 320px width + 20px space
+            const k = feature.items.length;
+            const x = startIndices[i];
+            const cardWidthWithSpace = 340;
 
-            // Tính chỉ số của 3 card hiển thị: (x % k), (x + 1) % k, (x + 2) % k
             const displayedIndices = [
-              ((x % k) + k) % k, // Đảm bảo không âm
+              ((x % k) + k) % k,
               (((x + 1) % k) + k) % k,
               (((x + 2) % k) + k) % k,
             ];
@@ -200,12 +226,12 @@ const FeaturesSection: React.FC = () => {
             return (
               <motion.div
                 animate={isFeaturesInView ? "visible" : "hidden"}
-                className="group bg-gray-900/80 rounded-2xl shadow-2xl shadow-cyan-500/20 p-8"
+                className="group bg-gray-900/80 rounded-2xl shadow-2xl shadow-cyan-500/20 p-6 md:p-8"
                 custom={i + 2}
                 key={i}
                 variants={fadeInVariants}
               >
-                <h3 className="text-3xl md:text-4xl font-extrabold text-center py-8 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-center py-6 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
                   {feature.title}
                 </h3>
 
@@ -216,7 +242,7 @@ const FeaturesSection: React.FC = () => {
                       className="p-2 rounded-full bg-gray-800/50 hover:bg-gray-700/50 transition-all duration-300"
                     >
                       <svg
-                        className="w-6 h-6 text-cyan-400"
+                        className="w-5 h-5 md:w-6 md:h-6 text-cyan-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -232,18 +258,22 @@ const FeaturesSection: React.FC = () => {
                     </button>
                   )}
 
-                  {/* Container băng chuyền */}
-                  <div className="overflow-hidden w-[1020px]">
+                  <div
+                    className="overflow-hidden w-full sm:w-[680px] md:w-[1020px]"
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={(e) => handleTouchMove(e, i, k)}
+                    onTouchEnd={handleTouchEnd}
+                  >
                     <motion.div
                       className="flex space-x-4"
                       animate={{
-                        x: -(((x % k) + k) % k) * cardWidthWithSpace, // Trượt dựa trên (x % k)
+                        x: -(((x % k) + k) % k) * cardWidthWithSpace,
                       }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
                       style={{ width: k * cardWidthWithSpace }}
                     >
                       {feature.items.map((item, idx) => (
-                        <div key={`${i}-${idx}`}>
+                        <div key={`${i}-${idx}`} className="flex-shrink-0">
                           <ImageFeatureCard
                             aspect={item.aspect}
                             desc={item.desc}
@@ -260,7 +290,7 @@ const FeaturesSection: React.FC = () => {
                       className="p-2 rounded-full bg-gray-800/50 hover:bg-gray-700/50 transition-all duration-300"
                     >
                       <svg
-                        className="w-6 h-6 text-cyan-400"
+                        className="w-5 h-5 md:w-6 md:h-6 text-cyan-400"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -277,10 +307,10 @@ const FeaturesSection: React.FC = () => {
                   )}
                 </div>
 
-                <div className="flex justify-center mt-8">
+                <div className="flex justify-center mt-6 md:mt-8">
                   <Link href={feature.route}>
                     <GenericButton
-                      className="bg-gradient-to-r from-cyan-400 to-white text-gray-900 px-8 py-3 rounded-full font-extrabold shadow-md shadow-cyan-500/40 hover:shadow-cyan-500/50 transition-all duration-300"
+                      className="bg-gradient-to-r from-cyan-400 to-white text-gray-900 px-6 py-2 md:px-8 md:py-3 rounded-full font-extrabold shadow-md shadow-cyan-500/40 hover:shadow-cyan-500/50 transition-all duration-300"
                       tooltipContent={`Explore ${feature.title}`}
                       tooltipId={`explore-${feature.title.toLowerCase().replace(/\s+/g, "-")}`}
                     >

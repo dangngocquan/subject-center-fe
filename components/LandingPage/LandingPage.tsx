@@ -21,7 +21,7 @@ const LandingPage = () => {
 
       <div className="relative z-10">
         <HeroSection />
-        <DashboardSection />
+        {/* <DashboardSection /> */}
         <FeaturesSection />
         <HowItWorksSection />
         {/* <TestimonialsSection /> */}
