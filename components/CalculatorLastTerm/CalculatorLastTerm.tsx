@@ -47,7 +47,7 @@ const CaculatorLastTerm: React.FC = () => {
     const newErrors: string[] = [];
     const totalCoefficient = inputs.reduce(
       (sum, input) => sum + Number(input.coefficient || 0),
-      0,
+      0
     );
 
     inputs.forEach((input, index) => {
@@ -59,14 +59,14 @@ const CaculatorLastTerm: React.FC = () => {
       }
       if (isNaN(coefficient) || coefficient <= 0 || coefficient >= 1) {
         newErrors.push(
-          `Coefficient in row ${index + 1} must be between 0 and 1.`,
+          `Coefficient in row ${index + 1} must be between 0 and 1.`
         );
       }
     });
 
     if (totalCoefficient >= 1) {
       newErrors.push(
-        `Total coefficients must be less than 1 (current: ${totalCoefficient.toFixed(2)}).`,
+        `Total coefficients must be less than 1 (current: ${totalCoefficient.toFixed(2)}).`
       );
     }
 
@@ -86,7 +86,7 @@ const CaculatorLastTerm: React.FC = () => {
 
     const totalCoefficient = inputs.reduce(
       (sum, input) => sum + Number(input.coefficient),
-      0,
+      0
     );
     const finalCoefficient = 1 - totalCoefficient;
     if (finalCoefficient <= 0) {
@@ -101,7 +101,7 @@ const CaculatorLastTerm: React.FC = () => {
     const currentScore = inputs.reduce(
       (sum, input) =>
         sum + Number(input.score || 0) * Number(input.coefficient),
-      0,
+      0
     );
 
     return VNU_CONVERSION_TABLE.scores.slice(0, -1).map((grade) => {
@@ -135,8 +135,8 @@ const CaculatorLastTerm: React.FC = () => {
   }, [inputs]);
 
   return (
-    <div className="p-6 max-w-8xl mx-auto bg-gray-900/80 backdrop-blur-md rounded-lg shadow-lg shadow-cyan-500/20">
-      <h1 className="text-2xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+    <div className="p-6 max-w-8xl mx-auto bg-color-1 backdrop-blur-md rounded-lg shadow-lg shadow-color-15">
+      <h1 className="text-2xl font-bold mb-6 bg-gradient-to-r from-color-15 to-color-1 bg-clip-text text-transparent">
         Final Exam Score Calculator
       </h1>
       <InputTable

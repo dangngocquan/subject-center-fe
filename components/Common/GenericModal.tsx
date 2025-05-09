@@ -46,14 +46,14 @@ const GenericModal: React.FC<GenericModalProps> = ({
         >
           <motion.div
             animate="visible"
-            className="bg-[#1A2A44] p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-[90%] sm:max-w-4xl relative border border-[#2A3A54] backdrop-blur-sm"
+            className="bg-primary p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-[90%] sm:max-w-4xl relative border border-color-15 backdrop-blur-sm"
             exit="exit"
             initial="hidden"
-            style={{ background: "rgba(26, 42, 68, 0.95)" }}
+            // style={{ background: "rgba(26, 42, 68, 0.95)" }}
             variants={modalVariants}
           >
             <button
-              className="absolute top-3 sm:top-4 right-3 sm:right-4 text-gray-400 hover:text-gray-200 transition-colors duration-200"
+              className="absolute top-3 sm:top-4 right-3 sm:right-4 text-color-R4 hover:text-color-R10 transition-colors duration-200"
               onClick={onClose}
             >
               <FaTimes className="sm:w-4 sm:h-4" size={14} />

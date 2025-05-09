@@ -6,7 +6,7 @@ import CalculatorLastTerm from "@/components/CalculatorLastTerm/CalculatorLastTe
 
 const LastTermPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-primary text-primary">
       <CalculatorLastTerm />
     </div>
   );
