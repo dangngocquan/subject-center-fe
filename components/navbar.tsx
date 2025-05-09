@@ -217,7 +217,7 @@ export const Navbar = () => {
       {isMenuVisible && (
         <div
           aria-label="Close menu"
-          className={`fixed inset-0 bg-black/70 z-40 lg:hidden cursor-pointer transition-opacity duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+          className={`fixed inset-0 bg-color-15/50 z-40 lg:hidden cursor-pointer transition-opacity duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] ${
             isMenuOpen ? "opacity-100" : "opacity-0"
           }`}
           role="button"
@@ -231,7 +231,7 @@ export const Navbar = () => {
       {isExpanded && (
         <div
           aria-label="Close expanded menu"
-          className="fixed inset-0 bg-black/50 z-40"
+          className="fixed inset-0 bg-color-15/50 z-40"
           role="button"
           tabIndex={0}
           onClick={() => setIsExpanded(false)}
@@ -248,7 +248,7 @@ export const Navbar = () => {
         variants={navbarVariants}
       >
         <HeroUINavbar
-          className="bg-gray-900/80 backdrop-blur-md shadow-lg shadow-cyan-500/20 z-50 w-full"
+          className="bg-color-1/50 backdrop-blur-md shadow-lg shadow-color-15/30 z-50 w-full"
           maxWidth="xl"
           position="sticky"
         >
@@ -268,7 +268,7 @@ export const Navbar = () => {
                 href="/"
               >
                 <Logo />
-                <p className="font-bold text-xl bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+                <p className="font-bold text-xl bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent">
                   S-CENTER
                 </p>
               </NextLink>
@@ -280,7 +280,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "ml-5 text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
+                      "ml-5 text-color-10 hover:text-color-B7 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
                     )}
                     href={item.href}
                     onClick={

@@ -51,11 +51,11 @@ export default function RootLayout({
               <Link
                 isExternal
                 className="flex items-center gap-1 text-current"
-                href=""
+                href="https://github.com/dangngocquan"
                 title="Bris"
               >
-                <span className="text-default-600">Powered by</span>
-                <p className="text-primary">Bris</p>
+                <span className="text-color-10">Powered by</span>
+                <p className="text-color-15 hover:text-color-G7">Bris</p>
               </Link>
             </footer>
           </div>

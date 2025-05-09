@@ -26,11 +26,11 @@ export const GenericButton: React.FC<GenericButtonProps> = ({
 
   // Enabled state styles
   const enabledStyles =
-    "bg-color-4 backdrop-blur-md text-color-15 border-color-15 hover:bg-color-7 hover:text-color-15 shadow-color-15";
+    "bg-color-4 backdrop-blur-md text-color-15 border-color-15 hover:bg-color-G3 hover:text-color-15";
 
   // Disabled state styles
   const disabledStyles =
-    "bg-color-12 text-color-15 border-color-15 cursor-not-allowed shadow-color-15";
+    "bg-color-10 text-color-15 border-color-15 cursor-not-allowed";
 
   return (
     <motion.button
@@ -48,7 +48,7 @@ export const GenericButton: React.FC<GenericButtonProps> = ({
           : {
               // scale: 1.05,
               transform: "translateY(-2px)",
-              boxShadow: "0 0 12px rgba(0, 0, 0, 0.4)",
+              boxShadow: "0px 5px 10px rgba(0, 0, 0, 1)",
             }
       }
       whileTap={disabled ? undefined : { scale: 1 }}

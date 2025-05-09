@@ -64,7 +64,7 @@ const HeroSection = () => {
       }}
       variants={fadeInVariants}
     >
-      <div className="absolute inset-0 bg-gradient-to-t from-color-1 via-color-5 to-color-8 z-0" />
+      <div className="absolute inset-0 bg-gradient-to-t from-color-1/100 via-color-5/10 to-color-1/1 z-0" />
 
       <motion.h1
         className="relative z-10 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-color-B7 to-color-B1 bg-clip-text text-transparent drop-shadow-lg"
@@ -74,7 +74,7 @@ const HeroSection = () => {
         Optimize Your <span className="text-color-B7">University Journey</span>
       </motion.h1>
       <motion.p
-        className="relative z-10 text-lg sm:text-xl md:text-2xl max-w-xl md:max-w-3xl font-light text-color-3 tracking-wide"
+        className="relative z-10 text-lg sm:text-xl md:text-2xl max-w-xl md:max-w-3xl font-light text-color-1 tracking-wide"
         custom={2}
         variants={fadeInVariants}
       >
@@ -94,7 +94,7 @@ const HeroSection = () => {
               variant: "shadow",
               size: "lg",
               className:
-                "bg-color-B2 hover:bg-color-B5 hover:scale-105 transition-all duration-300 shadow-lg shadow-color-B7 px-6 sm:px-8 py-2 text-color-8 hover:text-color-15 font-semibold",
+                "bg-color-B2 hover:bg-color-B5 transition-all duration-300 shadow-lg shadow-color-B7/1 hover:shadow-color-B7/100 px-6 sm:px-8 py-2 text-color-8 hover:text-color-15 font-semibold",
             })}
             onClick={() => setIsSignUpModalOpen(true)}
           >
@@ -107,7 +107,7 @@ const HeroSection = () => {
             radius: "full",
             size: "lg",
             className:
-              "border-color-8 text-color-8 hover:bg-color-B5 hover:border-color-15 hover:text-color-15 transition-all duration-300 px-6 sm:px-8 py-2 font-semibold",
+              "border-color-8 text-color-8 hover:bg-color-B5/80 hover:border-color-15 hover:text-color-15 transition-all duration-300 px-6 sm:px-8 py-2 font-semibold",
           })}
           href={siteConfig.routers.majors}
         >

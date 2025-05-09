@@ -10,8 +10,8 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)"],
-        mono: ["var(--font-mono)"],
+        sans: ["Roboto", "sans-serif"],
+        mono: ["Roboto Mono", "monospace"],
       },
       colors: {
         primary: {

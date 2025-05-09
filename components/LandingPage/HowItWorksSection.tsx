@@ -31,16 +31,16 @@ const HowItWorksSection = () => {
       <div className="max-w-full sm:max-w-4xl md:max-w-6xl mx-auto relative z-10 text-center">
         {/* Tiêu đề riêng, giống với DashboardSection */}
         <motion.h2
-          className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-12 md:mb-16 tracking-tight bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent"
+          className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-center mb-12 md:mb-16 tracking-tight bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent"
           custom={1}
           variants={fadeInVariants}
         >
-          How does <span className="text-cyan-400">S-CENTER</span> work?
+          How does S-CENTER work?
         </motion.h2>
 
         {/* Khối nội dung "nổi" lên */}
         <motion.div
-          className="relative bg-gray-900/80 p-6 md:p-8 rounded-2xl shadow-lg shadow-cyan-500/20"
+          className="relative bg-color-1/80 p-6 md:p-8 rounded-2xl shadow-lg shadow-color-15/20"
           custom={2}
           variants={fadeInVariants}
         >
@@ -69,7 +69,7 @@ const HowItWorksSection = () => {
             ].map((item, i) => (
               <motion.div
                 key={i}
-                className="group p-6 text-center bg-gray-900/30 backdrop-blur-md rounded-xl border border-cyan-500/20 hover:bg-gray-800/50 hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-500"
+                className="group p-6 text-center bg-color-1/30 backdrop-blur-md rounded-xl border border-color-15 hover:bg-color-6/50 hover:shadow-xl hover:shadow-color-15/20 transition-all duration-500"
                 custom={i + 2}
                 variants={fadeInVariants}
               >
@@ -78,10 +78,10 @@ const HowItWorksSection = () => {
                   className="w-24 h-24 mx-auto mb-4 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
                   src={item.img}
                 />
-                <h3 className="text-lg font-semibold text-cyan-400">
+                <h3 className="text-lg font-semibold text-color-15">
                   {item.step}
                 </h3>
-                <p className="text-gray-300 font-light leading-relaxed">
+                <p className="text-color-15 font-light leading-relaxed">
                   {item.desc}
                 </p>
               </motion.div>
