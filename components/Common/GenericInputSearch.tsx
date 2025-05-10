@@ -30,14 +30,14 @@ const GenericInputSearch: React.FC<GenericInputSearchProps> = ({
       transition={{ duration: 0.6, delay: 0.2 }}
     >
       {/* Container flex với viền và nền, bao quanh cả icon và input */}
-      <div className="flex items-center w-full py-4 px-4 rounded-md bg-gray-900/80 backdrop-blur-md border border-cyan-500/30 focus-within:ring-4 focus-within:ring-cyan-400/50 focus-within:border-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 hover:border-cyan-400">
+      <div className="flex items-center w-full py-4 px-4 rounded-md bg-color-1/80 backdrop-blur-md border border-color-10/30 focus-within:ring-2 focus-within:ring-color-15/80 focus-within:border-color-15 transition-all duration-300 shadow-lg shadow-color-15/20 hover:shadow-color-15/30 hover:border-color-15">
         {/* Icon FaSearch nằm trong container */}
-        <FaSearch className="w-6 h-6 text-cyan-400 mr-2" />
+        <FaSearch className="w-6 h-6 text-color-15 mr-2" />
 
         {/* Input không có viền riêng, chỉ có padding */}
         <input
           ref={inputRef}
-          className="flex-1 bg-transparent text-cyan-400/50 placeholder-cyan-400/50 focus:outline-none placeholder:transition-all placeholder:duration-300 focus:placeholder:opacity-0"
+          className="flex-1 bg-transparent text-color-15 placeholder-color-15/50 focus:outline-none placeholder:transition-all placeholder:duration-300 focus:placeholder:opacity-0"
           placeholder={placeholder}
           type="text"
           value={searchTerm}
@@ -52,7 +52,7 @@ const GenericInputSearch: React.FC<GenericInputSearchProps> = ({
             whileTap={{ scale: 0.9 }}
             onClick={handleClearSearch}
           >
-            <FaTimes className="w-5 h-5 text-cyan-400 hover:text-cyan-300 transition-all duration-300" />
+            <FaTimes className="w-5 h-5 text-color-15 hover:text-color-15 transition-all duration-300" />
           </motion.button>
         )}
       </div>

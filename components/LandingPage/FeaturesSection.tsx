@@ -239,10 +239,10 @@ const FeaturesSection: React.FC = () => {
                   {k > 1 && (
                     <button
                       onClick={() => handlePrev(i)}
-                      className="p-2 rounded-full bg-color-10/50 hover:bg-color-12/50 transition-all duration-300"
+                      className="text-color-15 hover:text-color-1 p-2 rounded-full bg-color-1 hover:bg-color-15 border border-color-15 transition-all duration-300"
                     >
                       <svg
-                        className="w-5 h-5 md:w-6 md:h-6 text-color-B8"
+                        className="w-5 h-5 md:w-6 md:h-6"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -287,10 +287,10 @@ const FeaturesSection: React.FC = () => {
                   {k > 1 && (
                     <button
                       onClick={() => handleNext(i)}
-                      className="p-2 rounded-full bg-color-10/50 hover:bg-color-12/50 transition-all duration-300"
+                      className="text-color-15 hover:text-color-1 p-2 rounded-full bg-color-1 hover:bg-color-15 border border-color-15 transition-all duration-300"
                     >
                       <svg
-                        className="w-5 h-5 md:w-6 md:h-6 text-color-B8"
+                        className="w-5 h-5 md:w-6 md:h-6 "
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

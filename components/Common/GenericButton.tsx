@@ -26,11 +26,11 @@ export const GenericButton: React.FC<GenericButtonProps> = ({
 
   // Enabled state styles
   const enabledStyles =
-    "bg-color-4 backdrop-blur-md text-color-15 border-color-15 hover:bg-color-G3 hover:text-color-15";
+    "bg-color-1 backdrop-blur-md text-color-15 border-color-15 hover:bg-color-G3 hover:text-color-15";
 
   // Disabled state styles
   const disabledStyles =
-    "bg-color-10 text-color-15 border-color-15 cursor-not-allowed";
+    "bg-color-5 text-color-15 border-color-15 cursor-not-allowed";
 
   return (
     <motion.button

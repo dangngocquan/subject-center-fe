@@ -38,7 +38,7 @@ const MajorsPage: React.FC = () => {
     );
 
   return (
-    <div className="min-h-screen p-6 md:p-8 bg-[#0A1A2F]">
+    <div className="min-h-screen p-6 md:p-8 bg-primary">
       {/* Majors List */}
       <MajorsList
         majors={filteredMajors}
