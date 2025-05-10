@@ -24,34 +24,34 @@ const MajorDetailTable: React.FC<MajorDetailTableProps> = ({
   onHandleSelection,
 }) => {
   return (
-    <div className="rounded-lg shadow-lg overflow-x-auto bg-[#1A2A44]">
+    <div className="rounded-lg shadow-lg overflow-x-auto bg-color-1 border border-color-15 text-color-15">
       <table className="min-w-full divide-y divide-gray-700">
-        <thead className="bg-[#2A3A54]">
+        <thead className="bg-color-6">
           <tr>
-            <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[60px]">
+            <th className="font-semibold px-2 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider w-[60px]">
               Select
             </th>
-            <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[80px]">
+            <th className="font-semibold px-2 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider w-[80px]">
               No.
             </th>
-            <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider min-w-[200px]">
+            <th className="font-semibold px-2 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider min-w-[200px]">
               Subject Name
             </th>
-            <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[120px]">
+            <th className="font-semibold px-2 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider w-[120px]">
               Subject Code
             </th>
-            <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[100px]">
+            <th className="font-semibold px-2 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider w-[100px]">
               Credits
             </th>
-            <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider w-[150px]">
+            <th className="font-semibold px-2 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider w-[150px]">
               Prerequisites
             </th>
-            <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider min-w-[200px]">
+            <th className="font-semibold px-2 sm:px-6 py-3 text-left text-xs font-medium uppercase tracking-wider min-w-[200px]">
               Requirements
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-700">
+        <tbody className="divide-y divide-color-15">
           {flatData.map((node) => (
             <MajorDetailRow
               key={node.genCode}

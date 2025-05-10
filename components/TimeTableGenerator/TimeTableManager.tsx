@@ -302,7 +302,7 @@ const TimeTableManager: React.FC = () => {
   const colorMap = getColorMap(courses.filter((course) => course.selected));
 
   return (
-    <div className="flex flex-row gap-4 p-4 h-screen">
+    <div className="flex flex-row gap-4 p-4 h-[90%]">
       <div className="w-1/3">
         <TimeTableInput
           courses={courses}

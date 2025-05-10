@@ -57,12 +57,12 @@ const TimeTableGrid: React.FC<TimeTableGridProps> = ({
   return (
     <div className="mb-6">
       <div className="overflow-x-auto">
-        <table className="w-full border border-gray-700">
+        <table className="w-full border border-color-15">
           <thead>
-            <tr className="bg-gray-800">
-              <th className="border border-gray-700 p-2 text-sm">Period</th>
+            <tr className="bg-color-6">
+              <th className="border border-color-15 p-2 text-sm">Period</th>
               {daysOfWeek.map((day, idx) => (
-                <th key={idx} className="border border-gray-700 p-2 text-sm">
+                <th key={idx} className="border border-color-15 p-2 text-sm">
                   {day}
                 </th>
               ))}
@@ -70,8 +70,8 @@ const TimeTableGrid: React.FC<TimeTableGridProps> = ({
           </thead>
           <tbody>
             {periods.map((period, periodIdx) => (
-              <tr key={periodIdx} className="hover:bg-gray-800">
-                <td className="border border-gray-700 p-2 text-center text-sm">
+              <tr key={periodIdx} className="hover:bg-color-3">
+                <td className="border border-color-15 p-2 text-center text-sm">
                   Period {period}
                 </td>
                 {grid[periodIdx].map((course, dayIdx) => {
@@ -79,21 +79,21 @@ const TimeTableGrid: React.FC<TimeTableGridProps> = ({
                   return (
                     <td
                       key={dayIdx}
-                      className={`border border-gray-700 p-2 text-center text-sm ${
-                        color ? `${color.bg} ${color.border}` : ""
+                      className={`border border-color-15 p-2 text-center text-sm ${
+                        color ? `${color.bg}` : ""
                       }`}
                     >
                       {course ? (
                         <motion.div
                           animate={{ opacity: 1, scale: 1 }}
-                          className={`p-2 rounded-lg shadow-lg ${color?.hoverShadow || ""} transition-shadow duration-300`}
+                          className={`p-2 transition-shadow duration-300`}
                           initial={{ opacity: 0, scale: 0.8 }}
                           transition={{ duration: 0.3 }}
                         >
-                          <p className="font-semibold text-white">
+                          <p className="font-semibold text-color-15">
                             {course.courseCode} - {course.classCode}
                           </p>
-                          <p className="text-xs text-gray-200">
+                          <p className="text-xs text-color-15">
                             {course.courseName}
                           </p>
                         </motion.div>

@@ -80,7 +80,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
     courses.length > 0 && courses.every((course) => course.selected);
 
   return (
-    <div className="border p-4 bg-gray-900 text-white rounded-lg h-full flex flex-col">
+    <div className="border p-4 bg-color-1 text-white rounded-lg h-full flex flex-col">
       <div className="flex flex-col justify-between items-start mb-4 shrink-0 gap-4">
         <FeaturesPanel
           allSelected={allSelected}
@@ -95,13 +95,13 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
 
       {/* Sử dụng GenericInputSearch với class điều chỉnh */}
       <GenericInputSearch
-        className="w-full mb-4 text-gray-300 placeholder-gray-300 border-gray-700"
+        className="w-full mb-4 text-color-15 placeholder-color-15 border-color-15"
         placeholder="Search by course code or name..."
         searchTerm={searchQuery}
         setSearchTerm={setSearchQuery}
       />
 
-      <h3 className="font-bold text-cyan-400 shrink-0 mb-2">Course List</h3>
+      <h3 className="font-bold text-color-15 shrink-0 mb-2">Course List</h3>
       <CourseList
         courses={filteredCourses}
         setCourses={setCourses}

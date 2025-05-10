@@ -23,6 +23,7 @@ const config = {
           dark: "#000000",
         },
         text: {
+          DEFAULT: "#000000",
           light: "#000000",
           dark: "#ffffff",
         },

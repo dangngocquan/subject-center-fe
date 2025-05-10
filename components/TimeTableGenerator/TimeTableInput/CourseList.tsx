@@ -50,16 +50,16 @@ const CourseList: React.FC<CourseListProps> = ({
   return (
     <>
       <div className="max-h-[60vh] overflow-y-auto pr-2">
-        <table className="w-full text-white border-collapse">
+        <table className="w-full text-color-15 border-collapse">
           <thead>
-            <tr className="bg-gray-800">
-              <th className="p-2 border border-gray-700">Select</th>
-              <th className="p-2 border border-gray-700">Course Code</th>
-              <th className="p-2 border border-gray-700">Course Name</th>
-              <th className="p-2 border border-gray-700">Credits</th>
-              <th className="p-2 border border-gray-700">Class Code</th>
-              <th className="p-2 border border-gray-700">Period</th>
-              <th className="p-2 border border-gray-700">Actions</th>
+            <tr className="bg-color-1">
+              <th className="p-2 border border-color-15">Select</th>
+              <th className="p-2 border border-color-15">Course Code</th>
+              <th className="p-2 border border-color-15">Course Name</th>
+              <th className="p-2 border border-color-15">Credits</th>
+              <th className="p-2 border border-color-15">Class Code</th>
+              <th className="p-2 border border-color-15">Period</th>
+              <th className="p-2 border border-color-15">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -68,62 +68,64 @@ const CourseList: React.FC<CourseListProps> = ({
               return courseList.map((course, index) => (
                 <tr
                   key={`${courseCode}-${index}`}
-                  className="border-b border-gray-700"
+                  className={`border-b border-color-15 ${
+                    course.selected ? "bg-color-G3" : "bg-color-1"
+                  }`}
                 >
                   {index === 0 && (
                     <>
                       <td
-                        className="p-2 border border-gray-700 align-middle text-center"
+                        className="p-2 border border-color-15 align-middle text-center"
                         rowSpan={rowSpan}
                       >
                         <input
                           checked={courseList[0].selected}
-                          className="text-cyan-400 border-gray-700 rounded focus:ring-cyan-500"
+                          className="text-color-15 border-color-15 rounded focus:ring-color-15"
                           type="checkbox"
                           onChange={() => toggleCourseSelection(courseCode)}
                         />
                       </td>
                       <td
-                        className={`p-2 border border-gray-700 align-middle ${
-                          course.selected ? "text-cyan-300" : "text-gray-500"
+                        className={`p-2 border border-color-15 align-middle ${
+                          course.selected ? "text-color-15" : "text-color-15"
                         }`}
                         rowSpan={rowSpan}
                       >
                         {courseCode}
                       </td>
                       <td
-                        className={`p-2 border border-gray-700 align-middle ${
-                          course.selected ? "text-cyan-300" : "text-gray-500"
+                        className={`p-2 border border-color-15 align-middle ${
+                          course.selected ? "text-color-15" : "text-color-15"
                         }`}
                         rowSpan={rowSpan}
                       >
                         {course.courseName}
                       </td>
                       <td
-                        className="p-2 border border-gray-700 align-middle text-center"
+                        className="p-2 border border-color-15 align-middle text-center"
                         rowSpan={rowSpan}
                       >
                         {course.credits}
                       </td>
                     </>
                   )}
-                  <td className="p-2 border border-gray-700">
+                  <td className="p-2 border border-color-15">
                     {course.classCode}
                   </td>
-                  <td className="p-2 border border-gray-700">
+                  <td className="p-2 border border-color-15">
                     Day {course.dayOfWeek + 1}, Period{" "}
                     {course.period.join(", ")}
                   </td>
-                  <td className="p-2 border border-gray-700 text-center">
+                  <td className="p-2 border border-color-15 text-center">
                     <div className="flex justify-center space-x-2">
                       <GenericButton
-                        className="text-xs hover:bg-blue-500 hover:text-white"
+                        className="text-xs hover:bg-color-B7 hover:text-color-15"
                         onClick={() => setEditCourse(course)}
                       >
                         <FaEdit size={12} />
                       </GenericButton>
                       <GenericButton
-                        className="text-xs hover:bg-red-500 hover:text-white"
+                        className="text-xs hover:bg-color-R7 hover:text-color-15"
                         onClick={() =>
                           setCourses(courses.filter((c) => c !== course))
                         }

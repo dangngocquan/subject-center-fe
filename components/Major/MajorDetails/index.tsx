@@ -138,7 +138,7 @@ const MajorDetail: React.FC<MajorDetailProps> = ({ id }) => {
   if (error) return <p className="text-red-500">Đã xảy ra lỗi: {error}</p>;
 
   return (
-    <div className="min-h-screen p-4 sm:p-6 bg-[#0A1A2F]">
+    <div className="min-h-screen p-4 sm:p-6 bg-primary">
       <MajorDetailHeader
         allExpanded={allExpanded}
         isEditMode={isEditMode}

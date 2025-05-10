@@ -78,7 +78,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
           <FaChevronLeft className="w-5 h-5" />
         </GenericButton>
 
-        <div className="flex items-center gap-3 flex-1">
+        <div className="flex items-center gap-3 flex-1 justify-center">
           {visiblePages[0] > 1 && (
             <span className="text-color-15 text-sm">...</span>
           )}
@@ -89,7 +89,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
               className={`w-3 h-3 rounded-md border border-color-15 shadow-lg shadow-color-15 ${
                 currentPage === page
                   ? "bg-color-1"
-                  : "bg-gray-900 backdrop-blur-md hover:bg-color-1/20"
+                  : "bg-color-10 backdrop-blur-md hover:bg-color-1/20"
               } transition-all duration-200`}
               whileHover={{ scale: 1.3 }}
               whileTap={{ scale: 0.9 }}

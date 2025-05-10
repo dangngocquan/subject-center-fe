@@ -19,11 +19,11 @@ const AddCourseModal: React.FC<AddCourseModalProps> = ({
 }) => {
   return (
     <GenericModal isOpen={isOpen} onClose={onClose}>
-      <div className="text-center text-white font-sans p-4 sm:p-6">
-        <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+      <div className="text-center text-color-1 font-sans p-4 sm:p-6">
+        <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-color-15 to-color-5">
           Add New Course
         </h3>
-        <p className="text-gray-300 mb-6">Choose how to add a course:</p>
+        <p className="text-color-15 mb-6">Choose how to add a course:</p>
         <div className="flex justify-center space-x-4">
           <GenericButton onClick={onCustom}>Add Custom</GenericButton>
           <GenericButton onClick={onJson}>Import JSON</GenericButton>
