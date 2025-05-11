@@ -41,6 +41,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
       ...newCourses.map((course) => ({ ...course, selected: true })),
     ];
     setCourses(updatedCourses);
+    localStorage.setItem("timetable-courses", JSON.stringify(updatedCourses));
     setModalType(null);
   };
 
@@ -54,6 +55,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
         : course
     );
     setCourses(updatedCourses);
+    localStorage.setItem("timetable-courses", JSON.stringify(updatedCourses));
   };
 
   const toggleAllSelection = () => {
@@ -63,6 +65,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
       selected: !allSelected,
     }));
     setCourses(updatedCourses);
+    localStorage.setItem("timetable-courses", JSON.stringify(updatedCourses));
   };
 
   const filteredCourses = courses.filter(

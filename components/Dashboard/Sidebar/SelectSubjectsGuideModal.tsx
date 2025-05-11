@@ -18,7 +18,7 @@ const SelectSubjectsGuideModal: React.FC<SelectSubjectsGuideModalProps> = ({
   return (
     <GenericModal isOpen={isOpen} onClose={onClose}>
       <div className="text-color-15 font-sans p-4 sm:p-6">
-        <h2 className=" text-center text-xl sm:text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+        <h2 className=" text-center text-xl sm:text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-color-15 to-color-5">
           Guideline
         </h2>
         <ol className="list-decimal list-inside space-y-4 text-sm sm:text-base">

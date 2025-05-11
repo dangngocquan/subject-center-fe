@@ -112,7 +112,7 @@ const CTASection = () => {
             Sign in to access all the amazing features of S-CENTER.
           </p>
           <GenericButton
-            className="bg-gradient-to-r from-color-3 to-color-6 hover:from-color-6 hover:to-color-9 text-color-15 px-6 py-3 rounded-full font-semibold shadow-lg shadow-cyan-500/50 hover:shadow-cyan-600/60 transition-all duration-300"
+            className="bg-gradient-to-r from-color-3 to-color-6 hover:from-color-6 hover:to-color-9 text-color-15 px-6 py-3 rounded-full font-semibold shadow-lg shadow-color-15/50 hover:shadow-color-15/60 transition-all duration-300"
             disabled={isLoading}
             onClick={() => authGoogle()}
           >

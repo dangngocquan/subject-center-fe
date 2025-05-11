@@ -134,8 +134,8 @@ const InputTable: React.FC<InputTableProps> = ({
                   <input
                     className={`w-full p-2 bg-color-1 text-color-15 border rounded focus:outline-none focus:ring-2 focus:ring-color-6 appearance-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                       hasError(index, "score")
-                        ? "border-red-500"
-                        : "border-cyan-500/20"
+                        ? "border-color-R7"
+                        : "border-color-B7"
                     }`}
                     placeholder="0-10"
                     type="number"

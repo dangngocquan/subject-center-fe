@@ -280,7 +280,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "ml-5 text-color-10 hover:text-color-B7 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
+                      "ml-5 text-color-10 hover:text-color-B7 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium"
                     )}
                     href={item.href}
                     onClick={
@@ -307,7 +307,7 @@ export const Navbar = () => {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <Logo />
-                      <p className="font-bold text-xl bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+                      <p className="font-bold text-xl bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent">
                         S-CENTER
                       </p>
                     </NextLink>
@@ -326,7 +326,7 @@ export const Navbar = () => {
                       <NextLink
                         className={clsx(
                           linkStyles({ color: "foreground" }),
-                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block"
+                          "text-white hover:text-color-15 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium w-full block"
                         )}
                         href={item.href}
                         onClick={

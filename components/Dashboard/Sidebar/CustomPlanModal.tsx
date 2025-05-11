@@ -333,39 +333,21 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
         </div>
       </GenericModal>
 
-      {/* <GenericModal
-        isOpen={errorModal.isOpen}
-        onClose={() => setErrorModal({ isOpen: false, message: "" })}
-      >
-        <div className="text-white p-4 sm:p-6">
-          <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-pink-600">
-            Error
-          </h2>
-          <p className="mb-6 text-sm sm:text-base">{errorModal.message}</p>
-          <button
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-color-15 rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg text-sm sm:text-base"
-            onClick={() => setErrorModal({ isOpen: false, message: "" })}
-          >
-            OK
-          </button>
-        </div>
-      </GenericModal> */}
-
       <GenericModal
         isOpen={resultModal.isOpen}
         onClose={() =>
           setResultModal({ isOpen: false, message: "", isSuccess: false })
         }
       >
-        <div className="text-white p-4 sm:p-6 flex flex-col items-center justify-center">
-          <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-color-G7 to-color-1">
+        <div className="text-color-15 p-4 sm:p-6 flex flex-col items-center justify-center">
+          <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-color-15 to-color-5">
             {resultModal.isSuccess ? "Success" : "Error"}
           </h2>
           <p className="mb-6 text-sm sm:text-base text-center">
             {resultModal.message}
           </p>
           <Link
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-color-15 rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg text-sm sm:text-base text-center"
+            className="w-full bg-gradient-to-r from-color-3 to-color-1 text-color-15 rounded-lg px-4 py-3 hover:from-color-6 hover:to-color-1 transition-all duration-300 shadow-lg hover:shadow-color-15/50 text-sm sm:text-base text-center"
             href={`${siteConfig.routers.planDetails(String(resultModal.data?.plan?.id))}`}
           >
             OK

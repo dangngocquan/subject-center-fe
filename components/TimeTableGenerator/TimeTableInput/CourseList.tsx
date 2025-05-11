@@ -144,13 +144,13 @@ const CourseList: React.FC<CourseListProps> = ({
       {/* Modal chỉnh sửa */}
       {editCourse && (
         <GenericModal isOpen={!!editCourse} onClose={() => setEditCourse(null)}>
-          <div className="text-center text-white font-sans p-4 sm:p-6">
-            <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+          <div className="text-center text-color-15 font-sans p-4 sm:p-6">
+            <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-color-15 to-color-5">
               Edit Course
             </h3>
             <div className="space-y-4 text-left">
               <input
-                className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+                className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
                 placeholder="Course Code"
                 type="text"
                 value={editCourse.courseCode}
@@ -159,7 +159,7 @@ const CourseList: React.FC<CourseListProps> = ({
                 }
               />
               <input
-                className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+                className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
                 placeholder="Course Name"
                 type="text"
                 value={editCourse.courseName}
@@ -168,7 +168,7 @@ const CourseList: React.FC<CourseListProps> = ({
                 }
               />
               <input
-                className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+                className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
                 placeholder="Class Code"
                 type="text"
                 value={editCourse.classCode}
@@ -177,7 +177,7 @@ const CourseList: React.FC<CourseListProps> = ({
                 }
               />
               <select
-                className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+                className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
                 value={editCourse.dayOfWeek}
                 onChange={(e) =>
                   setEditCourse({
@@ -195,7 +195,7 @@ const CourseList: React.FC<CourseListProps> = ({
                 <option value={6}>Sunday</option>
               </select>
               <input
-                className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+                className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
                 placeholder="Period (e.g., 1,2,3)"
                 type="text"
                 value={editCourse.period.join(",")}
@@ -210,7 +210,7 @@ const CourseList: React.FC<CourseListProps> = ({
                 }
               />
               <input
-                className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+                className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
                 placeholder="Credits"
                 type="number"
                 value={editCourse.credits}

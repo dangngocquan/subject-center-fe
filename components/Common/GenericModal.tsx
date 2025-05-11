@@ -41,14 +41,14 @@ const GenericModal: React.FC<GenericModalProps> = ({
       {isOpen && (
         <motion.div
           animate={{ opacity: 1 }}
-          className={`w-[100vw] fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70 px-4 sm:px-0 ${className}`}
+          className={`w-[100vw] fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70 px-4 sm:px-0`}
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
           <motion.div
             animate="visible"
-            className="bg-primary p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-[90%] sm:max-w-[90%] relative border border-color-15 backdrop-blur-sm"
+            className={`bg-primary p-4 sm:p-6 rounded-lg shadow-xl min-w-[50%] max-w-[90%] sm:max-w-[90%] relative border border-color-15 backdrop-blur-sm ${className}`}
             exit="exit"
             initial="hidden"
             // style={{ background: "rgba(26, 42, 68, 0.95)" }}

@@ -12,30 +12,6 @@ interface OutputTableProps {
 }
 
 const OutputTable: React.FC<OutputTableProps> = ({ results }) => {
-  // const getRowStyles = (minScore: number | null) => {
-  //   if (minScore === null) {
-  //     return {
-  //       backgroundColor: "bg-color-6", // bg-gray-800/20
-  //       // transition: "background-color 0.3s ease",
-  //     };
-  //   }
-  //   if (minScore > 10) {
-  //     return {
-  //       backgroundColor: "bg-color-R15)", // bg-red-900/20
-  //       // transition: "background-color 0.3s ease",
-  //     };
-  //   }
-  //   if (minScore <= 0) {
-  //     return {
-  //       backgroundColor: "bg-color-G15", // bg-green-900/20
-  //       // transition: "background-color 0.3s ease",
-  //     };
-  //   }
-  //   return {
-  //     backgroundColor: "bg-color-B15", // bg-cyan-900/20
-  //     // transition: "background-color 0.3s ease",
-  //   };
-  // };
 
   const getRowStyles = (minScore: number | null) => {
     if (minScore === null) {

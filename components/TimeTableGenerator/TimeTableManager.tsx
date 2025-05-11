@@ -13,7 +13,10 @@ interface CourseItemWithStatus extends CourseItem {
 }
 
 const TimeTableManager: React.FC = () => {
-  const [courses, setCourses] = useState<CourseItemWithStatus[]>([]);
+  const localCourses = JSON.parse(
+    localStorage.getItem("timetable-courses") ?? "[]"
+  );
+  const [courses, setCourses] = useState<CourseItemWithStatus[]>(localCourses);
   const [timetables, setTimetables] = useState<TimeTable[]>([]);
   const [currentTimetableIndex, setCurrentTimetableIndex] = useState(0);
   const [isCalculating, setIsCalculating] = useState(false);
