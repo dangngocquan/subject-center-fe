@@ -158,42 +158,48 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
   return (
     <>
       <GenericModal isOpen={isOpen} onClose={onClose}>
-        <div className="text-white font-sans p-4 sm:p-6">
-          <h2 className="text-xl sm:text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
-            Create Your Custom Plan
+        <div className="text-color-15 font-sans p-4 sm:p-6">
+          <h2 className="text-center text-xl sm:text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-color-15 to-color-5">
+            Customize By Form Data
           </h2>
           <input
-            className="w-full bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg px-4 py-3 mb-6 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300 placeholder-red-400 shadow-inner text-sm sm:text-base"
+            className="w-full bg-gradient-to-r from-color-3 to-color-1 text-color-15 rounded-lg px-4 py-3 mb-6 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 placeholder-color-R7 shadow-inner text-sm sm:text-base"
             disabled={isLoading}
             placeholder="Plan Name *"
             value={planName}
             onChange={(e) => setPlanName(e.target.value)}
           />
-          <div className="max-h-80 overflow-y-auto mb-6 rounded-lg shadow-lg border border-gray-700">
+          <div className="max-h-80 overflow-y-auto mb-6 shadow-lg shadow-color-15/50">
             <table className="w-full text-sm sm:text-base">
               <thead>
-                <tr className="bg-gradient-to-r from-gray-700 to-gray-800 text-gray-200 sticky top-0">
-                  <th className="p-3 sm:p-4 text-left font-semibold">Name *</th>
-                  <th className="p-3 sm:p-4 text-left font-semibold">Code *</th>
-                  <th className="p-3 sm:p-4 text-left font-semibold">
+                <tr className="bg-color-6 text-color-15 sticky top-0">
+                  <th className="border border-color-15 p-3 sm:p-4 text-left font-semibold">
+                    Name *
+                  </th>
+                  <th className="border border-color-15 p-3 sm:p-4 text-left font-semibold">
+                    Code *
+                  </th>
+                  <th className="border border-color-15 p-3 sm:p-4 text-left font-semibold">
                     Credit *
                   </th>
-                  <th className="p-3 sm:p-4 text-left font-semibold">
+                  <th className="border border-color-15 p-3 sm:p-4 text-left font-semibold">
                     Prerequisites
                   </th>
-                  <th className="p-3 sm:p-4 text-left font-semibold">Grade</th>
-                  <th className="p-3 sm:p-4" />
+                  <th className="border border-color-15 p-3 sm:p-4 text-left font-semibold">
+                    Grade
+                  </th>
+                  <th className="border border-color-15 p-3 sm:p-4" />
                 </tr>
               </thead>
               <tbody>
                 {subjects.map((subject, index) => (
                   <tr
                     key={index}
-                    className="border-b border-gray-700 hover:bg-gray-800/50 transition-colors duration-200"
+                    className="hover:bg-color-4 transition-colors duration-200"
                   >
-                    <td className="p-3 sm:p-4">
+                    <td className="border border-color-15 p-3 sm:p-4">
                       <input
-                        className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-red-400"
+                        className="w-full bg-color-1 text-color-15 rounded-lg px-3 py-2 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 text-sm sm:text-base placeholder-color-R7"
                         disabled={isLoading}
                         placeholder="Name *"
                         value={subject.name}
@@ -202,9 +208,9 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                         }
                       />
                     </td>
-                    <td className="p-3 sm:p-4">
+                    <td className="border border-color-15 p-3 sm:p-4">
                       <input
-                        className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-red-400"
+                        className="w-full bg-color-1 text-color-15 rounded-lg px-3 py-2 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 text-sm sm:text-base placeholder-color-R7"
                         disabled={isLoading}
                         placeholder="Code *"
                         value={subject.code}
@@ -213,9 +219,9 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                         }
                       />
                     </td>
-                    <td className="p-3 sm:p-4">
+                    <td className="border border-color-15 p-3 sm:p-4">
                       <input
-                        className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-red-400"
+                        className="w-full bg-color-1 text-color-15 rounded-lg px-3 py-2 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 text-sm sm:text-base placeholder-color-R7"
                         disabled={isLoading}
                         placeholder="Credit *"
                         type="text"
@@ -225,7 +231,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                         }
                       />
                     </td>
-                    <td className="p-3 sm:p-4">
+                    <td className="border border-color-15 p-3 sm:p-4">
                       <div className="space-y-3">
                         {subject.prerequisites.map((prereq, prereqIndex) => (
                           <div
@@ -233,7 +239,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                             className="flex items-center gap-2 group"
                           >
                             <input
-                              className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-gray-500"
+                              className="w-full bg-color-1 text-color-15 rounded-lg px-3 py-2 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 text-sm sm:text-base placeholder-color-15"
                               disabled={isLoading}
                               value={prereq}
                               onChange={(e) => {
@@ -245,7 +251,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                               }}
                             />
                             <button
-                              className="text-gray-400 hover:text-red-500 transition-colors duration-200 opacity-0 group-hover:opacity-100"
+                              className="text-color-15 hover:text-color-R7 transition-colors duration-200 opacity-0 group-hover:opacity-100"
                               disabled={isLoading}
                               onClick={() =>
                                 removePrerequisite(index, prereqIndex)
@@ -257,7 +263,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                         ))}
                         <div className="flex items-center gap-2">
                           <input
-                            className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 placeholder-gray-500 text-sm sm:text-base"
+                            className="w-full bg-color-1 text-color-15 rounded-lg px-3 py-2 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 placeholder-color-15 text-sm sm:text-base"
                             disabled={isLoading}
                             placeholder="Add prerequisite"
                             onKeyDown={(e) => {
@@ -268,11 +274,11 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                             }}
                           />
                           <button
-                            className="text-cyan-400 hover:text-cyan-600 transition-colors duration-200"
+                            className="text-color-15 hover:text-color-G7 transition-colors duration-200"
                             disabled={isLoading}
                             onClick={() => {
                               const input = document.querySelector(
-                                `tr:nth-child(${index + 1}) input[placeholder="Add prerequisite"]`,
+                                `tr:nth-child(${index + 1}) input[placeholder="Add prerequisite"]`
                               ) as HTMLInputElement;
                               addPrerequisite(index, input.value);
                               input.value = "";
@@ -283,9 +289,9 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                         </div>
                       </div>
                     </td>
-                    <td className="p-3 sm:p-4">
+                    <td className="border border-color-15 p-3 sm:p-4">
                       <input
-                        className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 text-sm sm:text-base placeholder-gray-500"
+                        className="w-full bg-color-1 text-color-15 rounded-lg px-3 py-2 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 text-sm sm:text-base placeholder-color-15"
                         disabled={isLoading}
                         placeholder="Grade"
                         value={subject.gradeLatin || ""}
@@ -294,9 +300,9 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                         }
                       />
                     </td>
-                    <td className="p-3 sm:p-4">
+                    <td className="border border-color-15 p-3 sm:p-4">
                       <button
-                        className="text-gray-400 hover:text-red-500 transition-colors duration-200"
+                        className="text-color-15 hover:text-color-R7 transition-colors duration-200"
                         disabled={isLoading}
                         onClick={() => removeSubject(index)}
                       >
@@ -308,16 +314,16 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
               </tbody>
             </table>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4">
+          <button
+            className="mt-[-16px] w-full bg-color-1 border border-color-15 hover:bg-color-6 text-color-15 px-4 py-3 flex items-center justify-center gap-2 hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md text-sm sm:text-base"
+            disabled={isLoading}
+            onClick={addSubject}
+          >
+            <FaPlus /> Add Subject
+          </button>
+          <div className="flex flex-col sm:flex-row gap-4 pt-6">
             <button
-              className="w-full bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg px-4 py-3 flex items-center justify-center gap-2 hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md text-sm sm:text-base"
-              disabled={isLoading}
-              onClick={addSubject}
-            >
-              <FaPlus /> Add Subject
-            </button>
-            <button
-              className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 text-sm sm:text-base disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-color-6 to-color-1 text-color-15 rounded-lg px-4 py-3 hover:from-color-9 hover:to-color-1 transition-all duration-300 shadow-lg hover:shadow-color-15/50 text-sm sm:text-base disabled:opacity-50"
               disabled={isLoading}
               onClick={handleSubmit}
             >
@@ -337,7 +343,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
           </h2>
           <p className="mb-6 text-sm sm:text-base">{errorModal.message}</p>
           <button
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg text-sm sm:text-base"
+            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-color-15 rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg text-sm sm:text-base"
             onClick={() => setErrorModal({ isOpen: false, message: "" })}
           >
             OK
@@ -352,14 +358,14 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
         }
       >
         <div className="text-white p-4 sm:p-6 flex flex-col items-center justify-center">
-          <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-600">
+          <h2 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-color-G7 to-color-1">
             {resultModal.isSuccess ? "Success" : "Error"}
           </h2>
           <p className="mb-6 text-sm sm:text-base text-center">
             {resultModal.message}
           </p>
           <Link
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg text-sm sm:text-base text-center"
+            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-color-15 rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg text-sm sm:text-base text-center"
             href={`${siteConfig.routers.planDetails(String(resultModal.data?.plan?.id))}`}
           >
             OK

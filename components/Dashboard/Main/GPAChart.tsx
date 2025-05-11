@@ -35,11 +35,11 @@ const GPAChart: React.FC<GPAChartProps> = ({ currentCPA }) => {
   };
 
   return (
-    <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 shadow-lg shadow-cyan-500/20 h-full flex flex-col">
-      <h3 className="text-cyan-400 text-xl sm:text-2xl font-semibold mb-4">
+    <div className="bg-color-1 rounded-2xl p-4 sm:p-6 shadow-lg shadow-color-15/50 h-full flex flex-col z-10">
+      <h3 className="text-color-15 text-xl sm:text-2xl font-semibold mb-4">
         Current GPA
       </h3>
-      <div className="flex-1 flex items-center justify-center relative">
+      <div className="flex-1 flex items-center justify-center relative z-1">
         <ResponsiveContainer height="100%" width="100%">
           <PieChart>
             {thresholdData.map((_, index) => (
@@ -55,6 +55,7 @@ const GPAChart: React.FC<GPAChartProps> = ({ currentCPA }) => {
                 stroke={thresholdColors[index]}
                 strokeOpacity={0.3}
                 strokeWidth={2}
+                className="z-0"
               />
             ))}
             <Pie
@@ -64,17 +65,18 @@ const GPAChart: React.FC<GPAChartProps> = ({ currentCPA }) => {
               innerRadius={80}
               outerRadius={100}
               startAngle={90}
+              z={1}
             >
               <Cell fill="#00ACC1" />
               <Cell fill="#4B5563" />
             </Pie>
           </PieChart>
         </ResponsiveContainer>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <div className="text-white text-lg sm:text-2xl font-semibold">
+        <div className="z-1 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+          <div className="text-color-15 text-lg sm:text-2xl font-semibold z-1">
             {`${safeCPA.toFixed(2)}/4.0`}
           </div>
-          <div className="text-gray-400 text-xs sm:text-sm mt-1">
+          <div className="text-color-15 text-xs sm:text-sm mt-1 z-1">
             {getGPALevelDescription(safeCPA)}
           </div>
         </div>

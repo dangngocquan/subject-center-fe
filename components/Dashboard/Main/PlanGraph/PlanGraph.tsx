@@ -34,11 +34,11 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
       height: "600px",
       marginLeft: "auto",
       marginRight: "auto",
-      border: "2px solid #00b7ff",
+      border: "2px solid rgb(0, 0, 0)",
       borderRadius: "15px",
-      background: "linear-gradient(145deg, #0a1a2f, #1a2a4f)",
+      background: "linear-gradient(145deg,rgb(255, 255, 255),rgb(255, 255, 255))",
       boxShadow:
-        "0 0 20px rgba(0, 183, 255, 0.5), inset 0 0 10px rgba(0, 183, 255, 0.3)",
+        "0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.3)",
       padding: "10px",
       overflow: "hidden" as const,
     };
@@ -47,7 +47,7 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
       borderRadius: "2px",
       padding: "12px",
       width: "200px",
-      boxShadow: "0 2px 8px rgba(34, 255, 0, 0.2)",
+      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
       textAlign: "center" as const,
       transition: "all 0.2s ease",
       wordBreak: "break-word" as const,
@@ -57,7 +57,7 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
 
     const subjectCardPStyle = { margin: "0", fontSize: "0.9em" };
     const subjectCardStrongStyle = {
-      color: "#007bff",
+      color: "#000000",
       fontWeight: "bold" as const,
     };
     const actionContainerStyle = {
@@ -199,7 +199,7 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
             const subjectCardStyle = {
               ...baseSubjectCardStyle,
               backgroundColor: getGradeColor(String(subject.gradeLatin)),
-              border: "1px solid #00b7ff",
+              border: "1px solid rgb(0, 0, 0)",
             };
 
             return {
@@ -227,7 +227,7 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
                         style={{
                           ...subjectCardPStyle,
                           fontSize: "0.85em",
-                          color: "#555",
+                          color: "#000000",
                           marginBottom: "4px",
                           lineHeight: "1.2",
                         }}
@@ -238,7 +238,7 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
                         style={{
                           ...subjectCardPStyle,
                           fontSize: "0.8em",
-                          color: "#00b7ff",
+                          color: "#000000",
                         }}
                       >
                         {subject.credit !== undefined
@@ -311,9 +311,9 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
                   target: targetId,
                   type: "bezier",
                   animated: true,
-                  style: { stroke: "#00b7ff", strokeWidth: 2 },
+                  style: { stroke: "#000000", strokeWidth: 2 },
                   arrowHeadType: "arrowclosed",
-                  markerEnd: { type: "arrowclosed", color: "#00b7ff" },
+                  markerEnd: { type: "arrowclosed", color: "#000000" },
                   pathOptions: { curvature: 0.5 },
                 };
               })
@@ -357,7 +357,7 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
               bottom: "9px",
               right: "9px",
               padding: "8px 16px",
-              background: "#007bff",
+              background: "#000000",
               color: "#fff",
               border: "none",
               borderRadius: "5px",

@@ -1,8 +1,8 @@
 "use client";
 
 import { useInView } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import React, { useEffect, useRef, useState } from "react";
 
 import LoadingModal from "../LoadingModal";
 
@@ -99,7 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
         const response = await deletePlan(Number(deleteModal.planId));
         if (!response.isBadRequest) {
           setLocalPlans((prevPlans) =>
-            prevPlans.filter((plan) => plan.id !== deleteModal.planId),
+            prevPlans.filter((plan) => plan.id !== deleteModal.planId)
           );
           if (selectedPlan?.id === deleteModal.planId) {
             router.push("/plans"); // Redirect to overview after deletion
@@ -131,8 +131,8 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
 
       setLocalPlans((prevPlans) =>
         prevPlans.map((plan) =>
-          plan.id === planId ? { ...plan, name: newName } : plan,
-        ),
+          plan.id === planId ? { ...plan, name: newName } : plan
+        )
       );
       if (selectedPlan?.id === planId) {
         setSelectedPlan((prev) => (prev ? { ...prev, name: newName } : null));
@@ -158,12 +158,12 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
         });
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
-          ),
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
+          )
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null,
+            prev ? { ...prev, name: planToUpdate.name } : null
           );
         }
       }
@@ -177,12 +177,12 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
       if (planToUpdate) {
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
-          ),
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
+          )
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null,
+            prev ? { ...prev, name: planToUpdate.name } : null
           );
         }
       }
@@ -206,7 +206,7 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
 
   return (
     <div
-      className={`bg-black text-white min-h-screen flex flex-col max-w-8xl mx-auto  relative ${
+      className={`bg-color-1 text-color-15 min-h-screen flex flex-col max-w-8xl mx-auto  relative ${
         isSidebarOpen ? "overflow-hidden" : ""
       }`}
     >
@@ -254,9 +254,7 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
               : "opacity-100"
           }`}
         >
-          {loading ? (
-            <p className="text-gray-400">Loading plans...</p>
-          ) : error ? (
+          {error ? (
             <p className="text-red-400">Error loading plans: {error}</p>
           ) : (
             <Main

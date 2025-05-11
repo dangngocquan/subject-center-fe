@@ -20,6 +20,7 @@ import ImportPlanResultByJsonModal from "./ImportResultModal";
 import { Plan } from "@/types/plan";
 import { createPlanByImportJSON } from "@/service/plan.api";
 import { siteConfig } from "@/config/site";
+import GenericInputSearch from "@/components/Common/GenericInputSearch";
 
 interface SidebarProps {
   searchQuery: string;
@@ -91,16 +92,16 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Debounced search handler
   const debouncedSetSearchQuery = useCallback(
     debounce((value: string) => setSearchQuery(value), 300),
-    [setSearchQuery],
+    [setSearchQuery]
   );
 
   // Memoized filtered plans
   const filteredPlans = useMemo(
     () =>
       plans.filter((plan) =>
-        (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
+        (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
       ),
-    [plans, searchQuery],
+    [plans, searchQuery]
   );
 
   const handleEditClick = (plan: Plan) => {
@@ -193,12 +194,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <div className="w-full h-full md:w-64 bg-gray-900/80 shadow-lg rounded-2xl md:rounded-2xl flex flex-col">
-      <div className="p-4 md:p-4 border-b border-gray-800/50">
+    <div className="w-full h-full md:w-64 bg-color-1/80 shadow-lg shadow-color-15/50 rounded-2xl md:rounded-2xl flex flex-col">
+      <div className="p-4 md:p-4 border-b border-color-15">
         <div className="relative mb-4">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-color-15" />
           <input
-            className="bg-gray-800 text-white placeholder-gray-400 rounded-full pl-10 pr-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
+            className="border border-color-15 bg-color-1 text-color-15 placeholder-color-15 rounded-lg pl-10 pr-4 py-2 w-full focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300"
             placeholder="Search Plans..."
             type="text"
             value={searchQuery}
@@ -223,14 +224,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <PlanCard isSelected={selectedPlanId === plan.id} plan={plan} />
                 <button
                   aria-label="Edit plan name"
-                  className="p-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                  className="p-1 text-color-15 hover:text-color-B7 transition-colors"
                   onClick={() => handleEditClick(plan)}
                 >
                   <PencilIcon className="w-5 h-5" />
                 </button>
                 <button
                   aria-label="Delete plan"
-                  className="p-1 text-gray-400 hover:text-red-400 transition-colors"
+                  className="p-1 text-color-15 hover:text-color-R7 transition-colors"
                   onClick={() => handleDeleteClick(plan.id ?? "")}
                 >
                   <TrashIcon className="w-5 h-5" />

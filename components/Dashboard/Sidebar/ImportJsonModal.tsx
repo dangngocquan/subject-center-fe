@@ -35,14 +35,14 @@ const ImportPlanByJsonModal: React.FC<ImportJsonModalProps> = ({
 
   return (
     <GenericModal isOpen={isOpen} onClose={onClose}>
-      <div className="text-center text-white font-sans p-4 sm:p-6">
-        <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
-          Import Plan from JSON
+      <div className="text-center text-color-15 font-sans p-4 sm:p-6">
+        <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-color-15 to-color-5">
+          Customize By Importing JSON
         </h3>
-        <p className="text-gray-300 mb-4">
-          The JSON file should follow this format (similar to Custom Plan):
+        <p className="text-color-15 mb-4">
+          The JSON file should follow this format
         </p>
-        <pre className="bg-gray-800 text-gray-300 p-4 rounded-lg mb-6 text-left whitespace-pre-wrap overflow-x-auto text-sm">
+        <pre className="border border-color-15 bg-color-1 text-color-15 p-4 rounded-lg mb-6 text-left whitespace-pre-wrap overflow-x-auto text-sm">
           {`{
   "name": "My Plan",
   "items": [
@@ -62,7 +62,7 @@ const ImportPlanByJsonModal: React.FC<ImportJsonModalProps> = ({
 }`}
         </pre>
         <div className="mb-6">
-          <label className="inline-block bg-gray-700 text-gray-300 rounded-full px-4 py-2 cursor-pointer hover:bg-gray-600 transition-all duration-300 border border-gray-500">
+          <label className="inline-block bg-color-1 text-color-15 rounded-lg px-4 py-2 cursor-pointer hover:bg-color-6 transition-all duration-300 border border-color-15">
             Select JSON File
             <input
               accept="application/json"
@@ -72,18 +72,12 @@ const ImportPlanByJsonModal: React.FC<ImportJsonModalProps> = ({
             />
           </label>
           {selectedFile && (
-            <p className="text-gray-400 mt-2">Selected: {selectedFile.name}</p>
+            <p className="text-color-15 mt-2">Selected: {selectedFile.name}</p>
           )}
         </div>
         <div className="flex justify-center space-x-4">
           <button
-            className="bg-gray-600 text-white rounded-lg px-4 py-2 hover:bg-gray-700 transition-all duration-300"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
-          <button
-            className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-2 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300"
+            className="min-w-[200px] bg-gradient-to-r from-color-6 to-color-1 text-color-15 rounded-lg px-4 py-2 hover:from-color-9 hover:to-color-1 transition-all duration-300 border border-color-15 shadow-lg hover:shadow-color-15/50"
             onClick={handleSubmit}
           >
             Submit

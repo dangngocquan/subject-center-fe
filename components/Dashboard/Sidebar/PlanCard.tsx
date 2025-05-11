@@ -20,9 +20,11 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, isSelected }) => {
     <Link
       aria-current={isSelected ? "true" : undefined} // Chỉ định trạng thái hiện tại
       aria-label={`Select plan ${plan.name}`} // Cải thiện a11y
-      className={`w-full text-left text-gray-300 hover:text-cyan-400 cursor-pointer transition-all duration-300 text-lg flex items-center gap-3 hover:bg-gray-800 hover:scale-105 rounded-lg px-3 py-2 ${
-        isSelected ? "bg-gray-800 text-cyan-400" : ""
-      } focus:outline-none focus:ring-2 focus:ring-cyan-500`}
+      className={`w-full text-left text-color-15 hover:text-color-15 cursor-pointer transition-all duration-300 text-lg flex items-center gap-3 hover:scale-105 rounded-lg px-3 py-2 ${
+        isSelected
+          ? "bg-color-3 text-color-15 hover:bg-color-6"
+          : "bg-color-1 hover:bg-color-6"
+      } focus:outline-none focus:ring-1 focus:ring-color-15`}
       href={siteConfig.routers.planDetails(String(plan.id))} // Use dynamic href
       onKeyDown={handleKeyDown} // Thêm listener bàn phím
     >

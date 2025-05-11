@@ -27,6 +27,7 @@ import {
   updateGradePlanItemByJson,
   updatePlanItem,
 } from "@/service/plan.api";
+import GenericButton from "@/components/Common/GenericButton";
 
 interface SubjectsListProps {
   items: PlanItem[];
@@ -90,7 +91,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
     let result = subjects.filter((subject) =>
       String(subject.name ?? "")
         .toLowerCase()
-        .includes(searchTerm.toLowerCase()),
+        .includes(searchTerm.toLowerCase())
     );
 
     if (sortConfig.direction) {
@@ -151,7 +152,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
             const updatedSubjects = [...prevSubjects];
             (data.items ?? []).forEach((newItem) => {
               const index = updatedSubjects.findIndex(
-                (subject) => subject.id === newItem.id,
+                (subject) => subject.id === newItem.id
               );
               if (index !== -1) {
                 updatedSubjects[index] = {
@@ -229,7 +230,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
       const response = await deletePlanItem(Number(planId), subjectToDelete.id);
       if (!response.isBadRequest) {
         const updatedSubjects = subjects.filter(
-          (subject) => subject.id !== subjectToDelete.id,
+          (subject) => subject.id !== subjectToDelete.id
         );
         setSubjects(updatedSubjects);
         setResultModal({
@@ -291,7 +292,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
         const updatedSubjects = subjects.map((subject) =>
           subject.id === updatedSubject.id
             ? { ...subject, ...result.data }
-            : subject,
+            : subject
         );
         setSubjects(updatedSubjects);
         setResultModal({
@@ -357,16 +358,16 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
   };
 
   return (
-    <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 shadow-lg shadow-cyan-500/20">
+    <div className="bg-color-1 rounded-2xl p-4 sm:p-6 shadow-lg shadow-color-15/50">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
-        <h3 className="text-cyan-400 text-xl sm:text-2xl font-semibold">
+        <h3 className="text-color-15 text-xl sm:text-2xl font-semibold">
           Subjects
         </h3>
         <div className="flex flex-wrap gap-2 items-center">
           <div className="relative w-full sm:w-auto">
-            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-color-15" />
             <input
-              className="bg-gray-800 text-white rounded-full pl-10 pr-4 py-2 w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
+              className="border border-color-15 bg-color-1 text-color-15 rounded-lg pl-10 pr-4 py-2 w-full sm:w-64 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300"
               placeholder="Search by subject name..."
               type="text"
               value={searchTerm}
@@ -374,14 +375,21 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
             />
           </div>
           <div className="flex gap-2">
-            <motion.button
+            {/* <motion.button
               className="p-2 bg-[#4A90E2] text-white rounded-full hover:bg-[#357ABD] transition-all duration-300"
               data-tooltip-content="Sort Options"
               data-tooltip-id="sort-tooltip"
               onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
             >
               <ArrowsUpDownIcon className="w-5 h-5" />
-            </motion.button>
+            </motion.button> */}
+            <GenericButton
+              tooltipContent="Sort Options"
+              tooltipId="sort-tooltip"
+              onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+            >
+              <ArrowsUpDownIcon className="w-5 h-5" />
+            </GenericButton>
             {isSortDropdownOpen && (
               <div className="absolute mt-12 w-48 bg-gray-800 rounded-lg shadow-lg z-10">
                 <button
@@ -434,30 +442,51 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
                 </button>
               </div>
             )}
-            <motion.button
+            {/* <motion.button
               className="p-2 bg-[#4A90E2] text-white rounded-full hover:bg-[#357ABD] transition-all duration-300"
               data-tooltip-content="Export to JSON"
               data-tooltip-id="export-tooltip"
               onClick={handleExportJSON}
             >
               <ArrowDownTrayIcon className="w-5 h-5" />
-            </motion.button>
-            <motion.button
+            </motion.button> */}
+            <GenericButton
+              tooltipContent="Export to JSON"
+              tooltipId="export-tooltip"
+              onClick={handleExportJSON}
+            >
+              <ArrowDownTrayIcon className="w-5 h-5" />
+            </GenericButton>
+            {/* <motion.button
               className="p-2 bg-[#4A90E2] text-white rounded-full hover:bg-[#357ABD] transition-all duration-300"
               data-tooltip-content="Import JSON to Update Grades"
               data-tooltip-id="import-tooltip"
               onClick={() => setIsImportModalOpen(true)}
             >
               <ArrowUpTrayIcon className="w-5 h-5" />
-            </motion.button>
-            <motion.button
+            </motion.button> */}
+            <GenericButton
+              tooltipContent="Import JSON to Update Grades"
+              tooltipId="import-tooltip"
+              onClick={() => setIsImportModalOpen(true)}
+            >
+              <ArrowUpTrayIcon className="w-5 h-5" />
+            </GenericButton>
+            {/* <motion.button
               className="p-2 bg-[#4A90E2] text-white rounded-full hover:bg-[#357ABD] transition-all duration-300"
               data-tooltip-content="Add New Subject"
               data-tooltip-id="add-tooltip"
               onClick={() => setIsCreateModalOpen(true)} // Updated to open create modal
             >
               <PlusIcon className="w-5 h-5" />
-            </motion.button>
+            </motion.button> */}
+            <GenericButton
+              tooltipContent="Add New Subject"
+              tooltipId="add-tooltip"
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              <PlusIcon className="w-5 h-5" />
+            </GenericButton>
             <Tooltip id="sort-tooltip" place="top" />
             <Tooltip id="export-tooltip" place="top" />
             <Tooltip id="import-tooltip" place="top" />
@@ -470,7 +499,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left min-w-[700px]">
             <thead>
-              <tr className="text-gray-400 border-b border-gray-800">
+              <tr className="text-color-15 border-b border-color-15">
                 <th className="py-2 px-4">Subject Name</th>
                 <th className="py-2 px-4">Code</th>
                 <th className="py-2 px-4">Credits</th>
@@ -484,18 +513,18 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
               {filteredAndSortedSubjects.map((subject, index) => (
                 <tr
                   key={subject.id ?? index}
-                  className="border-b border-gray-800 hover:bg-gray-800 transition-all duration-200"
+                  className="border-b border-color-150 hover:bg-color-6 transition-all duration-200"
                 >
-                  <td className="py-3 px-4 text-white">
+                  <td className="py-3 px-4 text-color-15">
                     {subject.name ?? "-"}
                   </td>
-                  <td className="py-3 px-4 text-gray-300">
+                  <td className="py-3 px-4 text-color-15">
                     {subject.code ?? "-"}
                   </td>
-                  <td className="py-3 px-4 text-gray-300">
+                  <td className="py-3 px-4 text-color-15">
                     {subject.credit ?? "-"}
                   </td>
-                  <td className="py-3 px-4 text-gray-300">
+                  <td className="py-3 px-4 text-color-15">
                     {subject.prerequisites &&
                     subject.prerequisites.length > 0 ? (
                       <div className="flex flex-col gap-1">
@@ -508,16 +537,16 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
                     )}
                   </td>
                   <td
-                    className={`py-3 px-4 ${subject.grade4 != null && subject.grade4 < 2.0 ? "text-red-400" : "text-gray-300"}`}
+                    className={`py-3 px-4 ${subject.grade4 != null && subject.grade4 < 2.0 ? "text-color-R7" : "text-color-15"}`}
                   >
                     {subject.grade4 ?? "-"}
                   </td>
-                  <td className="py-3 px-4 text-gray-300">
+                  <td className="py-3 px-4 text-color-15">
                     {subject.gradeLatin ?? "-"}
                   </td>
                   <td className="py-3 px-4 flex space-x-2">
                     <button
-                      className="text-cyan-400 hover:text-cyan-300 transition-all duration-300"
+                      className="text-color-15 hover:text-color-B7 transition-all duration-300"
                       data-tooltip-content="Edit Subject"
                       data-tooltip-id={`edit-tooltip-${index}`}
                       onClick={() => handleEditClick(subject)}
@@ -525,7 +554,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
                       <PencilIcon className="w-5 h-5" />
                     </button>
                     <button
-                      className="text-red-400 hover:text-red-300 transition-all duration-300"
+                      className="text-color-15 hover:text-color-R7 transition-all duration-300"
                       data-tooltip-content="Delete Subject"
                       data-tooltip-id={`delete-tooltip-${index}`}
                       onClick={() => handleDeleteClick(subject)}

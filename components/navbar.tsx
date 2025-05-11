@@ -255,7 +255,7 @@ export const Navbar = () => {
           <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
             <button
               aria-label="Toggle menu"
-              className="lg:hidden text-white mr-2"
+              className="lg:hidden text-color-15 mr-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               onKeyDown={handleHamburgerKeyDown}
             >
@@ -274,7 +274,7 @@ export const Navbar = () => {
               </NextLink>
             </NavbarBrand>
 
-            <ul className="hidden lg:flex gap-4 justify-start ml-2">
+            <ul className="hidden lg:flex gap-4 justify-start ml-2 font-bold">
               {siteConfig.navItems.map((item) => (
                 <NavbarItem key={item.href}>
                   <NextLink
@@ -486,15 +486,15 @@ export const Navbar = () => {
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent">
             Please Sign In
           </h2>
-          <p className="mb-6 text-gray-300 text-base md:text-lg leading-relaxed max-w-xs mx-auto">
+          <p className="mb-6 text-color-15 text-base md:text-lg leading-relaxed max-w-xs mx-auto">
             You need to sign in to explore service plans and access all
             features.
           </p>
           <GenericButton
-            className="bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-600 hover:to-cyan-800 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-cyan-500/50 hover:shadow-cyan-600/60 transition-all duration-300"
+            className="bg-gradient-to-r from-color-6 to-color-1 hover:from-color-9 hover:to-color-1 text-color-15 px-6 py-3 rounded-full font-semibold shadow-lg shadow-color-15/50 hover:shadow-color-15/60 transition-all duration-300"
             disabled={isLoading}
             onClick={() => {
               setIsLoading((prev) => !prev);
