@@ -99,6 +99,16 @@ const TimeTableResult: React.FC<TimeTableResultProps> = ({
           {isFullscreen ? <FaCompress size={16} /> : <FaExpand size={16} />}
         </GenericButton>
       </div>
+      {/* Phân trang */}
+      <div className="mt-4 shrink-0">
+        <GenericPagination
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          maxVisiblePages={5}
+          setCurrentPage={setCurrentPage}
+          totalItems={timetables.length}
+        />
+      </div>
 
       <div className="flex-1 overflow-y-auto mt-4">
         {currentTimetables.map((timetable, idx) => (
@@ -109,17 +119,6 @@ const TimeTableResult: React.FC<TimeTableResultProps> = ({
             timetable={timetable}
           />
         ))}
-      </div>
-
-      {/* Phân trang */}
-      <div className="mt-4 shrink-0">
-        <GenericPagination
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          maxVisiblePages={5}
-          setCurrentPage={setCurrentPage}
-          totalItems={timetables.length}
-        />
       </div>
     </div>
   );

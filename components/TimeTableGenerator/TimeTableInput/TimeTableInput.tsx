@@ -83,7 +83,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
     courses.length > 0 && courses.every((course) => course.selected);
 
   return (
-    <div className="border p-4 bg-color-1 text-white rounded-lg h-full flex flex-col">
+    <div className="border p-4 bg-color-1 text-color-15 rounded-lg h-full flex flex-col">
       <div className="flex flex-col justify-between items-start mb-4 shrink-0 gap-4">
         <FeaturesPanel
           allSelected={allSelected}

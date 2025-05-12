@@ -3,13 +3,23 @@
 
 import React, { useState } from "react";
 
+import LoadingModal from "../LoadingModal";
 import TimeTableInput from "./TimeTableInput/TimeTableInput";
-import { CourseItem, TimeTable } from "./types";
 import TimeTableResult from "./TimeTableResult/TimeTableResult";
+import { CourseItem, TimeTable } from "./types";
 
 // Add a selected state to CourseItem
 interface CourseItemWithStatus extends CourseItem {
   selected: boolean;
+}
+
+// Function to convert CourseItem to a format compatible with the algorithm
+export interface SubjectForTimetable {
+  courseCode: string;
+  courseName: string;
+  credits: number;
+  listTimes: number[][]; // List of periods for each class
+  listEnableTimeLessons: boolean[]; // Enable state for each class
 }
 
 const TimeTableManager: React.FC = () => {
@@ -20,6 +30,7 @@ const TimeTableManager: React.FC = () => {
   const [timetables, setTimetables] = useState<TimeTable[]>([]);
   const [currentTimetableIndex, setCurrentTimetableIndex] = useState(0);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // List of 20 diverse colors suitable for the theme
   const colorPalette = [
@@ -137,15 +148,6 @@ const TimeTableManager: React.FC = () => {
     });
     return colorMap;
   };
-
-  // Function to convert CourseItem to a format compatible with the algorithm
-  interface SubjectForTimetable {
-    courseCode: string;
-    courseName: string;
-    credits: number;
-    listTimes: number[][]; // List of periods for each class
-    listEnableTimeLessons: boolean[]; // Enable state for each class
-  }
 
   // Group CourseItem by courseCode and create SubjectForTimetable
   const prepareSubjects = (
@@ -274,6 +276,7 @@ const TimeTableManager: React.FC = () => {
   // Function to create timetables from the list of selected courses
   const generateTimetables = () => {
     setIsCalculating(true);
+    setIsLoading(true);
     const selectedCourses = courses.filter((course) => course.selected);
     const { subjects, maxLessonPerDay } = prepareSubjects(selectedCourses);
 
@@ -296,17 +299,17 @@ const TimeTableManager: React.FC = () => {
 
       return { courses: timetableCourses, totalCredits };
     });
-
     setTimetables(result);
     setIsCalculating(false);
+    setIsLoading(false);
   };
 
   // Map colors for the courses
   const colorMap = getColorMap(courses.filter((course) => course.selected));
 
   return (
-    <div className="flex flex-row gap-4 p-4 h-[90%]">
-      <div className="w-1/3">
+    <div className="flex flex-col gap-4 p-4 h-[90%]">
+      <div className="w-full h-[70vh] border border-color-15 shadow-lg shadow-color-15 rounded-lg">
         <TimeTableInput
           courses={courses}
           isCalculating={isCalculating}
@@ -314,7 +317,7 @@ const TimeTableManager: React.FC = () => {
           onGenerate={generateTimetables}
         />
       </div>
-      <div className="w-2/3">
+      <div className="w-full border border-color-15 shadow-lg shadow-color-15 rounded-lg min-h-[90vh]">
         <TimeTableResult
           colorMap={colorMap} // Pass colorMap to TimeTableResult
           currentIndex={currentTimetableIndex}
@@ -322,6 +325,7 @@ const TimeTableManager: React.FC = () => {
           timetables={timetables}
         />
       </div>
+      <LoadingModal isOpen={isLoading}></LoadingModal>
     </div>
   );
 };
