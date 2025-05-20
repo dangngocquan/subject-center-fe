@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { CourseItem } from "../types";
 
@@ -31,9 +31,35 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
   isCalculating,
 }) => {
   const [modalType, setModalType] = useState<"custom" | "json" | "add" | null>(
-    null,
+    null
   );
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Hàm lưu courses vào localStorage
+  const saveCoursesToLocalStorage = (
+    updatedCourses: CourseItemWithStatus[]
+  ) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("timetable-courses", JSON.stringify(updatedCourses));
+    }
+  };
+
+  const clearCoursesInLocalStorage = () => {
+    if (typeof window !== "undefined") {
+      setCourses([]);
+      localStorage.removeItem("timetable-courses");
+    }
+  };
+
+  // Khởi tạo courses từ localStorage khi component mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedCourses = localStorage.getItem("timetable-courses");
+      if (savedCourses) {
+        setCourses(JSON.parse(savedCourses));
+      }
+    }
+  }, [setCourses]);
 
   const handleCoursesUpdate = (newCourses: CourseItem[]) => {
     const updatedCourses = [
@@ -41,21 +67,21 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
       ...newCourses.map((course) => ({ ...course, selected: true })),
     ];
     setCourses(updatedCourses);
-    localStorage.setItem("timetable-courses", JSON.stringify(updatedCourses));
+    saveCoursesToLocalStorage(updatedCourses);
     setModalType(null);
   };
 
   const toggleCourseSelection = (courseCode: string) => {
     const isSelected = courses.some(
-      (course) => course.courseCode === courseCode && course.selected,
+      (course) => course.courseCode === courseCode && course.selected
     );
     const updatedCourses = courses.map((course) =>
       course.courseCode === courseCode
         ? { ...course, selected: !isSelected }
-        : course,
+        : course
     );
     setCourses(updatedCourses);
-    localStorage.setItem("timetable-courses", JSON.stringify(updatedCourses));
+    saveCoursesToLocalStorage(updatedCourses);
   };
 
   const toggleAllSelection = () => {
@@ -65,19 +91,19 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
       selected: !allSelected,
     }));
     setCourses(updatedCourses);
-    localStorage.setItem("timetable-courses", JSON.stringify(updatedCourses));
+    saveCoursesToLocalStorage(updatedCourses);
   };
 
   const filteredCourses = courses.filter(
     (course) =>
       course.courseCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.courseName.toLowerCase().includes(searchQuery.toLowerCase()),
+      course.courseName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const selectedCount = new Set(
     courses
       .filter((course) => course.selected)
-      .map((course) => course.courseCode),
+      .map((course) => course.courseCode)
   ).size;
   const allSelected =
     courses.length > 0 && courses.every((course) => course.selected);
@@ -92,6 +118,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
           onAddNewCourses={() => setModalType("add")}
           onGenerate={onGenerate}
           onToggleSelection={toggleAllSelection}
+          clearAll={() => clearCoursesInLocalStorage()}
         />
         <StatisticsPanel courses={courses} />
       </div>
