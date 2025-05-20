@@ -23,7 +23,7 @@ const CourseList: React.FC<CourseListProps> = ({
   setCourses,
 }) => {
   const [editCourse, setEditCourse] = useState<CourseItemWithStatus | null>(
-    null
+    null,
   );
 
   const groupCoursesByCode = (items: CourseItemWithStatus[]) => {
@@ -41,7 +41,7 @@ const CourseList: React.FC<CourseListProps> = ({
 
   const handleUpdateSubmit = (updatedCourse: CourseItemWithStatus) => {
     const updatedCourses = courses.map((course) =>
-      course === editCourse ? { ...updatedCourse } : course
+      course === editCourse ? { ...updatedCourse } : course,
     );
     setCourses(updatedCourses);
     setEditCourse(null);

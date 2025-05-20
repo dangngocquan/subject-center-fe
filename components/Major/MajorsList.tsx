@@ -36,10 +36,10 @@ const MajorsList: React.FC<MajorsListProps> = ({
       {/* Thanh tìm kiếm và phân trang */}
       <div className="flex flex-col sm:flex-row items-center justify-between w-full flex-between gap-4">
         <GenericInputSearch
+          className="flex-1 max-w-[66%]"
           placeholder="Search for a major..."
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-          className="flex-1 max-w-[66%]"
         />
 
         <GenericPagination

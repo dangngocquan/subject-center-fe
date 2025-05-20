@@ -28,7 +28,7 @@ const InputTable: React.FC<InputTableProps> = ({
     const newErrors: string[] = [];
     const totalCoefficient = inputs.reduce(
       (sum, input) => sum + Number(input.coefficient || 0),
-      0
+      0,
     );
 
     inputs.forEach((input, i) => {
@@ -45,7 +45,7 @@ const InputTable: React.FC<InputTableProps> = ({
 
     if (totalCoefficient >= 1) {
       newErrors.push(
-        `Total coefficients must be less than 1 (current: ${totalCoefficient.toFixed(2)}).`
+        `Total coefficients must be less than 1 (current: ${totalCoefficient.toFixed(2)}).`,
       );
     }
 
@@ -56,7 +56,7 @@ const InputTable: React.FC<InputTableProps> = ({
   const handleInputChange = (
     index: number,
     field: keyof Input,
-    value: string
+    value: string,
   ) => {
     const newInputs = [...inputs];
     newInputs[index][field] = value;
@@ -90,7 +90,7 @@ const InputTable: React.FC<InputTableProps> = ({
       const num = Number(value);
       const totalCoefficient = inputs.reduce(
         (sum, input) => sum + Number(input.coefficient || 0),
-        0
+        0,
       );
       return isNaN(num) || num <= 0 || num >= 1 || totalCoefficient >= 1;
     }

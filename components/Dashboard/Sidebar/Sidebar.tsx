@@ -20,7 +20,6 @@ import ImportPlanResultByJsonModal from "./ImportResultModal";
 import { Plan } from "@/types/plan";
 import { createPlanByImportJSON } from "@/service/plan.api";
 import { siteConfig } from "@/config/site";
-import GenericInputSearch from "@/components/Common/GenericInputSearch";
 
 interface SidebarProps {
   searchQuery: string;
@@ -92,16 +91,16 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Debounced search handler
   const debouncedSetSearchQuery = useCallback(
     debounce((value: string) => setSearchQuery(value), 300),
-    [setSearchQuery]
+    [setSearchQuery],
   );
 
   // Memoized filtered plans
   const filteredPlans = useMemo(
     () =>
       plans.filter((plan) =>
-        (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
+        (plan.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
       ),
-    [plans, searchQuery]
+    [plans, searchQuery],
   );
 
   const handleEditClick = (plan: Plan) => {

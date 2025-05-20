@@ -7,6 +7,7 @@ import ReactFlow, {
 } from "react-flow-renderer";
 
 import { calculateTiers, Tier } from "./utils";
+
 import { PlanItem } from "@/types/plan";
 
 interface PlanGraphProps {
@@ -36,7 +37,8 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
       marginRight: "auto",
       border: "2px solid rgb(0, 0, 0)",
       borderRadius: "15px",
-      background: "linear-gradient(145deg,rgb(255, 255, 255),rgb(255, 255, 255))",
+      background:
+        "linear-gradient(145deg,rgb(255, 255, 255),rgb(255, 255, 255))",
       boxShadow:
         "0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.3)",
       padding: "10px",
@@ -118,7 +120,7 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
       return () => {
         document.removeEventListener(
           "fullscreenchange",
-          handleFullscreenChange
+          handleFullscreenChange,
         );
       };
     }, []);
@@ -170,7 +172,7 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
 
     const handleKeyDown = (
       event: React.KeyboardEvent<HTMLDivElement>,
-      code: string
+      code: string,
     ) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
@@ -282,13 +284,13 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
             return (subject.prerequisites || [])
               .map((prereqCode, index) => {
                 const prereqItem = items.find(
-                  (item) => item.code === prereqCode
+                  (item) => item.code === prereqCode,
                 );
                 if (!prereqItem?.code) return null;
 
                 const prereqCodeVal = prereqItem.code;
                 const prereqTier = tiers.find((t) =>
-                  t.elements.some((e) => e.subject.code === prereqCodeVal)
+                  t.elements.some((e) => e.subject.code === prereqCodeVal),
                 );
                 const sourceId = `${prereqCodeVal}-${prereqTier?.level || 0}`;
 
@@ -372,7 +374,7 @@ const PlanGraph: React.FC<PlanGraphProps> = React.memo(
         </div>
       </div>
     );
-  }
+  },
 );
 
 PlanGraph.displayName = "PlanGraph";

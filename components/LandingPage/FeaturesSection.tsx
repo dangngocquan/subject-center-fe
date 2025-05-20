@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
 import { GenericButton } from "@/components/Common/GenericButton";
 import { siteConfig } from "@/config/site";
 
@@ -156,13 +157,13 @@ const FeaturesSection: React.FC = () => {
 
   const handleNext = (featureIndex: number) => {
     setStartIndices((prev) =>
-      prev.map((x, i) => (i === featureIndex ? x + 1 : x))
+      prev.map((x, i) => (i === featureIndex ? x + 1 : x)),
     );
   };
 
   const handlePrev = (featureIndex: number) => {
     setStartIndices((prev) =>
-      prev.map((x, i) => (i === featureIndex ? x - 1 : x))
+      prev.map((x, i) => (i === featureIndex ? x - 1 : x)),
     );
   };
 
@@ -173,7 +174,7 @@ const FeaturesSection: React.FC = () => {
   const handleTouchMove = (
     e: React.TouchEvent,
     featureIndex: number,
-    k: number
+    k: number,
   ) => {
     if (touchStartX.current === null) return;
     const touchEndX = e.touches[0].clientX;
@@ -194,11 +195,11 @@ const FeaturesSection: React.FC = () => {
 
   return (
     <motion.section
+      ref={featuresRef}
       animate={isFeaturesInView ? "visible" : "hidden"}
       className="py-8 md:py-16 lg:py-24 bg-transparent relative"
       custom={0}
       initial="hidden"
-      ref={featuresRef}
       variants={fadeInVariants}
     >
       <div className="max-w-full mx-auto relative z-10">
@@ -225,10 +226,10 @@ const FeaturesSection: React.FC = () => {
 
             return (
               <motion.div
+                key={i}
                 animate={isFeaturesInView ? "visible" : "hidden"}
                 className="mx-5 px-5 group bg-color-3/40 rounded-2xl shadow-xl shadow-color-15/20 p-6 md:p-8"
                 custom={i + 2}
-                key={i}
                 variants={fadeInVariants}
               >
                 <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-center py-6 bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent">
@@ -238,8 +239,8 @@ const FeaturesSection: React.FC = () => {
                 <div className="flex items-center justify-between w-full">
                   {k > 1 && (
                     <button
-                      onClick={() => handlePrev(i)}
                       className="text-color-15 hover:text-color-1 p-2 rounded-full bg-color-1 hover:bg-color-15 border border-color-15 transition-all duration-300"
+                      onClick={() => handlePrev(i)}
                     >
                       <svg
                         className="w-5 h-5 md:w-6 md:h-6"
@@ -249,10 +250,10 @@ const FeaturesSection: React.FC = () => {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
+                          d="M15 19l-7-7 7-7"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M15 19l-7-7 7-7"
                         />
                       </svg>
                     </button>
@@ -260,17 +261,17 @@ const FeaturesSection: React.FC = () => {
 
                   <div
                     className="overflow-hidden w-full sm:w-[680px] md:w-[1020px] py-10"
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={(e) => handleTouchMove(e, i, k)}
                     onTouchEnd={handleTouchEnd}
+                    onTouchMove={(e) => handleTouchMove(e, i, k)}
+                    onTouchStart={handleTouchStart}
                   >
                     <motion.div
-                      className="flex space-x-4"
                       animate={{
                         x: -(((x % k) + k) % k) * cardWidthWithSpace,
                       }}
-                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="flex space-x-4"
                       style={{ width: k * cardWidthWithSpace }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
                     >
                       {feature.items.map((item, idx) => (
                         <div key={`${i}-${idx}`} className="flex-shrink-0">
@@ -286,8 +287,8 @@ const FeaturesSection: React.FC = () => {
 
                   {k > 1 && (
                     <button
-                      onClick={() => handleNext(i)}
                       className="text-color-15 hover:text-color-1 p-2 rounded-full bg-color-1 hover:bg-color-15 border border-color-15 transition-all duration-300"
+                      onClick={() => handleNext(i)}
                     >
                       <svg
                         className="w-5 h-5 md:w-6 md:h-6 "
@@ -297,10 +298,10 @@ const FeaturesSection: React.FC = () => {
                         xmlns="http://www.w3.org/2000/svg"
                       >
                         <path
+                          d="M9 5l7 7-7 7"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M9 5l7 7-7 7"
                         />
                       </svg>
                     </button>

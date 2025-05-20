@@ -99,7 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
         const response = await deletePlan(Number(deleteModal.planId));
         if (!response.isBadRequest) {
           setLocalPlans((prevPlans) =>
-            prevPlans.filter((plan) => plan.id !== deleteModal.planId)
+            prevPlans.filter((plan) => plan.id !== deleteModal.planId),
           );
           if (selectedPlan?.id === deleteModal.planId) {
             router.push("/plans"); // Redirect to overview after deletion
@@ -131,8 +131,8 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
 
       setLocalPlans((prevPlans) =>
         prevPlans.map((plan) =>
-          plan.id === planId ? { ...plan, name: newName } : plan
-        )
+          plan.id === planId ? { ...plan, name: newName } : plan,
+        ),
       );
       if (selectedPlan?.id === planId) {
         setSelectedPlan((prev) => (prev ? { ...prev, name: newName } : null));
@@ -158,12 +158,12 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
         });
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
-          )
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
+          ),
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null
+            prev ? { ...prev, name: planToUpdate.name } : null,
           );
         }
       }
@@ -177,12 +177,12 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
       if (planToUpdate) {
         setLocalPlans((prevPlans) =>
           prevPlans.map((plan) =>
-            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan
-          )
+            plan.id === planId ? { ...plan, name: planToUpdate.name } : plan,
+          ),
         );
         if (selectedPlan?.id === planId) {
           setSelectedPlan((prev) =>
-            prev ? { ...prev, name: planToUpdate.name } : null
+            prev ? { ...prev, name: planToUpdate.name } : null,
           );
         }
       }

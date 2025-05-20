@@ -12,7 +12,6 @@ interface OutputTableProps {
 }
 
 const OutputTable: React.FC<OutputTableProps> = ({ results }) => {
-
   const getRowStyles = (minScore: number | null) => {
     if (minScore === null) {
       return "bg-color-3";

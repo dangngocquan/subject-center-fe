@@ -278,7 +278,7 @@ const CustomPlanModal: React.FC<CustomPlanModalProps> = ({
                             disabled={isLoading}
                             onClick={() => {
                               const input = document.querySelector(
-                                `tr:nth-child(${index + 1}) input[placeholder="Add prerequisite"]`
+                                `tr:nth-child(${index + 1}) input[placeholder="Add prerequisite"]`,
                               ) as HTMLInputElement;
                               addPrerequisite(index, input.value);
                               input.value = "";

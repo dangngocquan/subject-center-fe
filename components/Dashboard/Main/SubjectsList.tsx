@@ -10,7 +10,6 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
 } from "@heroicons/react/24/outline";
-import { motion } from "framer-motion";
 import { Tooltip } from "react-tooltip";
 
 import ConfirmDeleteModal from "./modals/ConfirmDeleteModal";
@@ -91,7 +90,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
     let result = subjects.filter((subject) =>
       String(subject.name ?? "")
         .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+        .includes(searchTerm.toLowerCase()),
     );
 
     if (sortConfig.direction) {
@@ -152,7 +151,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
             const updatedSubjects = [...prevSubjects];
             (data.items ?? []).forEach((newItem) => {
               const index = updatedSubjects.findIndex(
-                (subject) => subject.id === newItem.id
+                (subject) => subject.id === newItem.id,
               );
               if (index !== -1) {
                 updatedSubjects[index] = {
@@ -230,7 +229,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
       const response = await deletePlanItem(Number(planId), subjectToDelete.id);
       if (!response.isBadRequest) {
         const updatedSubjects = subjects.filter(
-          (subject) => subject.id !== subjectToDelete.id
+          (subject) => subject.id !== subjectToDelete.id,
         );
         setSubjects(updatedSubjects);
         setResultModal({
@@ -292,7 +291,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
         const updatedSubjects = subjects.map((subject) =>
           subject.id === updatedSubject.id
             ? { ...subject, ...result.data }
-            : subject
+            : subject,
         );
         setSubjects(updatedSubjects);
         setResultModal({

@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 
 import GenericModal from "./Common/GenericModal";
 import GenericButton from "./Common/GenericButton";
+import LoadingModal from "./LoadingModal";
 
 import { useAuthGoogle } from "@/service/auth.service";
 import {
@@ -27,7 +28,6 @@ import {
 } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
-import LoadingModal from "./LoadingModal";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -43,7 +43,7 @@ export const Navbar = () => {
       setIsLoading(false);
       setIsLoginModalOpen(false);
     },
-    () => setIsLoading(false)
+    () => setIsLoading(false),
   );
 
   const updateAuthToken = () => {
@@ -280,7 +280,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "ml-5 text-color-10 hover:text-color-B7 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium"
+                      "ml-5 text-color-10 hover:text-color-B7 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium",
                     )}
                     href={item.href}
                     onClick={
@@ -326,7 +326,7 @@ export const Navbar = () => {
                       <NextLink
                         className={clsx(
                           linkStyles({ color: "foreground" }),
-                          "text-white hover:text-color-15 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium w-full block"
+                          "text-white hover:text-color-15 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium w-full block",
                         )}
                         href={item.href}
                         onClick={

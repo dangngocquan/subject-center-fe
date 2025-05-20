@@ -40,7 +40,7 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
   const [newPrerequisite, setNewPrerequisite] = useState<string>("");
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -230,7 +230,7 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
                 className="text-color-15 hover:text-color-15 transition-colors duration-200"
                 onClick={() => {
                   const input = document.getElementById(
-                    "prerequisites-input"
+                    "prerequisites-input",
                   ) as HTMLInputElement;
                   if (input && input.value.trim()) {
                     addPrerequisite(input.value);

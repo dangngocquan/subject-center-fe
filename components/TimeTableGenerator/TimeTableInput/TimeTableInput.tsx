@@ -31,7 +31,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
   isCalculating,
 }) => {
   const [modalType, setModalType] = useState<"custom" | "json" | "add" | null>(
-    null
+    null,
   );
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -47,12 +47,12 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
 
   const toggleCourseSelection = (courseCode: string) => {
     const isSelected = courses.some(
-      (course) => course.courseCode === courseCode && course.selected
+      (course) => course.courseCode === courseCode && course.selected,
     );
     const updatedCourses = courses.map((course) =>
       course.courseCode === courseCode
         ? { ...course, selected: !isSelected }
-        : course
+        : course,
     );
     setCourses(updatedCourses);
     localStorage.setItem("timetable-courses", JSON.stringify(updatedCourses));
@@ -71,13 +71,13 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
   const filteredCourses = courses.filter(
     (course) =>
       course.courseCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      course.courseName.toLowerCase().includes(searchQuery.toLowerCase())
+      course.courseName.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const selectedCount = new Set(
     courses
       .filter((course) => course.selected)
-      .map((course) => course.courseCode)
+      .map((course) => course.courseCode),
   ).size;
   const allSelected =
     courses.length > 0 && courses.every((course) => course.selected);

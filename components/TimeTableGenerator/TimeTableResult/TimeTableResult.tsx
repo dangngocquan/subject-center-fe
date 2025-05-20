@@ -41,7 +41,7 @@ const TimeTableResult: React.FC<TimeTableResultProps> = ({
         })
         .catch((err) => {
           console.error(
-            `Error attempting to enable fullscreen: ${err.message}`
+            `Error attempting to enable fullscreen: ${err.message}`,
           );
         });
     } else {

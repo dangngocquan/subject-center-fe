@@ -69,7 +69,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
         if (editingPlan) onUpdatePlanName(editingPlan.id ?? "", newName);
         handleCloseModal();
       },
-      [editingPlan, onUpdatePlanName]
+      [editingPlan, onUpdatePlanName],
     );
 
     const handleAddPlan = useCallback(() => {
@@ -122,7 +122,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
           setIsResultModalOpen(true);
         }
       },
-      [onAddPlan]
+      [onAddPlan],
     );
 
     const defaultSummary: Credits = useMemo(
@@ -141,12 +141,12 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
         totalGradeCompleted: 0,
         totalGradeCanImprovement: 0,
       }),
-      []
+      [],
     );
 
     const filteredPlans = useMemo(() => {
       return plans.filter((plan) =>
-        plan?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+        plan?.name?.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }, [plans, searchTerm]);
 
@@ -155,7 +155,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentPlans = useMemo(
       () => filteredPlans.slice(indexOfFirstItem, indexOfLastItem),
-      [filteredPlans, indexOfFirstItem, indexOfLastItem]
+      [filteredPlans, indexOfFirstItem, indexOfLastItem],
     ).map((plan, index, array) => {
       const summary = plan.summary ?? defaultSummary;
       const isLastRow = index === array.length - 1;
@@ -163,7 +163,8 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
         summary.totalCredits > 0
           ? (summary.totalCreditsCompleted / summary.totalCredits) * 100
           : 0;
-      const progressColor = `bg-color-P${Math.floor(progress)}`;
+      // const progressColor = `bg-color-P${Math.floor(progress)}`;
+      const progressColor = `bg-color-P50`;
       return {
         ...plan,
         progress,
@@ -176,7 +177,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
       (planId: string) => {
         router.push(siteConfig.routers.planDetails(planId));
       },
-      [router]
+      [router],
     );
 
     return (
@@ -382,7 +383,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
         />
       </motion.div>
     );
-  }
+  },
 );
 
 PlansOverview.displayName = "PlansOverview";

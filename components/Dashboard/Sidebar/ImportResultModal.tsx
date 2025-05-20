@@ -32,7 +32,7 @@ const ImportPlanResultByJsonModal: React.FC<ImportResultModalProps> = ({
 
   const updatedCount =
     result?.result?.filter(
-      (item) => item.status === "UPDATED" || item.status === "SUCCEEDED"
+      (item) => item.status === "UPDATED" || item.status === "SUCCEEDED",
     ).length ?? 0;
   const newCount =
     result?.result?.filter((item) => item.status === "NEW").length ?? 0;

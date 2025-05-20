@@ -32,9 +32,9 @@ const EditPlanModal: React.FC<EditPlanModalProps> = ({
 
   return (
     <GenericModal
+      className="w-100% fixed pl-0"
       isOpen={isOpen}
       onClose={onClose}
-      className="w-100% fixed pl-0"
     >
       <h3 className="text-xl font-semibold text-color-15 mb-4 text-center">
         Edit Plan Name

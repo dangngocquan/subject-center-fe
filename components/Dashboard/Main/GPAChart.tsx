@@ -45,6 +45,7 @@ const GPAChart: React.FC<GPAChartProps> = ({ currentCPA }) => {
             {thresholdData.map((_, index) => (
               <Pie
                 key={`threshold-${index}`}
+                className="z-0"
                 data={[{ value: 4, name: "Threshold" }]}
                 dataKey="value"
                 endAngle={-270}
@@ -55,7 +56,6 @@ const GPAChart: React.FC<GPAChartProps> = ({ currentCPA }) => {
                 stroke={thresholdColors[index]}
                 strokeOpacity={0.3}
                 strokeWidth={2}
-                className="z-0"
               />
             ))}
             <Pie

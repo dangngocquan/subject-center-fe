@@ -9,7 +9,7 @@ const ConfirmDeleteModal: React.FC<{
   subjectName: string;
 }> = ({ isOpen, onClose, onConfirm, subjectName }) => {
   return (
-    <GenericModal isOpen={isOpen} onClose={onClose} className="w-[200px]">
+    <GenericModal className="w-[200px]" isOpen={isOpen} onClose={onClose}>
       <div className="text-center">
         <h3 className="text-lg font-semibold text-color-15 mb-4">
           Confirm Deletion

@@ -66,11 +66,11 @@ const Main: React.FC<MainProps> = ({
   if (!selectedPlan) {
     return (
       <PlansOverview
+        className="h-[90%]"
         plans={plans.filter((plan) => plan.id !== undefined)}
         onAddPlan={onAddPlan}
         onOpenDeleteModal={onOpenDeleteModal}
         onUpdatePlanName={onUpdatePlanName}
-        className="h-[90%]"
       />
     );
   }
@@ -151,7 +151,7 @@ const Main: React.FC<MainProps> = ({
           <SubjectsList
             items={
               (planDetails?.credits.items || []).filter(
-                (item) => item.id !== undefined
+                (item) => item.id !== undefined,
               ) as PlanItem[]
             }
             planId={selectedPlan?.id || null}
@@ -165,7 +165,7 @@ const Main: React.FC<MainProps> = ({
         <PlanGraph
           items={
             (planDetails?.credits.items || []).filter(
-              (item) => item.id !== undefined
+              (item) => item.id !== undefined,
             ) as PlanItem[]
           }
           planId={selectedPlan?.id || null} // Thêm planId

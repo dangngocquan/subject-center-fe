@@ -7,7 +7,6 @@ import { CourseItem } from "../types";
 
 import GenericModal from "@/components/Common/GenericModal";
 import GenericButton from "@/components/Common/GenericButton";
-import { ClipboardIcon } from "@heroicons/react/24/outline";
 
 const prompt = `
 Tôi cung cấp cho bạn một file dữ liệu trong định dạng <DOCUMENT> chứa các trang <PAGE> với nội dung từ <CONTENT_FROM_OCR>. Trong file này, tôi quan tâm đến các thông tin sau:
@@ -172,6 +171,7 @@ const ImportJsonModal: React.FC<ImportJsonModalProps> = ({
             "If you having a csv file, you can use AI with our prompt to generate valid json file."
           }
           <GenericButton
+            className="ml-2"
             onClick={() => {
               navigator.clipboard.writeText(`${prompt}`);
               setCopyPrompt(true);
@@ -179,7 +179,6 @@ const ImportJsonModal: React.FC<ImportJsonModalProps> = ({
                 setCopyPrompt(false);
               }, 5000);
             }}
-            className="ml-2"
           >
             {copyPrompt ? "Copied" : "Copy Prompt"}
           </GenericButton>
@@ -200,10 +199,13 @@ const ImportJsonModal: React.FC<ImportJsonModalProps> = ({
           )}
         </div>
         <div className="flex w-full justify-between">
-          <GenericButton onClick={onClose} className="hover:bg-color-R6 l-0 px-10">
+          <GenericButton
+            className="hover:bg-color-R6 l-0 px-10"
+            onClick={onClose}
+          >
             Hủy
           </GenericButton>
-          <GenericButton onClick={handleSubmit} className="mr-0 px-10">
+          <GenericButton className="mr-0 px-10" onClick={handleSubmit}>
             Xác nhận
           </GenericButton>
         </div>

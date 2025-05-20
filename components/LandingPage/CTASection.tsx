@@ -47,7 +47,7 @@ const CTASection = () => {
       setIsLoading(false);
       setIsLoginModalOpen(false);
     },
-    () => setIsLoading(false)
+    () => setIsLoading(false),
   );
 
   return (
