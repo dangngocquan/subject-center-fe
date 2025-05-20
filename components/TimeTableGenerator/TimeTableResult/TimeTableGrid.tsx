@@ -45,7 +45,7 @@ const TimeTableGrid: React.FC<TimeTableGridProps> = ({
 
   // Điền các course vào lưới
   timetable.courses.forEach((course) => {
-    const day = course.dayOfWeek; // 0-6
+    const day = course.dayOfWeek - 1; // 0-6
     course.period.forEach((period) => {
       const periodIndex = period - 1; // Tiết 1 -> index 0
       if (periodIndex < maxLessonPerDay && day < 7) {

@@ -1,4 +1,3 @@
-// components/TimeTable/TimeTableManager.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -23,9 +22,8 @@ export interface SubjectForTimetable {
 }
 
 const TimeTableManager: React.FC = () => {
-  const localCourses = JSON.parse(
-    localStorage.getItem("timetable-courses") ?? "[]"
-  );
+  const existedData = localStorage.getItem("timetable-courses") ?? "[]";
+  const localCourses = JSON.parse(existedData);
   const [courses, setCourses] = useState<CourseItemWithStatus[]>(localCourses);
   const [timetables, setTimetables] = useState<TimeTable[]>([]);
   const [currentTimetableIndex, setCurrentTimetableIndex] = useState(0);
@@ -273,6 +271,81 @@ const TimeTableManager: React.FC = () => {
     return result;
   };
 
+  const calculateMaxCreditsTimetables = (
+    subjects: SubjectForTimetable[],
+    maxLessonPerDay: number
+  ): number[][] => {
+    const result: number[][] = [];
+    const maxDays = 7;
+    const status = new Array(maxLessonPerDay * maxDays).fill(0);
+    const tempIndexTimeLessons = new Array(subjects.length).fill(-1);
+    let maxCredits = 0;
+
+    const find = (
+      indexSubject: number,
+      subjects: SubjectForTimetable[],
+      status: number[],
+      tempIndexTimeLessons: number[],
+      currentCredits: number
+    ) => {
+      if (indexSubject >= subjects.length) {
+        if (currentCredits >= maxCredits) {
+          if (currentCredits > maxCredits) {
+            maxCredits = currentCredits;
+            result.length = 0;
+          }
+          result.push([...tempIndexTimeLessons]);
+        }
+        return;
+      }
+
+      const subject = subjects[indexSubject];
+      const listTimes = subject.listTimes;
+      const listEnableTimes = subject.listEnableTimeLessons;
+
+      for (
+        let indexTimeLesson = 0;
+        indexTimeLesson < listTimes.length;
+        indexTimeLesson++
+      ) {
+        if (!listEnableTimes[indexTimeLesson]) continue;
+
+        let valid = true;
+        for (const time of listTimes[indexTimeLesson]) {
+          if (time >= status.length || time < 0) {
+            console.error(
+              `Invalid time index: ${time} for subject ${subject.courseCode}`
+            );
+            valid = false;
+            break;
+          }
+          status[time]++;
+          if (status[time] > 1) valid = false;
+        }
+        if (valid) {
+          tempIndexTimeLessons[indexSubject] = indexTimeLesson;
+          find(
+            indexSubject + 1,
+            subjects,
+            status,
+            tempIndexTimeLessons,
+            currentCredits + subject.credits
+          );
+        }
+        tempIndexTimeLessons[indexSubject] = -1;
+        for (const time of listTimes[indexTimeLesson]) {
+          if (time >= status.length || time < 0) continue;
+          status[time]--;
+        }
+      }
+    };
+
+    if (subjects.length > 0) {
+      find(0, subjects, status, tempIndexTimeLessons, 0);
+    }
+    return result;
+  };
+
   // Function to create timetables from the list of selected courses
   const generateTimetables = () => {
     setIsCalculating(true);
@@ -280,7 +353,13 @@ const TimeTableManager: React.FC = () => {
     const selectedCourses = courses.filter((course) => course.selected);
     const { subjects, maxLessonPerDay } = prepareSubjects(selectedCourses);
 
+    // Use calculateMaxCreditsTimetables instead of calculateTimetables
+    // const timetableIndices = calculateMaxCreditsTimetables(
+    //   subjects,
+    //   maxLessonPerDay
+    // );
     const timetableIndices = calculateTimetables(subjects, maxLessonPerDay);
+
     const result: TimeTable[] = timetableIndices.map((indices) => {
       const timetableCourses: CourseItem[] = [];
       let totalCredits = 0;
@@ -319,7 +398,7 @@ const TimeTableManager: React.FC = () => {
       </div>
       <div className="w-full border border-color-15 shadow-lg shadow-color-15 rounded-lg min-h-[90vh]">
         <TimeTableResult
-          colorMap={colorMap} // Pass colorMap to TimeTableResult
+          colorMap={colorMap}
           currentIndex={currentTimetableIndex}
           setCurrentIndex={setCurrentTimetableIndex}
           timetables={timetables}
