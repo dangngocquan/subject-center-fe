@@ -109,19 +109,19 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
 
   return (
     <GenericModal isOpen={isOpen} onClose={onClose}>
-      <div className="text-white font-sans p-4 sm:p-6">
-        <h3 className="text-xl sm:text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+      <div className="text-color-15 font-sans p-4 sm:p-6">
+        <h3 className="text-xl sm:text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-color-15 to-color-5">
           Create New Subject
         </h3>
         <div className="mb-6">
           <label
-            className="text-gray-200 font-semibold mb-3 block"
+            className="text-color-15 font-semibold mb-3 block"
             htmlFor="name-input"
           >
             Name *
           </label>
           <input
-            className="w-full bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300 placeholder-gray-400 shadow-inner text-sm sm:text-base"
+            className="w-full bg-gradient-to-r from-color-3 to-color-1 text-color-15 rounded-lg px-4 py-3 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 placeholder-color-15 shadow-inner text-sm sm:text-base"
             id="name-input"
             name="name"
             placeholder="Subject Name *"
@@ -131,13 +131,13 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
         </div>
         <div className="mb-6">
           <label
-            className="text-gray-200 font-semibold mb-3 block"
+            className="text-color-15 font-semibold mb-3 block"
             htmlFor="code-input"
           >
             Code *
           </label>
           <input
-            className="w-full bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300 placeholder-gray-400 shadow-inner text-sm sm:text-base"
+            className="w-full bg-gradient-to-r from-color-3 to-color-1 text-color-15 rounded-lg px-4 py-3 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 placeholder-color-15 shadow-inner text-sm sm:text-base"
             id="code-input"
             name="code"
             placeholder="Code *"
@@ -147,13 +147,13 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
         </div>
         <div className="mb-6">
           <label
-            className="text-gray-200 font-semibold mb-3 block"
+            className="text-color-15 font-semibold mb-3 block"
             htmlFor="credit-input"
           >
             Credit *
           </label>
           <input
-            className="w-full bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300 placeholder-gray-400 shadow-inner text-sm sm:text-base"
+            className="w-full bg-gradient-to-r from-color-3 to-color-1 text-color-15 rounded-lg px-4 py-3 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 placeholder-color-15 shadow-inner text-sm sm:text-base"
             id="credit-input"
             name="credit"
             placeholder="Credit *"
@@ -163,13 +163,13 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
         </div>
         <div className="mb-6">
           <label
-            className="text-gray-200 font-semibold mb-3 block"
+            className="text-color-15 font-semibold mb-3 block"
             htmlFor="gradeLatin-select"
           >
             Grade
           </label>
           <select
-            className="w-full bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300 placeholder-gray-400 shadow-inner text-sm sm:text-base"
+            className="w-full bg-gradient-to-r from-color-3 to-color-1 text-color-15 rounded-lg px-4 py-3 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 placeholder-color-15 shadow-inner text-sm sm:text-base"
             id="gradeLatin-select"
             name="gradeLatin"
             value={formData.gradeLatin || ""}
@@ -185,7 +185,7 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
         </div>
         <div className="mb-6">
           <label
-            className="text-gray-200 font-semibold mb-3 block"
+            className="text-color-15 font-semibold mb-3 block"
             htmlFor="prerequisites-input"
           >
             Prerequisites
@@ -196,14 +196,14 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
                 {formData.prerequisites.map((prereq, index) => (
                   <div key={index} className="flex items-center gap-2 group">
                     <input
-                      className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 placeholder-gray-500 text-sm sm:text-base"
+                      className="w-[100%] bg-color-3 text-color-15 rounded-lg px-3 py-2 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 placeholder-color-15 text-sm sm:text-base"
                       value={prereq}
                       onChange={(e) =>
                         updatePrerequisite(index, e.target.value)
                       }
                     />
                     <button
-                      className="text-gray-400 hover:text-red-500 transition-colors duration-200 opacity-0 group-hover:opacity-100"
+                      className="text-color-15 hover:text-color-R7 transition-colors duration-200 opacity-0 group-hover:opacity-100"
                       onClick={() => removePrerequisite(index)}
                     >
                       <FaTrash size={12} />
@@ -214,7 +214,7 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
             )}
             <div className="flex items-center gap-2">
               <input
-                className="w-full bg-gray-900 text-white rounded-lg px-3 py-2 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all duration-300 placeholder-gray-500 text-sm sm:text-base"
+                className="w-full bg-color-3 text-color-15 rounded-lg px-3 py-2 border border-color-15 focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300 placeholder-color-15 text-sm sm:text-base"
                 id="prerequisites-input"
                 placeholder="Add prerequisite"
                 value={newPrerequisite}
@@ -227,7 +227,7 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
                 }}
               />
               <button
-                className="text-cyan-400 hover:text-cyan-600 transition-colors duration-200"
+                className="text-color-15 hover:text-color-15 transition-colors duration-200"
                 onClick={() => {
                   const input = document.getElementById(
                     "prerequisites-input",
@@ -245,15 +245,15 @@ const CreateNewPlanItemModal: React.FC<CreateNewPlanItemModalProps> = ({
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
           <button
-            className="w-full bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg px-4 py-3 flex items-center justify-center gap-2 hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md text-sm sm:text-base"
+            className="w-full bg-gradient-to-r from-color-6 to-color-1 text-color-15 rounded-lg px-4 py-3 flex items-center justify-center gap-2 hover:from-color-9 hover:to-color-1 transition-all duration-300 shadow-lg hover:shadow-color-15/50 text-sm sm:text-base"
             onClick={onClose}
           >
             Cancel
           </button>
           <motion.button
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 text-sm sm:text-base"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            className="w-full bg-gradient-to-r from-color-G3 to-color-1 text-color-15 rounded-lg px-4 py-3 hover:from-color-G7 hover:to-color-1 transition-all duration-300 shadow-lg hover:shadow-color-15/50 text-sm sm:text-base"
+            whileHover={{ scale: 1 }}
+            whileTap={{ scale: 1 }}
             onClick={handleSubmit}
           >
             Submit

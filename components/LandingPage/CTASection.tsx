@@ -47,7 +47,7 @@ const CTASection = () => {
       setIsLoading(false);
       setIsLoginModalOpen(false);
     },
-    () => setIsLoading(false)
+    () => setIsLoading(false),
   );
 
   return (
@@ -61,14 +61,14 @@ const CTASection = () => {
     >
       <div className="relative z-10 flex flex-col items-center gap-6 text-center text-white">
         <motion.h2
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent drop-shadow-lg"
+          className="pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent drop-shadow-lg"
           custom={1}
           variants={fadeInVariants}
         >
-          Ready to <span className="text-cyan-400">get started</span>?
+          Ready to get started?
         </motion.h2>
         <motion.p
-          className="text-lg md:text-xl font-light max-w-xl text-gray-200 tracking-wide"
+          className="text-lg md:text-xl font-light max-w-xl text-color-15 tracking-wide"
           custom={2}
           variants={fadeInVariants}
         >
@@ -84,7 +84,7 @@ const CTASection = () => {
                 variant: "shadow",
                 size: "lg",
                 className:
-                  "bg-cyan-500 hover:bg-cyan-600 hover:scale-105 transition-all duration-300 shadow-lg shadow-cyan-500/40 px-8 md:px-10 py-3 md:py-4 text-lg md:text-xl text-white font-semibold",
+                  "bg-color-3 hover:bg-color-6 hover:scale-105 transition-all duration-300 shadow-lg shadow-color-15/40 px-8 md:px-10 py-3 md:py-4 text-lg md:text-xl text-color-15 font-semibold",
               })}
               onClick={() => setIsLoginModalOpen(true)} // Open modal on click
             >
@@ -105,14 +105,14 @@ const CTASection = () => {
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent">
             Log In Now
           </h2>
-          <p className="mb-6 text-gray-300 text-base md:text-lg leading-relaxed max-w-xs mx-auto">
+          <p className="mb-6 text-color-15 text-base md:text-lg leading-relaxed max-w-full mx-auto">
             Sign in to access all the amazing features of S-CENTER.
           </p>
           <GenericButton
-            className="bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-600 hover:to-cyan-800 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-cyan-500/50 hover:shadow-cyan-600/60 transition-all duration-300"
+            className="bg-gradient-to-r from-color-3 to-color-6 hover:from-color-6 hover:to-color-9 text-color-15 px-6 py-3 rounded-full font-semibold shadow-lg shadow-color-15/50 hover:shadow-color-15/60 transition-all duration-300"
             disabled={isLoading}
             onClick={() => authGoogle()}
           >

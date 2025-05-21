@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { CourseItem } from "../types";
 
@@ -35,12 +35,39 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
   );
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Hàm lưu courses vào localStorage
+  const saveCoursesToLocalStorage = (
+    updatedCourses: CourseItemWithStatus[]
+  ) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("timetable-courses", JSON.stringify(updatedCourses));
+    }
+  };
+
+  const clearCoursesInLocalStorage = () => {
+    if (typeof window !== "undefined") {
+      setCourses([]);
+      localStorage.removeItem("timetable-courses");
+    }
+  };
+
+  // Khởi tạo courses từ localStorage khi component mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedCourses = localStorage.getItem("timetable-courses");
+      if (savedCourses) {
+        setCourses(JSON.parse(savedCourses));
+      }
+    }
+  }, [setCourses]);
+
   const handleCoursesUpdate = (newCourses: CourseItem[]) => {
     const updatedCourses = [
       ...courses,
       ...newCourses.map((course) => ({ ...course, selected: true })),
     ];
     setCourses(updatedCourses);
+    saveCoursesToLocalStorage(updatedCourses);
     setModalType(null);
   };
 
@@ -54,6 +81,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
         : course
     );
     setCourses(updatedCourses);
+    saveCoursesToLocalStorage(updatedCourses);
   };
 
   const toggleAllSelection = () => {
@@ -63,6 +91,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
       selected: !allSelected,
     }));
     setCourses(updatedCourses);
+    saveCoursesToLocalStorage(updatedCourses);
   };
 
   const filteredCourses = courses.filter(
@@ -80,7 +109,7 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
     courses.length > 0 && courses.every((course) => course.selected);
 
   return (
-    <div className="border p-4 bg-gray-900 text-white rounded-lg h-full flex flex-col">
+    <div className="border p-4 bg-color-1 text-color-15 rounded-lg h-full flex flex-col">
       <div className="flex flex-col justify-between items-start mb-4 shrink-0 gap-4">
         <FeaturesPanel
           allSelected={allSelected}
@@ -89,19 +118,20 @@ const TimeTableInput: React.FC<TimeTableInputProps> = ({
           onAddNewCourses={() => setModalType("add")}
           onGenerate={onGenerate}
           onToggleSelection={toggleAllSelection}
+          clearAll={() => clearCoursesInLocalStorage()}
         />
         <StatisticsPanel courses={courses} />
       </div>
 
       {/* Sử dụng GenericInputSearch với class điều chỉnh */}
       <GenericInputSearch
-        className="w-full mb-4 text-gray-300 placeholder-gray-300 border-gray-700"
+        className="w-full mb-4 text-color-15 placeholder-color-15 border-color-15"
         placeholder="Search by course code or name..."
         searchTerm={searchQuery}
         setSearchTerm={setSearchQuery}
       />
 
-      <h3 className="font-bold text-cyan-400 shrink-0 mb-2">Course List</h3>
+      <h3 className="font-bold text-color-15 shrink-0 mb-2">Course List</h3>
       <CourseList
         courses={filteredCourses}
         setCourses={setCourses}

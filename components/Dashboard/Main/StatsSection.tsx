@@ -24,23 +24,21 @@ const StatsSection: React.FC<StatsSectionProps> = ({
   currentCPA,
 }) => {
   return (
-    <div className="bg-gray-900 rounded-2xl p-4 shadow-lg shadow-cyan-500/20 h-full flex flex-col">
-      <h3 className="text-cyan-400 text-xl font-semibold mb-4">Statistics</h3>
+    <div className="bg-color-1 rounded-2xl p-4 shadow-lg shadow-color-15/50 h-full flex flex-col">
+      <h3 className="text-color-15 text-xl font-semibold mb-4">Statistics</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
-        <div className="bg-gray-800 rounded-lg p-3">
-          <p className="text-gray-400 text-xs uppercase font-medium">
-            Overview
-          </p>
+        <div className="bg-color-1 rounded-lg p-3 border border-l-4 border-color-15">
+          <p className="text-color-9 text-xs uppercase font-medium">Overview</p>
           <div className="flex justify-between items-center mt-2">
             <div className="flex flex-col items-center">
               <p
-                className="text-white text-lg font-semibold"
+                className="text-color-15 text-lg font-semibold"
                 style={{ fontSize: "clamp(12px, 2vw, 18px)" }}
               >
                 {totalSubjects || 0}
               </p>
               <p
-                className="text-gray-400 text-xs"
+                className="text-color-9 text-xs"
                 style={{ fontSize: "clamp(10px, 1.5vw, 12px)" }}
               >
                 Subjects
@@ -48,13 +46,13 @@ const StatsSection: React.FC<StatsSectionProps> = ({
             </div>
             <div className="flex flex-col items-center">
               <p
-                className="text-white text-lg font-semibold"
+                className="text-color-15 text-lg font-semibold"
                 style={{ fontSize: "clamp(12px, 2vw, 18px)" }}
               >
                 {totalCredits || 0}
               </p>
               <p
-                className="text-gray-400 text-xs"
+                className="text-color-9 text-xs"
                 style={{ fontSize: "clamp(10px, 1.5vw, 12px)" }}
               >
                 Credits
@@ -63,8 +61,8 @@ const StatsSection: React.FC<StatsSectionProps> = ({
           </div>
         </div>
 
-        <div className="bg-gray-800 rounded-lg p-3 border-l-4 border-green-500">
-          <p className="text-gray-400 text-xs uppercase font-medium">
+        <div className="bg-color-1 rounded-lg p-3 border border-l-4 border-green-500">
+          <p className="text-color-9 text-xs uppercase font-medium">
             Completed
           </p>
           <div className="flex justify-between items-center mt-2">
@@ -76,7 +74,7 @@ const StatsSection: React.FC<StatsSectionProps> = ({
                 {totalSubjectsCompleted || 0}
               </p>
               <p
-                className="text-gray-400 text-xs"
+                className="text-color-9 text-xs"
                 style={{ fontSize: "clamp(10px, 1.5vw, 12px)" }}
               >
                 Subjects
@@ -90,7 +88,7 @@ const StatsSection: React.FC<StatsSectionProps> = ({
                 {totalCreditsCompleted || 0}
               </p>
               <p
-                className="text-gray-400 text-xs"
+                className="text-color-9 text-xs"
                 style={{ fontSize: "clamp(10px, 1.5vw, 12px)" }}
               >
                 Credits
@@ -99,8 +97,8 @@ const StatsSection: React.FC<StatsSectionProps> = ({
           </div>
         </div>
 
-        <div className="bg-gray-800 rounded-lg p-3 border-l-4 border-red-500">
-          <p className="text-gray-400 text-xs uppercase font-medium">
+        <div className="bg-color-1 rounded-lg p-3 border border-l-4 border-red-500">
+          <p className="text-color-9 text-xs uppercase font-medium">
             Incomplete
           </p>
           <div className="flex justify-between items-center mt-2">
@@ -112,7 +110,7 @@ const StatsSection: React.FC<StatsSectionProps> = ({
                 {totalSubjectsIncomplete || 0}
               </p>
               <p
-                className="text-gray-400 text-xs"
+                className="text-color-9 text-xs"
                 style={{ fontSize: "clamp(10px, 1.5vw, 12px)" }}
               >
                 Subjects
@@ -126,7 +124,7 @@ const StatsSection: React.FC<StatsSectionProps> = ({
                 {totalCreditsIncomplete || 0}
               </p>
               <p
-                className="text-gray-400 text-xs"
+                className="text-color-9 text-xs"
                 style={{ fontSize: "clamp(10px, 1.5vw, 12px)" }}
               >
                 Credits
@@ -135,8 +133,8 @@ const StatsSection: React.FC<StatsSectionProps> = ({
           </div>
         </div>
 
-        <div className="bg-gray-800 rounded-lg p-3 border-l-4 border-yellow-500">
-          <p className="text-gray-400 text-xs uppercase font-medium">
+        <div className="bg-color-1 rounded-lg p-3 border border-l-4 border-yellow-500">
+          <p className="text-color-9 text-xs uppercase font-medium">
             Can Improve
           </p>
           <div className="flex justify-between items-center mt-2">
@@ -148,7 +146,7 @@ const StatsSection: React.FC<StatsSectionProps> = ({
                 {totalSubjectsCanImprovement || 0}
               </p>
               <p
-                className="text-gray-400 text-xs"
+                className="text-color-9 text-xs"
                 style={{ fontSize: "clamp(10px, 1.5vw, 12px)" }}
               >
                 Subjects
@@ -162,7 +160,7 @@ const StatsSection: React.FC<StatsSectionProps> = ({
                 {totalCreditsCanImprovement || 0}
               </p>
               <p
-                className="text-gray-400 text-xs"
+                className="text-color-9 text-xs"
                 style={{ fontSize: "clamp(10px, 1.5vw, 12px)" }}
               >
                 Credits
@@ -171,12 +169,12 @@ const StatsSection: React.FC<StatsSectionProps> = ({
           </div>
         </div>
 
-        <div className="bg-gray-800 rounded-lg p-3 sm:col-span-2">
-          <p className="text-gray-400 text-xs uppercase font-medium">
+        <div className="bg-color-1 rounded-lg p-3 sm:col-span-2">
+          <p className="text-color-9 text-xs uppercase font-medium">
             Current CPA
           </p>
           <p
-            className="text-cyan-400 text-lg font-semibold text-center mt-2"
+            className={`text-color-P${Math.floor(((currentCPA ?? 0.1) / 4) * 100)} text-lg font-semibold text-center mt-2`}
             style={{ fontSize: "clamp(12px, 2vw, 18px)" }}
           >
             {currentCPA ? currentCPA.toFixed(4) : "0.00"}

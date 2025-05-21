@@ -16,9 +16,9 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen, onClose }) => {
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="bg-gray-900/90 p-6 rounded-lg text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500 mx-auto" />
-            <p className="text-white mt-4">Waiting ...</p>
+          <div className="bg-color-15/50 p-6 rounded-lg text-center w-[150px] h-[150px]">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-color-G7 mx-auto" />
+            <p className="text-white mt-4">Loading ...</p>
           </div>
         </motion.div>
       )}

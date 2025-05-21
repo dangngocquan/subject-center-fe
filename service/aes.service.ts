@@ -1,4 +1,5 @@
 import * as CryptoJS from "crypto-js";
+
 import { aesConfig } from "@/config/env";
 
 export const encode = async (data: string) => {

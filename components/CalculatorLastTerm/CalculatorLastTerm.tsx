@@ -135,8 +135,8 @@ const CaculatorLastTerm: React.FC = () => {
   }, [inputs]);
 
   return (
-    <div className="p-6 max-w-8xl mx-auto bg-gray-900/80 backdrop-blur-md rounded-lg shadow-lg shadow-cyan-500/20">
-      <h1 className="text-2xl font-bold mb-6 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+    <div className="p-6 max-w-8xl mx-auto bg-color-1 backdrop-blur-md rounded-lg shadow-lg shadow-color-15">
+      <h1 className="text-2xl font-bold mb-6 bg-gradient-to-r from-color-15 to-color-1 bg-clip-text text-transparent">
         Final Exam Score Calculator
       </h1>
       <InputTable

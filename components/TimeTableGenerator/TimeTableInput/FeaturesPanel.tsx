@@ -5,6 +5,7 @@ import { FaPlus, FaPlay, FaCheckSquare, FaUndo } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
 
 import GenericButton from "@/components/Common/GenericButton";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 interface FeaturesPanelProps {
   onAddNewCourses: () => void;
@@ -13,6 +14,7 @@ interface FeaturesPanelProps {
   onToggleSelection: () => void;
   selectedCourses: number;
   allSelected: boolean;
+  clearAll: () => void;
 }
 
 const FeaturesPanel: React.FC<FeaturesPanelProps> = ({
@@ -22,6 +24,7 @@ const FeaturesPanel: React.FC<FeaturesPanelProps> = ({
   onToggleSelection,
   selectedCourses,
   allSelected,
+  clearAll,
 }) => {
   return (
     <>
@@ -51,6 +54,15 @@ const FeaturesPanel: React.FC<FeaturesPanelProps> = ({
 
           <GenericButton
             className="text-sm w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
+            tooltipContent="Clear all course"
+            tooltipId="clear-courses-tooltip"
+            onClick={clearAll}
+          >
+            <TrashIcon className="w-4 h-4 md:w-5 md:h-5" />
+          </GenericButton>
+
+          <GenericButton
+            className="text-sm w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
             disabled={isCalculating || selectedCourses === 0}
             tooltipContent={
               isCalculating ? "Generating timetable" : "Generate timetable"
@@ -71,6 +83,11 @@ const FeaturesPanel: React.FC<FeaturesPanelProps> = ({
       <Tooltip
         className="bg-[#2A3A54] text-white p-2 rounded z-50 text-xs md:text-sm"
         id="add-courses-tooltip"
+        place="bottom"
+      />
+      <Tooltip
+        className="bg-[#2A3A54] text-white p-2 rounded z-50 text-xs md:text-sm"
+        id="clear-courses-tooltip"
         place="bottom"
       />
       <Tooltip

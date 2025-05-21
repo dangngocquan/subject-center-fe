@@ -1,8 +1,8 @@
 "use client";
 
 import { useInView } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import React, { useEffect, useRef, useState } from "react";
 
 import LoadingModal from "../LoadingModal";
 
@@ -206,7 +206,7 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
 
   return (
     <div
-      className={`bg-black text-white min-h-screen flex flex-col max-w-8xl mx-auto  relative ${
+      className={`bg-color-1 text-color-15 min-h-screen flex flex-col max-w-8xl mx-auto  relative ${
         isSidebarOpen ? "overflow-hidden" : ""
       }`}
     >
@@ -254,9 +254,7 @@ const Dashboard: React.FC<DashboardProps> = ({ initialPlanId = null }) => {
               : "opacity-100"
           }`}
         >
-          {loading ? (
-            <p className="text-gray-400">Loading plans...</p>
-          ) : error ? (
+          {error ? (
             <p className="text-red-400">Error loading plans: {error}</p>
           ) : (
             <Main

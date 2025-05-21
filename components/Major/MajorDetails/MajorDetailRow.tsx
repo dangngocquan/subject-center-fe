@@ -39,14 +39,14 @@ const MajorDetailRow: React.FC<MajorDetailRowProps> = ({
   let rowBackground = "";
   if (isEditMode && !node.isLeaf && (node.minCredits || node.minChildren)) {
     rowBackground =
-      meetsMinCredits && meetsMinChildren ? "bg-green-500/20" : "bg-red-500/20";
+      meetsMinCredits && meetsMinChildren ? "bg-color-G7/20" : "bg-color-R7/20";
   }
 
   return (
     <motion.tr
       key={node.genCode}
       animate={{ opacity: 1 }}
-      className={`hover:bg-[#2A3A54] cursor-pointer ${rowBackground}`}
+      className={`hover:bg-color-3 cursor-pointer ${rowBackground}`}
       exit={{ opacity: 0 }}
       initial={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
@@ -66,7 +66,7 @@ const MajorDetailRow: React.FC<MajorDetailRowProps> = ({
         {node.isLeaf && node.parentGenCode && (
           <input
             checked={isSelected}
-            className="h-4 w-4 text-[#4A90E2] focus:ring-[#4A90E2] bg-gray-700 border-gray-600 transition-opacity duration-300"
+            className="h-4 w-4 text-color-15 focus:ring-color-15 bg-color-1 border-color-15 transition-opacity duration-300"
             disabled={!isEditMode}
             name={node.parentGenCode || undefined}
             style={{
@@ -87,7 +87,7 @@ const MajorDetailRow: React.FC<MajorDetailRowProps> = ({
         >
           {node.name}
           {isExpandable && (
-            <span className="ml-2 text-gray-400">
+            <span className="ml-2 text-color-15">
               {expanded.has(node.genCode) ? "▼" : "▶"}
             </span>
           )}

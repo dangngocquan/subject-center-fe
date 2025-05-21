@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { API_ROUTES } from "@/service/api-route.service";
 import BaseRequest from "@/service/base-request.service";
 import { Major } from "@/types/major";
-import { decode } from "@/service/aes.service";
 
 export const useMajors = (searchQuery: string) => {
   const [majors, setMajors] = useState<Major[]>([]);
@@ -19,7 +18,7 @@ export const useMajors = (searchQuery: string) => {
         API_ROUTES.GET_MAJORS,
         {
           query: { name: query },
-        }
+        },
       );
       setMajors(response.data.data);
     } catch (err) {

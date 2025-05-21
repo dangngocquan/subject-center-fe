@@ -79,8 +79,8 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
   };
 
   return (
-    <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 shadow-lg shadow-cyan-500/20">
-      <h3 className="text-cyan-400 text-xl sm:text-2xl font-semibold mb-4">
+    <div className="bg-color-1 rounded-2xl p-4 sm:p-6 shadow-lg shadow-color-15/50">
+      <h3 className="text-color-15 text-xl sm:text-2xl font-semibold mb-4">
         CPA Marks
       </h3>
       <div className="flex items-center mb-4">
@@ -91,7 +91,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
           type="checkbox"
           onChange={(e) => setUseImprovements(e.target.checked)}
         />
-        <label className="text-cyan-400" htmlFor="improvement">
+        <label className="text-color-15" htmlFor="improvement">
           Include Improvements
         </label>
       </div>
@@ -201,12 +201,14 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
         </ComposedChart>
       </ResponsiveContainer>
       <div className="mt-4 overflow-x-auto">
-        <table className="min-w-full bg-gray-800 text-white">
+        <table className="min-w-full bg-color-1 text-color-15">
           <thead>
             <tr>
-              <th className="py-2 px-4">Graduation Mark</th>
-              <th className="py-2 px-4">Is Possible</th>
-              <th className="py-2 px-4">Cases</th>
+              <th className="border border-color-15 py-2 px-4">
+                Graduation Mark
+              </th>
+              <th className="border border-color-15 py-2 px-4">Is Possible</th>
+              <th className="border border-color-15 py-2 px-4">Cases</th>
             </tr>
           </thead>
           <tbody>
@@ -240,28 +242,30 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
                 currentIndex > 0 ? gradeOrder[currentIndex - 1] : lowestGrade;
 
               return (
-                <tr key={index} className="border-t border-gray-700">
-                  <td className="py-2 px-4">{mark.details.content}</td>
-                  <td className="py-2 px-4">
+                <tr key={index} className="border border-color-15">
+                  <td className="border border-color-15 py-2 px-4">
+                    {mark.details.content}
+                  </td>
+                  <td className="border border-color-15 py-2 px-4 text-center">
                     {mark.details.isPossibly !== undefined
                       ? mark.details.isPossibly
                         ? "Yes"
                         : "No"
                       : "N/A"}
                   </td>
-                  <td className="py-2 px-4">
+                  <td className="border border-color-15 py-2 px-4">
                     {mark.details.cases && mark.details.cases.length > 0 ? (
                       <div className="space-y-2">
-                        <p className="text-gray-400 text-xs">
+                        <p className="text-color-15 text-xs">
                           You need at least the credits shown below. Aim for
                           higher grades (e.g., {lowestGrade} to {nextGrade}).
                         </p>
                         {mark.details.cases.map((caseItem, caseIndex) => (
                           <div key={caseIndex}>
-                            <h4 className="text-cyan-400 text-sm">
+                            <h4 className="text-color-B7 text-sm">
                               Case {caseIndex + 1}
                             </h4>
-                            <table className="w-full bg-gray-700 rounded-md text-sm mt-1">
+                            <table className="w-full bg-color-1 border rounded-md text-sm mt-1">
                               <thead>
                                 <tr>
                                   <th className="py-1 px-3">Minimum Grade</th>

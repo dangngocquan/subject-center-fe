@@ -17,9 +17,9 @@ const SelectSubjectsGuideModal: React.FC<SelectSubjectsGuideModalProps> = ({
 }) => {
   return (
     <GenericModal isOpen={isOpen} onClose={onClose}>
-      <div className="text-white font-sans p-4 sm:p-6">
-        <h2 className="text-xl sm:text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
-          How to Select Subjects
+      <div className="text-color-15 font-sans p-4 sm:p-6">
+        <h2 className=" text-center text-xl sm:text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-color-15 to-color-5">
+          Guideline
         </h2>
         <ol className="list-decimal list-inside space-y-4 text-sm sm:text-base">
           <li>After accessing the next page, you will see a list of majors.</li>
@@ -36,20 +36,14 @@ const SelectSubjectsGuideModal: React.FC<SelectSubjectsGuideModalProps> = ({
             Plan,&quot; enter a plan name, and submit.
           </li>
         </ol>
-        <div className="flex flex-col sm:flex-row gap-4 mt-6">
+        <div className="flex flex-col sm:flex-row gap-4 mt-6 justify-center">
           <Link
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg px-4 py-3 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 text-sm sm:text-base"
+            className="text-center font-bold w-[100%] bg-gradient-to-r from-color-6 to-color-1 text-color-15 rounded-lg px-4 py-3 hover:from-color-9 hover:to-color-1 transition-all duration-300 shadow-lg hover:shadow-color-15/50 text-sm sm:text-base"
             href={`${siteConfig.routers.majors}`}
             onClick={onNavigate}
           >
             Go to Majors
           </Link>
-          <button
-            className="w-full bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-lg px-4 py-3 hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-md text-sm sm:text-base"
-            onClick={onClose}
-          >
-            Cancel
-          </button>
         </div>
       </div>
     </GenericModal>

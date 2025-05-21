@@ -40,11 +40,10 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     height: "600px",
     marginLeft: "auto",
     marginRight: "auto",
-    border: "2px solid #00b7ff",
+    border: "2px solid rgb(0, 0, 0)",
     borderRadius: "15px",
-    background: "linear-gradient(145deg, #0a1a2f, #1a2a4f)",
-    boxShadow:
-      "0 0 20px rgba(0, 183, 255, 0.5), inset 0 0 10px rgba(0, 183, 255, 0.3)",
+    background: "linear-gradient(145deg,rgb(255, 255, 255),rgb(255, 255, 255))",
+    boxShadow: "0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.3)",
     padding: "10px",
     overflow: "hidden" as const,
   };
@@ -54,7 +53,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     borderRadius: "2px",
     padding: "12px",
     width: "200px",
-    boxShadow: "0 2px 8px rgba(34, 255, 0, 0.2)",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
     textAlign: "center" as const,
     transition: "all 0.2s ease",
     wordBreak: "break-word" as const,
@@ -70,7 +69,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
   };
 
   const subjectCardStrongStyle = {
-    color: "#007bff",
+    color: "#000000",
     fontWeight: "bold" as const,
   };
 
@@ -124,7 +123,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     }
 
     const selected = major.items.find(
-      (item) => item.code === selectedCode || item.genCode === selectedCode
+      (item) => item.code === selectedCode || item.genCode === selectedCode,
     );
     if (!selected) return visibleSubjects;
 
@@ -133,7 +132,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     if (selected.prerequisites) {
       selected.prerequisites.forEach((prereqCode) => {
         const prereqItem = major.items.find(
-          (item) => item.code === prereqCode || item.genCode === prereqCode
+          (item) => item.code === prereqCode || item.genCode === prereqCode,
         );
         if (prereqItem?.genCode) visibleSubjects.add(prereqItem.genCode);
       });
@@ -142,7 +141,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
     major.items.forEach((item) => {
       if (
         item.prerequisites?.some(
-          (prereq) => prereq === selected.code || prereq === selected.genCode
+          (prereq) => prereq === selected.code || prereq === selected.genCode,
         ) &&
         item.genCode
       ) {
@@ -161,7 +160,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
 
   const handleKeyDown = (
     event: React.KeyboardEvent<HTMLDivElement>,
-    genCode: string
+    genCode: string,
   ) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -170,7 +169,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
   };
 
   const tierWidths = tiers.map(
-    (tier) => tier.elements.filter((e) => e.type === "subject").length * 220
+    (tier) => tier.elements.filter((e) => e.type === "subject").length * 220,
   );
   const maxWidth = Math.max(...tierWidths, 300);
 
@@ -202,8 +201,8 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
                 style={{
                   ...subjectCardStyle,
                   border: selected?.has(genCode)
-                    ? "2px solid #28a745"
-                    : "1px solid #00b7ff",
+                    ? "2px solid rgb(0, 0, 0)"
+                    : "1px solid rgb(0, 0, 0)",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "flex-start" }}>
@@ -240,7 +239,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
                       style={{
                         ...subjectCardPStyle,
                         fontSize: "0.85em",
-                        color: "#555",
+                        color: "#000000",
                         marginBottom: "4px",
                         lineHeight: "1.2",
                       }}
@@ -251,7 +250,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
                       style={{
                         ...subjectCardPStyle,
                         fontSize: "0.8em",
-                        color: "#00b7ff",
+                        color: "#000000",
                         marginBottom: "0px",
                       }}
                     >
@@ -284,7 +283,7 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
         return (subject?.prerequisites || [])
           .map((prereqCode, index) => {
             const prereqItem = major?.items.find(
-              (item) => item.code === prereqCode || item.genCode === prereqCode
+              (item) => item.code === prereqCode || item.genCode === prereqCode,
             );
             if (!prereqItem) return null;
 
@@ -292,8 +291,8 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
             const prereqTier = tiers.find((t) =>
               t.elements.some(
                 (e) =>
-                  e.type === "subject" && e.subject.genCode === prereqGenCode
-              )
+                  e.type === "subject" && e.subject.genCode === prereqGenCode,
+              ),
             );
             const sourceId = `${prereqGenCode}-${prereqTier?.level || 0}`;
 
@@ -320,9 +319,9 @@ const CurriculumGraph: React.FC<CurriculumGraphProps> = ({
               target: targetId,
               type: "bezier",
               animated: true,
-              style: { stroke: "#00b7ff", strokeWidth: 2 },
+              style: { stroke: "#000000", strokeWidth: 2 },
               arrowHeadType: "arrowclosed",
-              markerEnd: { type: "arrowclosed", color: "#00b7ff" },
+              markerEnd: { type: "arrowclosed", color: "#000000" },
               pathOptions: { curvature: 0.5 },
             };
           })

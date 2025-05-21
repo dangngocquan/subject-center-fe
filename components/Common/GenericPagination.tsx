@@ -10,6 +10,7 @@ interface GenericPaginationProps {
   totalItems: number;
   itemsPerPage: number;
   maxVisiblePages?: number;
+  className?: string;
 }
 
 const GenericPagination: React.FC<GenericPaginationProps> = ({
@@ -18,6 +19,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
   totalItems,
   itemsPerPage,
   maxVisiblePages = 5,
+  className = "",
 }) => {
   const [inputPage, setInputPage] = useState(currentPage.toString());
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -46,7 +48,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
   };
 
   const handleJumpToPageOnEnter = (
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (e.key === "Enter") {
       handleJumpToPage();
@@ -64,9 +66,9 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
   const visiblePages = getVisiblePages();
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className={`flex flex-col items-center gap-2 ${className}`}>
       {/* Group 1: Navigation buttons and dots */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 w-full">
         <GenericButton
           disabled={currentPage === 1}
           tooltipContent="Previous page"
@@ -76,19 +78,19 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
           <FaChevronLeft className="w-5 h-5" />
         </GenericButton>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-1 justify-center">
           {visiblePages[0] > 1 && (
-            <span className="text-cyan-400/70 text-sm">...</span>
+            <span className="text-color-15 text-sm">...</span>
           )}
 
           {visiblePages.map((page) => (
             <motion.button
               key={page}
-              className={`w-3 h-3 rounded-md border border-cyan-500/30 shadow-lg shadow-cyan-500/20 ${
+              className={`w-3 h-3 rounded-md border border-color-15 shadow-lg shadow-color-15 ${
                 currentPage === page
-                  ? "bg-cyan-400"
-                  : "bg-gray-900/80 backdrop-blur-md hover:bg-cyan-400/20"
-              } transition-all duration-300`}
+                  ? "bg-color-1"
+                  : "bg-color-10 backdrop-blur-md hover:bg-color-1/20"
+              } transition-all duration-200`}
               whileHover={{ scale: 1.3 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => handlePageChange(page)}
@@ -96,7 +98,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
           ))}
 
           {visiblePages[visiblePages.length - 1] < totalPages && (
-            <span className="text-cyan-400/70 text-sm">...</span>
+            <span className="text-color-15 text-sm">...</span>
           )}
         </div>
 
@@ -114,7 +116,7 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
       <div className="flex items-center justify-between w-full max-w-[300px]">
         <div className="relative">
           <input
-            className="w-16 sm:w-16 py-1 pl-2 pr-8 rounded-md bg-gray-900/80 backdrop-blur-md text-cyan-400/50 border border-cyan-500/30 focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/30 hover:border-cyan-400 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-16 sm:w-16 py-1 pl-2 pr-8 rounded-md bg-color-1 backdrop-blur-md text-color-15  focus:outline-none focus:ring-2 focus:ring-color-15 focus:border-color-15 transition-all duration-300 shadow-lg shadow-color-15/20 hover:shadow-color-15/30 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             max={totalPages}
             min={1}
             placeholder="Page"
@@ -130,11 +132,11 @@ const GenericPagination: React.FC<GenericPaginationProps> = ({
             whileTap={{ scale: 0.9 }}
             onClick={handleJumpToPage}
           >
-            <FaArrowRight className="w-4 h-4 text-cyan-400 hover:text-cyan-300 transition-all duration-300" />
+            <FaArrowRight className="w-4 h-4 text-color-15 hover:text-color-15 transition-all duration-300" />
           </motion.button>
         </div>
 
-        <span className="ml-2 text-cyan-400/70 text-sm bg-gray-900/80 backdrop-blur-md px-3 py-1 rounded-md shadow-lg shadow-cyan-500/20">
+        <span className="ml-2 text-color-15 text-sm bg-color-1 backdrop-blur-md px-3 py-1 rounded-md shadow-lg shadow-color-15/20">
           {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, totalItems)}/
           {totalItems} • Page {currentPage}/{totalPages}
         </span>

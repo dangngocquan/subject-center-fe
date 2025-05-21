@@ -74,7 +74,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
       const response = await onCreatePlan({
         name: planName,
         items: majorItems.filter((node) =>
-          selectedItems.includes(node.genCode)
+          selectedItems.includes(node.genCode),
         ) as PlanItem[],
       });
 
@@ -183,7 +183,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
 const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
-  selected: Set<string>
+  selected: Set<string>,
 ): { totalCredits: number; totalCount: number } => {
   let totalCredits = 0;
   let totalCount = 0;

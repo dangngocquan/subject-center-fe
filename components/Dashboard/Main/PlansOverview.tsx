@@ -1,6 +1,6 @@
 "use client";
 
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
 import React, { useMemo, useState, useCallback } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter for programmatic navigation
@@ -17,8 +17,10 @@ import GenericPagination from "@/components/Common/GenericPagination";
 import { createPlanByImportJSON } from "@/service/plan.api";
 import { Credits, Plan } from "@/types/plan";
 import { siteConfig } from "@/config/site";
+import GenericButton from "@/components/Common/GenericButton";
 
 interface PlansOverviewProps {
+  className?: string;
   plans: Plan[];
   onUpdatePlanName: (planId: string, newName: string) => void;
   onOpenDeleteModal: (planId: string) => void;
@@ -38,7 +40,7 @@ const slideInVariants = {
 };
 
 const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
-  ({ plans, onUpdatePlanName, onOpenDeleteModal, onAddPlan }) => {
+  ({ className, plans, onUpdatePlanName, onOpenDeleteModal, onAddPlan }) => {
     const router = useRouter(); // Initialize router for navigation
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
@@ -154,7 +156,22 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
     const currentPlans = useMemo(
       () => filteredPlans.slice(indexOfFirstItem, indexOfLastItem),
       [filteredPlans, indexOfFirstItem, indexOfLastItem],
-    );
+    ).map((plan, index, array) => {
+      const summary = plan.summary ?? defaultSummary;
+      const isLastRow = index === array.length - 1;
+      const progress =
+        summary.totalCredits > 0
+          ? (summary.totalCreditsCompleted / summary.totalCredits) * 100
+          : 0;
+      // const progressColor = `bg-color-P${Math.floor(progress)}`;
+      const progressColor = `bg-color-P50`;
+      return {
+        ...plan,
+        progress,
+        progressColor,
+        isLastRow,
+      };
+    });
 
     const handleRowClick = useCallback(
       (planId: string) => {
@@ -166,55 +183,58 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
     return (
       <motion.div
         animate="visible"
-        className="flex-1  w-full"
+        className={`flex-1  w-full ${className ?? ""}`}
         custom="left"
         initial="hidden"
         variants={slideInVariants}
       >
-        <div className="bg-gray-900 rounded-2xl p-4 sm:p-6 shadow-lg shadow-cyan-500/20 w-full mx-auto">
+        <div className="bg-color-1 rounded-2xl p-4 sm:p-6 shadow-lg shadow-color-15/50 w-full mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
-            <h3 className="text-cyan-400 text-xl sm:text-2xl font-semibold">
+            <h3 className="text-color-15 text-xl sm:text-2xl font-semibold">
               Plans Overview
             </h3>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <GenericInputSearch
-                className="w-full sm:w-64"
+                className="w-full sm:w-64 min-w-[270px]"
                 placeholder="Search Plans..."
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
               />
-              <button
-                aria-label="Add a new plan"
-                className="bg-cyan-500 text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-cyan-600 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                type="button"
-                onClick={handleAddPlan}
-              >
-                Add Plan
-              </button>
+              <GenericButton onClick={handleAddPlan}>
+                <PlusIcon className="w-6 h-6" />
+              </GenericButton>
             </div>
           </div>
-          <div className="bg-gray-800 rounded-lg p-4 mb-4">
-            <p className="text-gray-400 text-sm">Total Plans</p>
-            <p className="text-white text-lg sm:text-2xl font-semibold">
+          <div className="bg-color-1 rounded-lg p-4 mb-4">
+            <p className="text-color-15 text-sm">Total Plans</p>
+            <p className="text-color-15 text-lg sm:text-2xl font-semibold">
               {filteredPlans.length}
             </p>
           </div>
           <div className="mt-6">
-            <h4 className="text-cyan-300 text-lg sm:text-xl font-medium mb-2">
+            <h4 className="text-color-15 text-lg sm:text-xl font-medium mb-2">
               Plans Summary
             </h4>
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm text-gray-400 table-auto">
-                <thead className="bg-gray-800 text-cyan-400">
+              <table className="w-full text-left text-sm text-color-15 table-auto">
+                <thead className="bg-color-6 text-color-15 ">
                   <tr>
-                    <th className="p-3 sm:p-4 rounded-tl-lg min-w-[150px]">
+                    <th className="p-3 sm:p-4 min-w-[150px] border border-color-15">
                       Plan Name
                     </th>
-                    <th className="p-3 sm:p-4 min-w-[100px]">Subjects</th>
-                    <th className="p-3 sm:p-4 min-w-[100px]">Credits</th>
-                    <th className="p-3 sm:p-4 min-w-[80px]">GPA</th>
-                    <th className="p-3 sm:p-4 min-w-[150px]">Progress</th>
-                    <th className="p-3 sm:p-4 rounded-tr-lg min-w-[100px]">
+                    <th className="p-3 sm:p-4 min-w-[100px] border border-color-15">
+                      Subjects
+                    </th>
+                    <th className="p-3 sm:p-4 min-w-[100px] border border-color-15">
+                      Credits
+                    </th>
+                    <th className="p-3 sm:p-4 min-w-[80px] border border-color-15">
+                      GPA
+                    </th>
+                    <th className="p-3 sm:p-4 min-w-[150px] border border-color-15">
+                      Progress
+                    </th>
+                    <th className="p-3 sm:p-4 min-w-[100px] border border-color-15">
                       Actions
                     </th>
                   </tr>
@@ -223,78 +243,70 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
                   {currentPlans.length === 0 ? (
                     <tr>
                       <td
-                        className="p-3 sm:p-4 text-center text-gray-500"
+                        className="p-3 sm:p-4 text-center text-color-15"
                         colSpan={6}
                       >
                         {searchTerm
                           ? "No plans match your search."
-                          : "No plans available. Click 'Add Plan' to create a new one."}
+                          : "No plans available. Click '+' to create a new one."}
                       </td>
                     </tr>
                   ) : (
                     currentPlans.map((plan, index) => {
                       const summary = plan.summary ?? defaultSummary;
                       const isLastRow = index === currentPlans.length - 1;
-                      const progress =
-                        summary.totalCredits > 0
-                          ? (summary.totalCreditsCompleted /
-                              summary.totalCredits) *
-                            100
-                          : 0;
-                      const progressColor =
-                        progress >= 80
-                          ? "bg-cyan-400"
-                          : progress >= 50
-                            ? "bg-yellow-400"
-                            : "bg-red-400";
+                      // const progress =
+                      //   summary.totalCredits > 0
+                      //     ? (summary.totalCreditsCompleted /
+                      //         summary.totalCredits) *
+                      //       100
+                      //     : 0;
+                      const progress = plan.progress;
+
+                      // const progressColor = `bg-color-P${Math.floor(progress)}`;
+                      const progressColor = plan.progressColor;
 
                       return (
                         <tr
                           key={plan.id}
-                          className="border-b border-gray-800 hover:bg-gray-700 transition-all duration-200 cursor-pointer"
+                          className="border border-color-15 hover:bg-color-4 transition-all duration-200 cursor-pointer"
                           onClick={() => handleRowClick(plan.id ?? "")}
                         >
                           <td
-                            className={`p-3 sm:p-4 text-white ${isLastRow ? "rounded-bl-lg" : ""}`}
+                            className={`border border-color-15 p-3 sm:p-4 text-color-15 ${isLastRow ? "rounded-bl-lg" : ""}`}
                           >
                             {plan.name}
                           </td>
-                          <td className="p-3 sm:p-4">
+                          <td className="border border-color-15 p-3 sm:p-4">
                             {summary.totalSubjects} subjects
                           </td>
-                          <td className="p-3 sm:p-4">
+                          <td className="border border-color-15 p-3 sm:p-4">
                             {summary.totalCredits} credits
                           </td>
-                          <td className="p-3 sm:p-4">
+                          <td className="border border-color-15 p-3 sm:p-4">
                             <span
-                              className={
-                                summary.currentCPA >= 8
-                                  ? "text-cyan-400"
-                                  : "text-gray-400"
-                              }
+                              className={`text-color-P${Math.floor((summary.currentCPA / 4) * 100)}`}
                             >
                               {summary.currentCPA.toFixed(4)}
                             </span>
                           </td>
-                          <td className="p-3 sm:p-4">
+                          <td className="border border-color-15 p-3 sm:p-4">
                             <div className="flex items-center gap-2">
-                              <div className="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
+                              <div className="w-24 h-2 bg-color-15  overflow-hidden">
                                 <div
-                                  className={`h-full ${progressColor} rounded-full transition-all duration-300`}
+                                  className={`h-full ${progressColor}  transition-all duration-300`}
                                   style={{ width: `${progress}%` }}
                                 />
                               </div>
-                              <span className="text-gray-400 text-xs">
+                              <span className="text-color-15 text-xs">
                                 {progress.toFixed(1)}%
                               </span>
                             </div>
                           </td>
-                          <td
-                            className={`p-3 sm:p-4 flex gap-2 ${isLastRow ? "rounded-br-lg" : ""}`}
-                          >
+                          <td className={` p-3 sm:p-4 flex gap-2`}>
                             <button
                               aria-label="Edit plan name"
-                              className="p-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                              className=" text-color-15 hover:text-color-B7 transition-colors"
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent row click
                                 handleEditClick(plan);
@@ -304,7 +316,7 @@ const PlansOverview: React.FC<PlansOverviewProps> = React.memo(
                             </button>
                             <button
                               aria-label="Delete plan"
-                              className="p-1 text-gray-400 hover:text-red-400 transition-colors"
+                              className="text-color-15 hover:text-color-R7 transition-colors"
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent row click
                                 onOpenDeleteModal(plan.id ?? "");

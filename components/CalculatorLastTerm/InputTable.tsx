@@ -103,28 +103,25 @@ const InputTable: React.FC<InputTableProps> = ({
 
   return (
     <div className="mb-6">
-      <h2 className="text-xl font-semibold mb-4 text-cyan-400">
+      <h2 className="text-xl font-semibold mb-4 text-color-15">
         Enter Your Scores
       </h2>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-white">
+        <table className="w-full border-collapse text-color-15">
           <thead>
-            <tr className="bg-gray-800/50">
-              <th className="border border-cyan-500/30 p-3">Title</th>
-              <th className="border border-cyan-500/30 p-3">Score</th>
-              <th className="border border-cyan-500/30 p-3">Coefficient</th>
-              <th className="border border-cyan-500/30 p-3 w-16">Action</th>
+            <tr className="bg-color-6">
+              <th className="border border-color-15 p-3">Title</th>
+              <th className="border border-color-15 p-3">Score</th>
+              <th className="border border-color-15 p-3">Coefficient</th>
+              <th className="border border-color-15 p-3 w-16">Action</th>
             </tr>
           </thead>
           <tbody>
             {inputs.map((input, index) => (
-              <tr
-                key={index}
-                className="hover:bg-gray-800/30 transition-colors"
-              >
-                <td className="border border-cyan-500/30 p-2">
+              <tr key={index} className="hover:bg-color-3 transition-colors">
+                <td className="border border-color-13 p-2">
                   <input
-                    className="w-full p-2 bg-gray-900/50 text-white border border-cyan-500/20 rounded focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                    className="w-full p-2 bg-color-1 text-color-15 border border-color-3 rounded focus:outline-none focus:ring-2 focus:ring-color-6"
                     placeholder="e.g., Attendance"
                     type="text"
                     value={input.title}
@@ -133,12 +130,12 @@ const InputTable: React.FC<InputTableProps> = ({
                     }
                   />
                 </td>
-                <td className="border border-cyan-500/30 p-2">
+                <td className="border border-color-13 p-2">
                   <input
-                    className={`w-full p-2 bg-gray-900/50 text-white border rounded focus:outline-none focus:ring-2 focus:ring-cyan-400 appearance-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                    className={`w-full p-2 bg-color-1 text-color-15 border rounded focus:outline-none focus:ring-2 focus:ring-color-6 appearance-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                       hasError(index, "score")
-                        ? "border-red-500"
-                        : "border-cyan-500/20"
+                        ? "border-color-R7"
+                        : "border-color-B7"
                     }`}
                     placeholder="0-10"
                     type="number"
@@ -148,12 +145,12 @@ const InputTable: React.FC<InputTableProps> = ({
                     }
                   />
                 </td>
-                <td className="border border-cyan-500/30 p-2">
+                <td className="border border-color-13 p-2">
                   <input
-                    className={`w-full p-2 bg-gray-900/50 text-white border rounded focus:outline-none focus:ring-2 focus:ring-cyan-400 appearance-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+                    className={`w-full p-2 bg-color-1 text-color-15 border rounded focus:outline-none focus:ring-2 focus:ring-color-6 appearance-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                       hasError(index, "coefficient")
-                        ? "border-red-500"
-                        : "border-cyan-500/20"
+                        ? "border-color-R15"
+                        : "border-color-G10"
                     }`}
                     placeholder="0.1-0.9"
                     type="number"
@@ -163,9 +160,9 @@ const InputTable: React.FC<InputTableProps> = ({
                     }
                   />
                 </td>
-                <td className="border border-cyan-500/30 p-2 text-center">
+                <td className="border border-color-13 p-2 text-center">
                   <GenericButton
-                    className="p-2 hover:bg-red-500 hover:text-white"
+                    className="p-2 hover:bg-color-R15 hover:text-color-15"
                     disabled={inputs.length === 1}
                     onClick={() => removeRow(index)}
                   >

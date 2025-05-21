@@ -46,19 +46,19 @@ const ShowMoreToggle: React.FC<{
   };
 
   return (
-    <div className="sticky bottom-0 bg-gray-900/80 border-t border-gray-800/50">
+    <div className="sticky bottom-0 bg-color-1/80 border-t border-color-15/50">
       <div
-        className="flex items-center justify-center gap-2 py-3 px-4 cursor-pointer group hover:bg-gray-800/50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+        className="flex items-center justify-center gap-2 py-3 px-4 cursor-pointer group hover:bg-color-1/50 transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-color-15"
         role="button"
         tabIndex={0}
         onClick={onToggle}
         onKeyDown={handleKeyDown}
       >
-        <span className="text-cyan-400 text-sm font-medium group-hover:text-cyan-300 transition-colors duration-200">
+        <span className="text-color-15 text-sm font-medium group-hover:text-color-15 transition-colors duration-200">
           {showAll ? "Show Less" : `Show More (${totalPlans - 10} more)`}
         </span>
         <ChevronDownIcon
-          className={`w-4 h-4 text-cyan-400 group-hover:text-cyan-300 transition-transform duration-300 ${
+          className={`w-4 h-4 text-color-15 group-hover:text-color-15 transition-transform duration-300 ${
             showAll ? "rotate-180" : ""
           }`}
         />
@@ -193,26 +193,18 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <div className="w-full h-full md:w-64 bg-gray-900/80 shadow-lg rounded-2xl md:rounded-2xl flex flex-col">
-      <div className="p-4 md:p-4 border-b border-gray-800/50">
+    <div className="w-full h-full md:w-64 bg-color-1/80 shadow-lg shadow-color-15/50 rounded-2xl md:rounded-2xl flex flex-col">
+      <div className="p-4 md:p-4 border-b border-color-15">
         <div className="relative mb-4">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-color-15" />
           <input
-            className="bg-gray-800 text-white placeholder-gray-400 rounded-full pl-10 pr-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all duration-300"
+            className="border border-color-15 bg-color-1 text-color-15 placeholder-color-15 rounded-lg pl-10 pr-4 py-2 w-full focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-300"
             placeholder="Search Plans..."
             type="text"
             value={searchQuery}
             onChange={(e) => debouncedSetSearchQuery(e.target.value)}
           />
         </div>
-        {/* <button
-          aria-label="Add a new plan"
-          className="w-full bg-cyan-500 text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-cyan-600 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-          type="button"
-          onClick={handleAddPlan}
-        >
-          Add Plan
-        </button> */}
       </div>
       <div className="flex-1 overflow-y-auto flex flex-col">
         <ul className="space-y-2 px-4 py-4 flex-1">
@@ -223,14 +215,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <PlanCard isSelected={selectedPlanId === plan.id} plan={plan} />
                 <button
                   aria-label="Edit plan name"
-                  className="p-1 text-gray-400 hover:text-cyan-400 transition-colors"
+                  className="p-1 text-color-15 hover:text-color-B7 transition-colors"
                   onClick={() => handleEditClick(plan)}
                 >
                   <PencilIcon className="w-5 h-5" />
                 </button>
                 <button
                   aria-label="Delete plan"
-                  className="p-1 text-gray-400 hover:text-red-400 transition-colors"
+                  className="p-1 text-color-15 hover:text-color-R7 transition-colors"
                   onClick={() => handleDeleteClick(plan.id ?? "")}
                 >
                   <TrashIcon className="w-5 h-5" />

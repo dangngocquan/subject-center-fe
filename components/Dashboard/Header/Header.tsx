@@ -15,13 +15,13 @@ const PlanHeader: React.FC<PlanHeaderProps> = ({
   onToggleSidebar,
 }) => {
   return (
-    <nav className="bg-gray-900/80 backdrop-blur-md p-2 sm:p-3 md:p-4 flex justify-between items-center shadow-lg shadow-cyan-500/20 w-full flex-wrap gap-2">
+    <nav className="bg-color-1/80 backdrop-blur-md p-2 sm:p-3 md:p-4 flex justify-between items-center shadow-lg shadow-color-15/50 w-full flex-wrap gap-2 rounded-lg">
       <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4 min-w-0">
         {/* Nút toggle sidebar chỉ hiển thị trên màn hình nhỏ */}
         {selectedPlanName && (
           <button
             aria-label="Toggle sidebar"
-            className="md:hidden text-white p-1 sm:p-2"
+            className="md:hidden text-color-15 p-1 sm:p-2"
             onClick={onToggleSidebar}
           >
             <Bars3Icon className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -30,13 +30,13 @@ const PlanHeader: React.FC<PlanHeaderProps> = ({
         {!selectedPlanName && (
           <div
             aria-label="Toggle sidebar"
-            className="md:hidden text-white p-1 sm:p-2"
+            className="md:hidden text-color-15 p-1 sm:p-2"
           >
             <div className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         )}
         {/* Tên plan với giới hạn chiều rộng và truncate */}
-        <div className="bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent font-bold text-sm sm:text-base md:text-lg lg:text-xl truncate flex-1 min-w-0">
+        <div className="bg-gradient-to-r from-color-15 to-color-1 bg-clip-text font-bold text-sm sm:text-base md:text-lg lg:text-xl truncate flex-1 min-w-0">
           {selectedPlanName ? `Plan: ${selectedPlanName}` : "Plans Dashboard"}
         </div>
       </div>
@@ -44,7 +44,7 @@ const PlanHeader: React.FC<PlanHeaderProps> = ({
         {/* Nút Overview với kích thước và padding responsive */}
         <Link
           aria-label="View overview of all plans"
-          className="bg-cyan-500 text-white rounded-full px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 text-xs sm:text-sm hover:bg-cyan-600 transition-all duration-300 whitespace-nowrap"
+          className="bg-color-3 text-color-15 rounded-lg px-2 py-1 sm:px-3 sm:py-1 md:px-4 md:py-2 text-xs sm:text-sm hover:bg-color-6 transition-all duration-300 whitespace-nowrap"
           href={siteConfig.routers.plans}
         >
           Overview

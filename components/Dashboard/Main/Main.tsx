@@ -66,6 +66,7 @@ const Main: React.FC<MainProps> = ({
   if (!selectedPlan) {
     return (
       <PlansOverview
+        className="h-[90%]"
         plans={plans.filter((plan) => plan.id !== undefined)}
         onAddPlan={onAddPlan}
         onOpenDeleteModal={onOpenDeleteModal}
@@ -77,37 +78,37 @@ const Main: React.FC<MainProps> = ({
   return (
     <motion.div
       animate="visible"
-      className="grid grid-cols-1 gap-4 p-2 sm:p-4"
+      className="grid grid-cols-1 sm:p-4 gap-4"
       custom="left"
       initial="hidden"
       variants={slideInVariants}
     >
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap gap-2 mb-4 shadow-lg shadow-color-15/50 rounded-lg">
         <button
-          className={`flex-1 py-2 px-3 rounded text-sm ${
+          className={`flex-1 py-2 px-3 m-3 rounded-lg text-sm ${
             activeTab === "overview"
-              ? "bg-cyan-500 text-white"
-              : "bg-gray-700 text-gray-300"
+              ? "bg-color-6 text-color-15"
+              : "bg-color-1 text-color-15"
           }`}
           onClick={() => setActiveTab("overview")}
         >
           Overview
         </button>
         <button
-          className={`flex-1 py-2 px-3 rounded text-sm ${
+          className={`flex-1 py-2 px-3 m-3 rounded-lg text-sm ${
             activeTab === "marks"
-              ? "bg-cyan-500 text-white"
-              : "bg-gray-700 text-gray-300"
+              ? "bg-color-6 text-color-15"
+              : "bg-color-1 text-color-15"
           }`}
           onClick={() => setActiveTab("marks")}
         >
           CPA Marks
         </button>
         <button
-          className={`flex-1 py-2 px-3 rounded text-sm ${
+          className={`flex-1 py-2 px-3 m-3 rounded-lg text-sm ${
             activeTab === "graph"
-              ? "bg-cyan-500 text-white"
-              : "bg-gray-700 text-gray-300"
+              ? "bg-color-6 text-color-15"
+              : "bg-color-1 text-color-15"
           }`}
           onClick={() => setActiveTab("graph")}
         >

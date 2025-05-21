@@ -56,7 +56,7 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
 
   return (
     <motion.div
-      className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-[#1A2A44] p-4 rounded-lg shadow-lg mb-4"
+      className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-color-1 p-4 rounded-lg shadow-lg mb-4 border border-color-15"
       style={{ minHeight: "120px" }}
     >
       <motion.div
@@ -64,19 +64,19 @@ const MajorDetailHeader: React.FC<MajorDetailHeaderProps> = ({
         className="flex flex-col space-y-2 w-full sm:w-auto"
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <h2 className="text-xl sm:text-2xl font-bold tracking-wide bg-gradient-to-r from-[#4A90E2] to-white bg-clip-text text-transparent">
+        <h2 className="text-xl sm:text-2xl font-bold tracking-wide bg-gradient-to-r from-color-15 to-color-5 bg-clip-text">
           {majorName || "Danh sách chuyên ngành"}
         </h2>
 
         <motion.span
           animate={{ opacity: 1 }}
-          className="text-base sm:text-lg font-medium text-gray-300"
+          className="text-base sm:text-lg font-medium text-color-15"
           exit={{ opacity: 0 }}
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
           Tổng tín chỉ đã chọn:{" "}
-          <span className="text-[#4A90E2] font-semibold">{totalCredits}</span>
+          <span className="text-color-G8 font-semibold">{totalCredits}</span>
         </motion.span>
       </motion.div>
 

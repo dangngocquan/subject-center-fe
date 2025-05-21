@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 
 import GenericModal from "./Common/GenericModal";
 import GenericButton from "./Common/GenericButton";
+import LoadingModal from "./LoadingModal";
 
 import { useAuthGoogle } from "@/service/auth.service";
 import {
@@ -27,7 +28,6 @@ import {
 } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 import { LOCAL_STORAGE_KEYS } from "@/config/localStorage";
-import LoadingModal from "./LoadingModal";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -43,7 +43,7 @@ export const Navbar = () => {
       setIsLoading(false);
       setIsLoginModalOpen(false);
     },
-    () => setIsLoading(false)
+    () => setIsLoading(false),
   );
 
   const updateAuthToken = () => {
@@ -217,7 +217,7 @@ export const Navbar = () => {
       {isMenuVisible && (
         <div
           aria-label="Close menu"
-          className={`fixed inset-0 bg-black/70 z-40 lg:hidden cursor-pointer transition-opacity duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+          className={`fixed inset-0 bg-color-15/50 z-40 lg:hidden cursor-pointer transition-opacity duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] ${
             isMenuOpen ? "opacity-100" : "opacity-0"
           }`}
           role="button"
@@ -231,7 +231,7 @@ export const Navbar = () => {
       {isExpanded && (
         <div
           aria-label="Close expanded menu"
-          className="fixed inset-0 bg-black/50 z-40"
+          className="fixed inset-0 bg-color-15/50 z-40"
           role="button"
           tabIndex={0}
           onClick={() => setIsExpanded(false)}
@@ -248,14 +248,14 @@ export const Navbar = () => {
         variants={navbarVariants}
       >
         <HeroUINavbar
-          className="bg-gray-900/80 backdrop-blur-md shadow-lg shadow-cyan-500/20 z-50 w-full"
+          className="bg-color-1/50 backdrop-blur-md shadow-lg shadow-color-15/30 z-50 w-full"
           maxWidth="xl"
           position="sticky"
         >
           <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
             <button
               aria-label="Toggle menu"
-              className="lg:hidden text-white mr-2"
+              className="lg:hidden text-color-15 mr-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               onKeyDown={handleHamburgerKeyDown}
             >
@@ -268,19 +268,19 @@ export const Navbar = () => {
                 href="/"
               >
                 <Logo />
-                <p className="font-bold text-xl bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+                <p className="font-bold text-xl bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent">
                   S-CENTER
                 </p>
               </NextLink>
             </NavbarBrand>
 
-            <ul className="hidden lg:flex gap-4 justify-start ml-2">
+            <ul className="hidden lg:flex gap-4 justify-start ml-2 font-bold">
               {siteConfig.navItems.map((item) => (
                 <NavbarItem key={item.href}>
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "ml-5 text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium"
+                      "ml-5 text-color-10 hover:text-color-B7 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium",
                     )}
                     href={item.href}
                     onClick={
@@ -307,7 +307,7 @@ export const Navbar = () => {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <Logo />
-                      <p className="font-bold text-xl bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+                      <p className="font-bold text-xl bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent">
                         S-CENTER
                       </p>
                     </NextLink>
@@ -326,7 +326,7 @@ export const Navbar = () => {
                       <NextLink
                         className={clsx(
                           linkStyles({ color: "foreground" }),
-                          "text-white hover:text-cyan-300 transition-colors data-[active=true]:text-cyan-400 data-[active=true]:font-medium w-full block"
+                          "text-white hover:text-color-15 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium w-full block",
                         )}
                         href={item.href}
                         onClick={
@@ -486,15 +486,15 @@ export const Navbar = () => {
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-white bg-clip-text text-transparent">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent">
             Please Sign In
           </h2>
-          <p className="mb-6 text-gray-300 text-base md:text-lg leading-relaxed max-w-xs mx-auto">
+          <p className="mb-6 text-color-15 text-base md:text-lg leading-relaxed max-w-xs mx-auto">
             You need to sign in to explore service plans and access all
             features.
           </p>
           <GenericButton
-            className="bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-600 hover:to-cyan-800 text-white px-6 py-3 rounded-full font-semibold shadow-lg shadow-cyan-500/50 hover:shadow-cyan-600/60 transition-all duration-300"
+            className="bg-gradient-to-r from-color-6 to-color-1 hover:from-color-9 hover:to-color-1 text-color-15 px-6 py-3 rounded-full font-semibold shadow-lg shadow-color-15/50 hover:shadow-color-15/60 transition-all duration-300"
             disabled={isLoading}
             onClick={() => {
               setIsLoading((prev) => !prev);

@@ -31,18 +31,24 @@ const EditPlanModal: React.FC<EditPlanModalProps> = ({
   };
 
   return (
-    <GenericModal isOpen={isOpen} onClose={onClose}>
-      <h3 className="text-xl font-semibold text-white mb-4">Edit Plan Name</h3>
+    <GenericModal
+      className="w-100% fixed pl-0"
+      isOpen={isOpen}
+      onClose={onClose}
+    >
+      <h3 className="text-xl font-semibold text-color-15 mb-4 text-center">
+        Edit Plan Name
+      </h3>
       <input
-        className="w-full bg-gray-700 text-white rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+        className="w-full border border-color-15 bg-color-1 text-color-15 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-color-6"
         placeholder="Enter new name..."
         type="text"
         value={newName}
         onChange={(e) => setNewName(e.target.value)}
       />
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-around gap-2">
         <motion.button
-          className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-500 transition-all duration-200 text-sm font-medium"
+          className="px-4 py-2 bg-color-1 text-color-15 rounded-md hover:bg-color-R6 transition-all duration-200 text-sm font-medium"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={onClose}
@@ -50,7 +56,7 @@ const EditPlanModal: React.FC<EditPlanModalProps> = ({
           Cancel
         </motion.button>
         <motion.button
-          className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
+          className="px-4 py-2 bg-color-1 text-color-15 rounded-md hover:bg-color-G6 transition-all duration-200 text-sm font-medium"
           disabled={newName.trim() === ""}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}

@@ -138,50 +138,50 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
 
   return (
     <GenericModal isOpen={isOpen} onClose={onClose}>
-      <div className="text-center text-white font-sans p-4 sm:p-6">
-        <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+      <div className="text-center text-color-1 font-sans p-4 sm:p-6">
+        <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-color-15 to-color-5">
           Add Custom Course
         </h3>
         <div className="space-y-4 text-left">
           <div>
             <input
-              className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+              className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
               placeholder="Course Code"
               type="text"
               value={form.courseCode}
               onChange={(e) => setForm({ ...form, courseCode: e.target.value })}
             />
             {errors.courseCode && (
-              <p className="text-red-400 text-sm mt-1">{errors.courseCode}</p>
+              <p className="text-color-R7 text-sm mt-1">{errors.courseCode}</p>
             )}
           </div>
           <div>
             <input
-              className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+              className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
               placeholder="Course Name"
               type="text"
               value={form.courseName}
               onChange={(e) => setForm({ ...form, courseName: e.target.value })}
             />
             {errors.courseName && (
-              <p className="text-red-400 text-sm mt-1">{errors.courseName}</p>
+              <p className="text-color-R7 text-sm mt-1">{errors.courseName}</p>
             )}
           </div>
           <div>
             <input
-              className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+              className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
               placeholder="Class Code"
               type="text"
               value={form.classCode}
               onChange={(e) => setForm({ ...form, classCode: e.target.value })}
             />
             {errors.classCode && (
-              <p className="text-red-400 text-sm mt-1">{errors.classCode}</p>
+              <p className="text-color-R7 text-sm mt-1">{errors.classCode}</p>
             )}
           </div>
           <div>
             <select
-              className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+              className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
               value={form.dayOfWeek}
               onChange={(e) =>
                 setForm({ ...form, dayOfWeek: parseInt(e.target.value) })
@@ -197,15 +197,15 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
             </select>
           </div>
           <div>
-            <div className="relative w-full bg-gray-800 border border-gray-700 rounded-lg p-2 min-h-[40px] flex flex-wrap items-center gap-2">
+            <div className="relative w-full bg-color-1 border border-color-15 rounded-lg p-2 min-h-[40px] flex flex-wrap items-center gap-2">
               {form.period.map((period, index) => (
                 <div
                   key={index}
-                  className="bg-gray-600 text-white rounded-full px-2 py-1 text-sm flex items-center"
+                  className="bg-color-6 text-color-15 rounded-full px-2 py-1 text-sm flex items-center"
                 >
                   {period}
                   <button
-                    className="ml-1 text-gray-300 hover:text-red-400"
+                    className="ml-1 text-color-R5 hover:text-color-R7"
                     onClick={() => removePeriod(index)}
                   >
                     <FaTimes size={10} />
@@ -215,7 +215,7 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
               <div className="flex items-center gap-2">
                 <input
                   ref={inputRef}
-                  className="bg-transparent text-gray-300 border-none outline-none w-16"
+                  className="bg-transparent text-color-15 border-none outline-none w-16"
                   min="1"
                   placeholder="Period"
                   type="number"
@@ -232,19 +232,19 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
               </div>
             </div>
             {errors.period && (
-              <p className="text-red-400 text-sm mt-1">{errors.period}</p>
+              <p className="text-color-R7 text-sm mt-1">{errors.period}</p>
             )}
           </div>
           <div>
             <input
-              className="w-full bg-gray-800 text-gray-300 border border-gray-700 rounded-lg p-2"
+              className="w-full bg-color-1 text-color-15 border border-color-15 rounded-lg p-2"
               placeholder="Credits"
               type="text"
               value={form.credits}
               onChange={(e) => setForm({ ...form, credits: e.target.value })}
             />
             {errors.credits && (
-              <p className="text-red-400 text-sm mt-1">{errors.credits}</p>
+              <p className="text-color-R7 text-sm mt-1">{errors.credits}</p>
             )}
           </div>
         </div>

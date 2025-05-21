@@ -41,7 +41,7 @@ const TimeTableResult: React.FC<TimeTableResultProps> = ({
         })
         .catch((err) => {
           console.error(
-            `Error attempting to enable fullscreen: ${err.message}`
+            `Error attempting to enable fullscreen: ${err.message}`,
           );
         });
     } else {
@@ -70,7 +70,7 @@ const TimeTableResult: React.FC<TimeTableResultProps> = ({
 
   if (timetables.length === 0) {
     return (
-      <div className="border p-4 bg-gray-900 text-white rounded-lg">
+      <div className="border p-4 bg-color-1 text-color-15 rounded-lg">
         Chưa có timetable nào.
       </div>
     );
@@ -84,20 +84,30 @@ const TimeTableResult: React.FC<TimeTableResultProps> = ({
   return (
     <div
       ref={resultRef}
-      className="border p-4 bg-gray-900 text-white rounded-lg flex flex-col h-full"
+      className="border p-4 bg-color-1 text-color-15 rounded-lg flex flex-col h-full"
     >
       <div className="flex justify-between items-center mb-4">
         <div>
-          <h2 className="font-bold text-cyan-400">Result</h2>
+          <h2 className="font-bold text-color-15">Result</h2>
         </div>
         <GenericButton
           className="text-sm"
-          tooltipContent={isFullscreen ? "Thoát Fullscreen" : "Fullscreen"}
+          tooltipContent={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
           tooltipId="fullscreen-tooltip"
           onClick={toggleFullscreen}
         >
           {isFullscreen ? <FaCompress size={16} /> : <FaExpand size={16} />}
         </GenericButton>
+      </div>
+      {/* Phân trang */}
+      <div className="mt-4 shrink-0">
+        <GenericPagination
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          maxVisiblePages={5}
+          setCurrentPage={setCurrentPage}
+          totalItems={timetables.length}
+        />
       </div>
 
       <div className="flex-1 overflow-y-auto mt-4">
@@ -109,17 +119,6 @@ const TimeTableResult: React.FC<TimeTableResultProps> = ({
             timetable={timetable}
           />
         ))}
-      </div>
-
-      {/* Phân trang */}
-      <div className="mt-4 shrink-0">
-        <GenericPagination
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          maxVisiblePages={5}
-          setCurrentPage={setCurrentPage}
-          totalItems={timetables.length}
-        />
       </div>
     </div>
   );
