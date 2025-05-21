@@ -40,7 +40,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
     : (cpa?.withoutImprovements.marks ?? []);
 
   const graduationMarks = marks.filter(
-    (mark) => mark.type === "GRADUATION_MARK" || mark.type === "NODE",
+    (mark) => mark.type === "GRADUATION_MARK" || mark.type === "NODE"
   );
   const minMark = marks.find((mark) => mark.type === "MIN");
   const maxMark = marks.find((mark) => mark.type === "MAX");
@@ -57,7 +57,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
         return null;
       }
       return (
-        <div className="bg-gray-500 p-4 rounded-lg shadow-lg text-white">
+        <div className="bg-gray-500 p-4 rounded-lg shadow-lg text-color-15">
           <h4>{graduations[graduations.length - 1]?.details?.content}</h4>
           <p>{x.toFixed(2)}</p>
         </div>
@@ -217,7 +217,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
                 mark.details.cases?.flatMap((caseItem) =>
                   caseItem.grades
                     ?.map((grade) => grade.gradeLatin)
-                    .filter(Boolean),
+                    .filter(Boolean)
                 ) || [];
               const gradeOrder = [
                 "A+",
@@ -235,7 +235,7 @@ const MarksGraph: React.FC<MarksGraphProps> = ({ cpa }) => {
               const lowestGrade =
                 allGrades.sort(
                   (a, b) =>
-                    gradeOrder.indexOf(a ?? "") - gradeOrder.indexOf(b ?? ""),
+                    gradeOrder.indexOf(a ?? "") - gradeOrder.indexOf(b ?? "")
                 )[allGrades.length - 1] || "D";
               const currentIndex = gradeOrder.indexOf(lowestGrade);
               const nextGrade =

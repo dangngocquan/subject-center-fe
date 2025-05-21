@@ -224,7 +224,7 @@ const CustomCourseModal: React.FC<CustomCourseModalProps> = ({
                   onKeyPress={handleKeyPress}
                 />
                 <GenericButton
-                  className="text-sm hover:bg-green-500 hover:text-white"
+                  className="text-sm hover:bg-green-500 hover:text-color-15"
                   onClick={addPeriod}
                 >
                   <FaPlus size={12} />

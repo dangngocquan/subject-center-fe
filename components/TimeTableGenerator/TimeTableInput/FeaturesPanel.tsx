@@ -3,9 +3,9 @@
 import React from "react";
 import { FaPlus, FaPlay, FaCheckSquare, FaUndo } from "react-icons/fa";
 import { Tooltip } from "react-tooltip";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 import GenericButton from "@/components/Common/GenericButton";
-import { TrashIcon } from "@heroicons/react/24/outline";
 
 interface FeaturesPanelProps {
   onAddNewCourses: () => void;
@@ -81,22 +81,22 @@ const FeaturesPanel: React.FC<FeaturesPanelProps> = ({
 
       {/* Tooltips */}
       <Tooltip
-        className="bg-[#2A3A54] text-white p-2 rounded z-50 text-xs md:text-sm"
+        className="bg-[#2A3A54] text-color-15 p-2 rounded z-50 text-xs md:text-sm"
         id="add-courses-tooltip"
         place="bottom"
       />
       <Tooltip
-        className="bg-[#2A3A54] text-white p-2 rounded z-50 text-xs md:text-sm"
+        className="bg-[#2A3A54] text-color-15 p-2 rounded z-50 text-xs md:text-sm"
         id="clear-courses-tooltip"
         place="bottom"
       />
       <Tooltip
-        className="bg-[#2A3A54] text-white p-2 rounded z-50 text-xs md:text-sm"
+        className="bg-[#2A3A54] text-color-15 p-2 rounded z-50 text-xs md:text-sm"
         id="toggle-selection-tooltip"
         place="bottom"
       />
       <Tooltip
-        className="bg-[#2A3A54] text-white p-2 rounded z-50 text-xs md:text-sm"
+        className="bg-[#2A3A54] text-color-15 p-2 rounded z-50 text-xs md:text-sm"
         id="generate-tooltip"
         place="bottom"
       />

@@ -74,7 +74,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
       const response = await onCreatePlan({
         name: planName,
         items: majorItems.filter((node) =>
-          selectedItems.includes(node.genCode),
+          selectedItems.includes(node.genCode)
         ) as PlanItem[],
       });
 
@@ -95,22 +95,22 @@ const PlanModal: React.FC<PlanModalProps> = ({
     <>
       {isLoading && <LoadingModal isOpen={isLoading} />}
       <GenericModal isOpen={isOpen} onClose={onClose}>
-        <h3 className="text-xl font-semibold text-white mb-4">
+        <h3 className="text-xl font-semibold text-color-15 mb-4">
           Create Study Plan
         </h3>
 
         <div className="mb-4">
           <label
-            className="block text-sm font-medium text-gray-300 mb-1"
+            className="block text-sm font-medium text-color-15 mb-1"
             htmlFor="planName"
           >
             Plan Name
           </label>
           <input
-            className="w-full p-2 bg-[#2A3A54] text-white border border-[#3A4A64] rounded-md focus:outline-none focus:ring-1 focus:ring-[#4A90E2] transition-all duration-200 placeholder-gray-500 text-sm"
+            className="w-full p-2 bg-color-1 text-color-15 border border-color-15 rounded-md focus:outline-none focus:ring-1 focus:ring-color-15 transition-all duration-200 placeholder-color-15 text-sm"
             id="planName"
             placeholder="e.g., Semester 1 Plan 2025"
-            style={{ background: "rgba(42, 58, 84, 0.8)" }}
+            // style={{ background: "rgba(42, 58, 84, 0.8)" }}
             type="text"
             value={planName}
             onChange={(e) => setPlanName(e.target.value)}
@@ -123,10 +123,10 @@ const PlanModal: React.FC<PlanModalProps> = ({
               Groups not meeting requirements:
             </p>
             <div
-              className="max-h-40 overflow-y-auto bg-[#2A3A54] p-3 rounded-md border border-[#3A4A64] scrollbar-thin scrollbar-thumb-[#4A90E2] scrollbar-track-[#2A3A54] scrollbar-thumb-rounded"
-              style={{ background: "rgba(42, 58, 84, 0.8)" }}
+              className="max-h-40 overflow-y-auto bg-color-1 p-3 rounded-md border border-color-15 scrollbar-thin scrollbar-thumb-[#4A90E2] scrollbar-track-[#2A3A54] scrollbar-thumb-rounded"
+              // style={{ background: "rgba(42, 58, 84, 0.8)" }}
             >
-              <ul className="text-gray-300 text-sm space-y-2">
+              <ul className="text-color-15 text-sm space-y-2">
                 {unmetRequirements.map((group) => {
                   const { totalCredits, totalCount } =
                     calculateTotalCreditsAndCount(group, selected);
@@ -136,7 +136,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
                       className="flex justify-between items-center"
                     >
                       <span className="truncate flex-1">{group.name}</span>
-                      <span className="text-gray-400 text-xs">
+                      <span className="text-color-15 text-xs">
                         {group.minCredits && (
                           <span>
                             {totalCredits}/{group.minCredits} credits
@@ -159,7 +159,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
         <div className="flex justify-end space-x-2">
           <GenericButton
-            className="px-4 py-2 bg-[#3A4A64] text-gray-200 rounded-md hover:bg-[#4A5A74] transition-all duration-200 text-sm font-medium"
+            className="px-4 py-2 bg-color-1 text-color-15 rounded-md hover:bg-color-5 transition-all duration-200 text-sm font-medium"
             tooltipContent="Continue selecting"
             tooltipId="continue-tooltip"
             onClick={onClose}
@@ -167,7 +167,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
             Continue selecting
           </GenericButton>
           <GenericButton
-            className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
+            className="px-4 py-2 bg-color-1 text-color-15 rounded-md hover:bg-color-G7 transition-all duration-200 text-sm font-medium"
             disabled={isLoading}
             tooltipContent="Create Plan"
             tooltipId="create-tooltip"
@@ -183,7 +183,7 @@ const PlanModal: React.FC<PlanModalProps> = ({
 
 const calculateTotalCreditsAndCount = (
   node: MajorItemWithChildren,
-  selected: Set<string>,
+  selected: Set<string>
 ): { totalCredits: number; totalCount: number } => {
   let totalCredits = 0;
   let totalCount = 0;

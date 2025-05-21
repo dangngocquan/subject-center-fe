@@ -28,27 +28,27 @@ const ResultModal: React.FC<ResultModalProps> = ({
   if (!isOpen) return null;
 
   const succeededCount = result.filter(
-    (item) => item.status === "SUCCEEDED",
+    (item) => item.status === "SUCCEEDED"
   ).length;
   const failedCount = result.filter((item) => item.status === "FAILED").length;
 
   return (
     <GenericModal isOpen={isOpen} onClose={onClose}>
       {/* Title */}
-      <h3 className="text-2xl font-bold text-blue-400 mb-4 relative inline-block">
+      <h3 className="text-2xl font-bold text-color-15 mb-4 relative inline-block">
         Plan Creation Results
-        <span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-transparent rounded-full" />
+        <span className="absolute -bottom-1 left-0 w-full h-1 bg-color-1 rounded-full" />
       </h3>
       {/* Statistics */}
       <div className="mb-6 grid grid-cols-3 gap-4 text-sm justify-center justify-between">
         <div className="flex flex-col items-center p-3 bg-green-900/30 rounded-lg">
-          <span className="text-gray-300">Successful Subjects</span>
+          <span className="text-color-15">Successful Subjects</span>
           <span className="text-green-400 font-semibold text-lg">
             {succeededCount}
           </span>
         </div>
         <div className="flex flex-col items-center p-3 bg-red-900/30 rounded-lg">
-          <span className="text-gray-300">Failed Subjects</span>
+          <span className="text-color-15">Failed Subjects</span>
           <span className="text-red-400 font-semibold text-lg">
             {failedCount}
           </span>
@@ -56,7 +56,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
       </div>
       {/* Content */}
       {result.length === 0 ? (
-        <p className="text-gray-300 text-sm">
+        <p className="text-color-15 text-sm">
           No results available at the moment.
         </p>
       ) : (
@@ -66,19 +66,19 @@ const ResultModal: React.FC<ResultModalProps> = ({
             <thead style={{ backgroundColor: "#2A3A54" }}>
               <tr>
                 <th
-                  className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                  className="px-4 py-2 text-left text-xs font-medium text-color-15 uppercase tracking-wider"
                   style={{ width: "40%" }}
                 >
                   Name
                 </th>
                 <th
-                  className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                  className="px-4 py-2 text-left text-xs font-medium text-color-15 uppercase tracking-wider"
                   style={{ width: "20%" }}
                 >
                   Code
                 </th>
                 <th
-                  className="px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wider"
+                  className="px-4 py-2 text-left text-xs font-medium text-color-15 uppercase tracking-wider"
                   style={{ width: "40%" }}
                 >
                   Message
@@ -96,13 +96,13 @@ const ResultModal: React.FC<ResultModalProps> = ({
                       : "bg-red-500/20 text-red-400"
                   } hover:bg-[#2A3A54]`}
                 >
-                  <td className="px-4 py-2 whitespace-normal text-white">
+                  <td className="px-4 py-2 whitespace-normal text-color-15">
                     {item.name}
                   </td>
-                  <td className="px-4 py-2 whitespace-normal text-white">
+                  <td className="px-4 py-2 whitespace-normal text-color-15">
                     {item.code}
                   </td>
-                  <td className="px-4 py-2 whitespace-normal text-white">
+                  <td className="px-4 py-2 whitespace-normal text-color-15">
                     {item.message || "-"}
                   </td>
                 </tr>
@@ -118,7 +118,7 @@ const ResultModal: React.FC<ResultModalProps> = ({
           href={`${siteConfig.routers.planDetails(String(planName))}`}
         >
           <motion.button
-            className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
+            className="px-4 py-2 bg-[#4A90E2] text-color-15 rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >

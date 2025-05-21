@@ -47,7 +47,7 @@ const CTASection = () => {
       setIsLoading(false);
       setIsLoginModalOpen(false);
     },
-    () => setIsLoading(false),
+    () => setIsLoading(false)
   );
 
   return (
@@ -59,7 +59,7 @@ const CTASection = () => {
       initial="hidden"
       variants={fadeInVariants}
     >
-      <div className="relative z-10 flex flex-col items-center gap-6 text-center text-white">
+      <div className="relative z-10 flex flex-col items-center gap-6 text-center text-color-15">
         <motion.h2
           className="pb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-color-15 to-color-5 bg-clip-text text-transparent drop-shadow-lg"
           custom={1}
@@ -101,7 +101,7 @@ const CTASection = () => {
       >
         <motion.div
           animate={{ opacity: 1, y: 0 }}
-          className="text-center text-white p-4"
+          className="text-center text-color-15 p-4"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >

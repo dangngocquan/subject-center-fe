@@ -162,7 +162,7 @@ const InputTable: React.FC<InputTableProps> = ({
                 </td>
                 <td className="border border-color-13 p-2 text-center">
                   <GenericButton
-                    className="p-2 hover:bg-color-R15 hover:text-color-15"
+                    className="p-2 hover:bg-color-R5 hover:text-color-15"
                     disabled={inputs.length === 1}
                     onClick={() => removeRow(index)}
                   >

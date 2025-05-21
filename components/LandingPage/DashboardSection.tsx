@@ -47,7 +47,7 @@ const DashboardSection = () => {
             src="/images/dashboard-preview.jpg"
           />
           <motion.p
-            className="mt-4 md:mt-6 text-gray-300 font-light text-base sm:text-lg"
+            className="mt-4 md:mt-6 text-color-15 font-light text-base sm:text-lg"
             custom={3}
             variants={fadeInVariants}
           >

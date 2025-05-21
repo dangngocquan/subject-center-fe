@@ -74,7 +74,7 @@ const TestimonialsSection = () => {
                   className="w-16 h-16 rounded-full mx-auto mb-4 opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
                   src={testimonial.avatar}
                 />
-                <p className="text-gray-300 italic mb-2 leading-relaxed">
+                <p className="text-color-15 italic mb-2 leading-relaxed">
                   &quot;{testimonial.text}&quot;
                 </p>
                 <p className="text-cyan-400 font-semibold">

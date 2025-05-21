@@ -25,10 +25,10 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
       >
         {isSuccess ? "Success" : "Failure"}
       </h3>
-      <p className="text-white mb-6">{message}</p>
+      <p className="text-color-15 mb-6">{message}</p>
       <div className="flex justify-end">
         <button
-          className="px-4 py-2 bg-[#4A90E2] text-white rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
+          className="px-4 py-2 bg-[#4A90E2] text-color-15 rounded-md hover:bg-[#357ABD] transition-all duration-200 text-sm font-medium"
           onClick={onClose}
         >
           Close

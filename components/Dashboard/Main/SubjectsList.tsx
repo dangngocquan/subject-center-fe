@@ -90,7 +90,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
     let result = subjects.filter((subject) =>
       String(subject.name ?? "")
         .toLowerCase()
-        .includes(searchTerm.toLowerCase()),
+        .includes(searchTerm.toLowerCase())
     );
 
     if (sortConfig.direction) {
@@ -151,7 +151,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
             const updatedSubjects = [...prevSubjects];
             (data.items ?? []).forEach((newItem) => {
               const index = updatedSubjects.findIndex(
-                (subject) => subject.id === newItem.id,
+                (subject) => subject.id === newItem.id
               );
               if (index !== -1) {
                 updatedSubjects[index] = {
@@ -229,7 +229,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
       const response = await deletePlanItem(Number(planId), subjectToDelete.id);
       if (!response.isBadRequest) {
         const updatedSubjects = subjects.filter(
-          (subject) => subject.id !== subjectToDelete.id,
+          (subject) => subject.id !== subjectToDelete.id
         );
         setSubjects(updatedSubjects);
         setResultModal({
@@ -291,7 +291,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
         const updatedSubjects = subjects.map((subject) =>
           subject.id === updatedSubject.id
             ? { ...subject, ...result.data }
-            : subject,
+            : subject
         );
         setSubjects(updatedSubjects);
         setResultModal({
@@ -375,7 +375,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
           </div>
           <div className="flex gap-2">
             {/* <motion.button
-              className="p-2 bg-[#4A90E2] text-white rounded-full hover:bg-[#357ABD] transition-all duration-300"
+              className="p-2 bg-[#4A90E2] text-color-15 rounded-full hover:bg-[#357ABD] transition-all duration-300"
               data-tooltip-content="Sort Options"
               data-tooltip-id="sort-tooltip"
               onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
@@ -390,9 +390,9 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
               <ArrowsUpDownIcon className="w-5 h-5" />
             </GenericButton>
             {isSortDropdownOpen && (
-              <div className="absolute mt-12 w-48 bg-gray-800 rounded-lg shadow-lg z-10">
+              <div className="absolute mt-12 w-48 bg-color-1 rounded-lg shadow-lg z-10">
                 <button
-                  className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 flex items-center"
+                  className="block w-full text-left px-4 py-2 text-color-15 hover:bg-color-4 flex items-center"
                   onClick={() => handleSort("name")}
                 >
                   Sort by Name
@@ -404,7 +404,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
                     ))}
                 </button>
                 <button
-                  className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 flex items-center"
+                  className="block w-full text-left px-4 py-2 text-color-15 hover:bg-color-4 flex items-center"
                   onClick={() => handleSort("code")}
                 >
                   Sort by Code
@@ -416,7 +416,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
                     ))}
                 </button>
                 <button
-                  className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 flex items-center"
+                  className="block w-full text-left px-4 py-2 text-color-15 hover:bg-color-4 flex items-center"
                   onClick={() => handleSort("credit")}
                 >
                   Sort by Credit
@@ -428,7 +428,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
                     ))}
                 </button>
                 <button
-                  className="block w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 flex items-center"
+                  className="block w-full text-left px-4 py-2 text-color-15 hover:bg-color-4 flex items-center"
                   onClick={() => handleSort("grade4")}
                 >
                   Sort by Grade
@@ -442,7 +442,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
               </div>
             )}
             {/* <motion.button
-              className="p-2 bg-[#4A90E2] text-white rounded-full hover:bg-[#357ABD] transition-all duration-300"
+              className="p-2 bg-[#4A90E2] text-color-15 rounded-full hover:bg-[#357ABD] transition-all duration-300"
               data-tooltip-content="Export to JSON"
               data-tooltip-id="export-tooltip"
               onClick={handleExportJSON}
@@ -457,7 +457,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
               <ArrowDownTrayIcon className="w-5 h-5" />
             </GenericButton>
             {/* <motion.button
-              className="p-2 bg-[#4A90E2] text-white rounded-full hover:bg-[#357ABD] transition-all duration-300"
+              className="p-2 bg-[#4A90E2] text-color-15 rounded-full hover:bg-[#357ABD] transition-all duration-300"
               data-tooltip-content="Import JSON to Update Grades"
               data-tooltip-id="import-tooltip"
               onClick={() => setIsImportModalOpen(true)}
@@ -472,7 +472,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
               <ArrowUpTrayIcon className="w-5 h-5" />
             </GenericButton>
             {/* <motion.button
-              className="p-2 bg-[#4A90E2] text-white rounded-full hover:bg-[#357ABD] transition-all duration-300"
+              className="p-2 bg-[#4A90E2] text-color-15 rounded-full hover:bg-[#357ABD] transition-all duration-300"
               data-tooltip-content="Add New Subject"
               data-tooltip-id="add-tooltip"
               onClick={() => setIsCreateModalOpen(true)} // Updated to open create modal
@@ -569,7 +569,7 @@ const SubjectsList: React.FC<SubjectsListProps> = ({
           </table>
         </div>
       ) : (
-        <p className="text-gray-400">No subjects available.</p>
+        <p className="text-color-15">No subjects available.</p>
       )}
 
       {isModalOpen && selectedSubject && (

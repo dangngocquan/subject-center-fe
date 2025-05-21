@@ -56,7 +56,7 @@ export default function TimeTableResult({ timetables }: TimeTableResultProps) {
         total={filteredTimetables.length}
         onNext={() =>
           setCurrentIndex((prev) =>
-            Math.min(filteredTimetables.length - 1, prev + 1),
+            Math.min(filteredTimetables.length - 1, prev + 1)
           )
         }
         onPrev={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
@@ -132,7 +132,7 @@ function TimeTableResultHeader({
           }
         />
       </div>
-      <button className="mt-2 bg-yellow-500 text-white p-2 rounded">
+      <button className="mt-2 bg-yellow-500 text-color-15 p-2 rounded">
         Save Timetable
       </button>
     </div>
@@ -181,7 +181,7 @@ function TimeTableResultMain({
       </table>
       <div className="mt-4 flex justify-between">
         <button
-          className="bg-gray-500 text-white p-2 rounded"
+          className="bg-gray-500 text-color-15 p-2 rounded"
           disabled={index === 0}
           onClick={onPrev}
         >
@@ -191,7 +191,7 @@ function TimeTableResultMain({
           {index + 1}/{total}
         </p>
         <button
-          className="bg-gray-500 text-white p-2 rounded"
+          className="bg-gray-500 text-color-15 p-2 rounded"
           disabled={index === total - 1}
           onClick={onNext}
         >

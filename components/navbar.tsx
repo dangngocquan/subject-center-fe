@@ -43,7 +43,7 @@ export const Navbar = () => {
       setIsLoading(false);
       setIsLoginModalOpen(false);
     },
-    () => setIsLoading(false),
+    () => setIsLoading(false)
   );
 
   const updateAuthToken = () => {
@@ -280,7 +280,7 @@ export const Navbar = () => {
                   <NextLink
                     className={clsx(
                       linkStyles({ color: "foreground" }),
-                      "ml-5 text-color-10 hover:text-color-B7 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium",
+                      "ml-5 text-color-10 hover:text-color-B7 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium"
                     )}
                     href={item.href}
                     onClick={
@@ -295,7 +295,7 @@ export const Navbar = () => {
 
             {isMenuVisible && (
               <div
-                className={`lg:hidden fixed top-0 left-0 w-4/5 max-w-xs h-screen bg-gray-900/90 backdrop-blur-md z-50 transition-transform duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform ${
+                className={`lg:hidden fixed top-0 left-0 w-4/5 max-w-xs h-screen bg-color-6/90 backdrop-blur-md z-50 transition-transform duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform ${
                   isMenuOpen ? "translate-x-0" : "-translate-x-full"
                 }`}
               >
@@ -326,7 +326,7 @@ export const Navbar = () => {
                       <NextLink
                         className={clsx(
                           linkStyles({ color: "foreground" }),
-                          "text-white hover:text-color-15 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium w-full block",
+                          "text-color-15 hover:text-color-15 transition-colors data-[active=true]:text-color-15 data-[active=true]:font-medium w-full block"
                         )}
                         href={item.href}
                         onClick={
@@ -482,7 +482,7 @@ export const Navbar = () => {
       >
         <motion.div
           animate={{ opacity: 1, y: 0 }}
-          className="text-center text-white p-4"
+          className="text-center text-color-15 p-4"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
